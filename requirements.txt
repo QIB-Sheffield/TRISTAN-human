@@ -1,0 +1,4 @@
+xnat
+requests
+mdreg
+dipy
