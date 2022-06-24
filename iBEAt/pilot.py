@@ -3,11 +3,8 @@ import numpy as np
 
 import mdreg
 from mdreg.models import constant
-
 import dbdicom as db
-import weasel as wsl
-import weasel.actions as actions
-from weasel.widgets import SeriesViewerROI, FourDimViewer
+import weasel
 
 #from iBEAt.xnat import Upload, Download
 #from iBEAt.rename import Leeds
@@ -17,20 +14,20 @@ def menu(parent):
 
     menu = parent.menu('File')
     menu.action(Open, shortcut='Ctrl+O')
-    menu.action(actions.folder.Read)
-    menu.action(actions.folder.Save, shortcut='Ctrl+S')
-    menu.action(actions.folder.Restore, shortcut='Ctrl+R')
-    menu.action(actions.folder.Close, shortcut='Ctrl+C')
+    menu.action(weasel.actions.folder.Read)
+    menu.action(weasel.actions.folder.Save, shortcut='Ctrl+S')
+    menu.action(weasel.actions.folder.Restore, shortcut='Ctrl+R')
+    menu.action(weasel.actions.folder.Close, shortcut='Ctrl+C')
 
-    actions.edit.menu(parent.menu('Edit'))
+    weasel.actions.edit.menu(parent.menu('Edit'))
 
     menu = parent.menu('View')
-    menu.action(actions.view.Series)
+    menu.action(weasel.actions.view.Series)
     menu.action(Region, text='Draw ROI')
     menu.action(FourDimArrayDisplay, text='4D Array')
     menu.separator()
-    menu.action(actions.view.CloseWindows, text='Close windows')
-    menu.action(actions.view.TileWindows, text='Tile windows')
+    menu.action(weasel.actions.view.CloseWindows, text='Close windows')
+    menu.action(weasel.actions.view.TileWindows, text='Tile windows')
 
     menu = parent.menu('TRISTAN lab')
     #menu.action(RenameSeries, text='Rename series..')
@@ -62,7 +59,7 @@ def menu(parent):
     menu.separator()
     #menu.action(Upload, text = 'Upload results to XNAT') # function upload
 
-    actions.about.menu(parent.menu('About'))
+    weasel.actions.about.menu(parent.menu('About'))
 
 
 # These attributes are used frequently in iBEAt.
@@ -75,7 +72,7 @@ attributes = [
 ]
 
 
-class Open(wsl.Action):
+class Open(weasel.Action):
 
     def enable(self, app):
 
@@ -100,7 +97,7 @@ class Open(wsl.Action):
         app.status.cursorToNormal()
 
 
-class OpenSubFolders(wsl.Action):
+class OpenSubFolders(weasel.Action):
 
     def enable(self, app):
 
@@ -130,7 +127,7 @@ class OpenSubFolders(wsl.Action):
         app.display(app.folder)
 
 
-class MergeDynamics(wsl.Action):
+class MergeDynamics(weasel.Action):
 
     def enable(self, app):
 
@@ -176,19 +173,19 @@ class MergeDynamics(wsl.Action):
                 cnt += 1
         app.refresh()
 
-class MDRegDynamics(wsl.Action):
+class MDRegDynamics(weasel.Action):
 
-    def enable(self, weasel):
+    def enable(self, app):
 
-        if not hasattr(weasel, 'folder'):
+        if not hasattr(app, 'folder'):
             return False
         return True
 
-    def run(self, weasel): 
+    def run(self, app): 
         """
         Perform model-driven motion correction
         """
-        series = weasel.get_selected(3)[0]
+        series = app.get_selected(3)[0]
         array, dataset = series.array(['SliceLocation', 'AcquisitionTime'], pixels_first=True)
 
         mdr = mdreg.MDReg()
@@ -196,7 +193,7 @@ class MDRegDynamics(wsl.Action):
     #    mdr.signal_model = constant
         mdr.set_elastix(MaximumNumberOfIterations = 256)
     #    #mdr.precision = 1
-        mdr.status = weasel.status
+        mdr.status = app.status
 
         for z in range(array.shape[2]):
             mdr.pinned_message = 'MDR for slice ' + str(z) + ' of ' + str(array.shape[2])
@@ -217,9 +214,9 @@ class MDRegDynamics(wsl.Action):
         #fit = series.new_sibling(SeriesDescription = series.SeriesDescription + '_array')
         #fit.write_array(xarray, pixels_first=True)
 
-        weasel.refresh() 
+        app.refresh() 
 
-class RenameSeries(wsl.Action):
+class RenameSeries(weasel.Action):
 
     def enable(self, app):
         if not hasattr(app, 'folder'):
@@ -236,7 +233,7 @@ class RenameSeries(wsl.Action):
         app.refresh()
 
 
-class Region(wsl.Action):
+class Region(weasel.Action):
 
     def enable(self, app):
         
@@ -248,53 +245,53 @@ class Region(wsl.Action):
 
         for series in app.get_selected(3):
 
-            viewer = SeriesViewerROI(series, dimensions=attributes + ['StudyDate'])
+            viewer = weasel.widgets.SeriesViewerROI(series, dimensions=attributes + ['StudyDate'])
             viewer.dataWritten.connect(app.treeView.setFolder)
             app.addAsSubWindow(viewer, title=series.label())
 
 
-class FourDimArrayDisplay(wsl.Action):
+class FourDimArrayDisplay(weasel.Action):
 
-    def enable(self, weasel):
-        return weasel.nr_selected(3) != 0
+    def enable(self, app):
+        return app.nr_selected(3) != 0
 
-    def run(self, weasel):
-        series = weasel.get_selected(3)[0]
+    def run(self, app):
+        series = app.get_selected(3)[0]
         array = series.load_npy()
         no_array = array is None
         if no_array:
             array, _ = series.array(['SliceLocation', 'AcquisitionTime'], pixels_first=True)
             array = np.squeeze(array[...,0])
         if array.ndim != 4:
-            weasel.dialog.information("Please select a 4D array for this viewer")
+            app.dialog.information("Please select a 4D array for this viewer")
             return
-        viewer = FourDimViewer(weasel.status, array)
-        weasel.addAsSubWindow(viewer, title=series.label())
-        weasel.status.message('Saving array for rapid access..')
+        viewer = weasel.widgets.FourDimViewer(weasel.status, array)
+        app.addAsSubWindow(viewer, title=series.label())
+        app.status.message('Saving array for rapid access..')
         if no_array:
             series.save_npy(array=array)
-        weasel.status.message('')
+        app.status.message('')
 
 
-class MDR_iBEAt_MT_Button(wsl.Action):
+class MDR_iBEAt_MT_Button(weasel.Action):
     pass
 
-class MDR_allSeries_iBEAt_Button(wsl.Action):
+class MDR_allSeries_iBEAt_Button(weasel.Action):
     pass
 
-class MDR_allSeries_iBEAt_Button_NO_importing(wsl.Action):
+class MDR_allSeries_iBEAt_Button_NO_importing(weasel.Action):
     pass
 
-class iBEAt_SiemensT1T2MapButton(wsl.Action):
+class iBEAt_SiemensT1T2MapButton(weasel.Action):
     pass
 
-class iBEAt_SiemensT2sMapButton(wsl.Action):
+class iBEAt_SiemensT2sMapButton(weasel.Action):
     pass
 
-class iBEAt_SiemensIVIMButton(wsl.Action):
+class iBEAt_SiemensIVIMButton(weasel.Action):
     pass
 
-class iBEAt_SiemensDTIButton(wsl.Action):
+class iBEAt_SiemensDTIButton(weasel.Action):
     pass
 
 
