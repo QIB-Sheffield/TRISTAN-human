@@ -1,3 +1,3 @@
 # iBEAt pipelines
 
-iBEAt image processing pipelines under development
+TRISTAN human image processing pipelines - under development

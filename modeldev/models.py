@@ -211,9 +211,11 @@ class LiverOneShotOneScan(CurveFit):
             ['S0', "Signal amplitude S0", 1200, "a.u.", 0, np.inf, False, 4],
             ['FA', "Flip angle", self.aorta.FA, "deg", 0, 180, False, 4],
             #['FA', "Flip angle", 180.0, "deg", 0, 180, False, 4],
-            ['khe', "Intracellular gadoxetate uptake rate", self.khe, 'mL/sec/mL', 0, np.inf, True, 5],
-            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 0, np.inf, True, 3],
-            ['veapp', "Apparent liver extracellular volume", self.ve_app, 'mL/mL', 0, 1, True, 3],
+            ['Ktrans', "Extraction fraction", self.Ktrans, '', 0, np.inf, True, 5],
+            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 0, np.inf, True, 5],
+            ['FpTe', "Apparent liver extracellular volume", self.veL, 'mL/mL', 0, 1, True, 3],
+            # ['MTTa', "Arterial mean transit time", 5.0, 'sec', 0, np.inf, True, 5],
+            # ['AFF', "Arterial flow fraction", 0.2, '', 0, 1, True, 5],
             ['TTDgut', "Gut transit time dispersion", 31.0, 'sec', 0, np.inf, True, 3],
             ['MTTgut', "Gut mean transit time", 43.0, 'sec', 0, np.inf, True, 3],
         ]
@@ -244,19 +246,21 @@ class LiverOneShotOneScan(CurveFit):
     def R1(self):
 
         p = self.p.value
-        self.cb = dcmri.propagate_dd(
+        cv = dcmri.propagate_dd(
             self.aorta.t, self.aorta.cb, p.MTTgut, p.TTDgut)
+        # ca = dcmri.propagate_delay(self.aorta.t, self.aorta.cb, p.MTTa)
+        # self.cb = p.AFF*ca + (1-p.AFF)*cv
+        self.cb = cv
 
-#        AFF = 0.1
-#        c_liver_artery = np.interp(t-MTTla, t, self.cp, left=0) # Delay in arteries
-#        cp = AFF*c_liver_artery + (1-AFF)*c_portal_vein
         #cp = expconv(Te, t, cp)            # Dispersion in liver extracellular space
 
-        ne = p.veapp*self.cb/self.aorta.Hct
-        nh = (p.Th*p.khe)*dcmri.propagate_compartment(self.aorta.t, ne, p.Th)
-        self.ce = ne/self.veL
+        cp = self.cb/self.aorta.Hct
+        ne, nh = dcmri.residue_high_flow_2cfm(self.aorta.t, cp, p.Ktrans, p.Th, p.FpTe)
+
+        self.ce = (1-p.Ktrans/self.Fp)*cp
         self.ch = nh/self.vh
-        self.cl = (ne + nh)/(self.veL+self.vh)
+        self.cl = ne + nh
+
         return self.R10 + self.aorta.rp*ne + self.rh*nh
 
     def signal_smooth(self):
@@ -569,9 +573,11 @@ class LiverTwoShotTwoScan(LiverOneShotOneScan):
             ['S02', "Signal amplitude S0", 1200, "a.u.", 0, np.inf, False, 4],
             ['FA2', "Flip angle 2", self.aorta.FA, "deg", 0, 180, False, 4],
             #['FA2', "Flip angle", 180.0, "deg", 0, 180, False, 4],
-            ['khe', "Intracellular gadoxetate uptake rate", self.khe, 'mL/sec/mL', 0, np.inf, True, 5],
-            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 0, np.inf, True, 3],
-            ['veapp', "Apparent liver extracellular volume", self.ve_app, 'mL/mL', 0, 1, True, 3],
+            ['Ktrans', "Extraction fraction", self.Ktrans, '', 0, np.inf, True, 5],
+            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 0, np.inf, True, 5],
+            ['FpTe', "Apparent liver extracellular volume", self.veL, 'mL/mL', 0, 1, True, 3],
+            # ['MTTa', "Arterial mean transit time", 5.0, 'sec', 0, np.inf, True, 5],
+            # ['AFF', "Arterial flow fraction", 0.2, '', 0, 1, True, 5],
             ['TTDgut', "Gut transit time dispersion", 31.0, 'sec', 0, np.inf, True, 3],
             ['MTTgut', "Gut mean transit time", 43.0, 'sec', 0, np.inf, True, 3],
         ]
@@ -579,22 +585,19 @@ class LiverTwoShotTwoScan(LiverOneShotOneScan):
     def R1(self):
 
         p = self.p.value
-        self.cb = dcmri.propagate_dd(
-            self.aorta.t, self.aorta.cb, 
-            p.MTTgut, p.TTDgut)
+        cv = dcmri.propagate_dd(
+            self.aorta.t, self.aorta.cb, p.MTTgut, p.TTDgut)
+        # ca = dcmri.propagate_delay(self.aorta.t, self.aorta.cb, p.MTTa)
+        # self.cb = p.AFF*ca + (1-p.AFF)*cv
+        self.cb = cv
 
-#        AFF = 0.1
-#        c_liver_artery = np.interp(t-MTTla, t, self.cp, left=0) # Delay in arteries
-#        cp = AFF*c_liver_artery + (1-AFF)*c_portal_vein
         #cp = expconv(Te, t, cp)            # Dispersion in liver extracellular space
 
-        ne = p.veapp*self.cb/self.aorta.Hct
-        nh = (p.Th*p.khe)*dcmri.propagate_compartment(self.aorta.t, ne, p.Th)
-
-        # Store as extra output for diagnostic reasons
-        self.ce = ne/self.veL
+        cp = self.cb/self.aorta.Hct
+        ne, nh = dcmri.residue_high_flow_2cfm(self.aorta.t, cp, p.Ktrans, p.Th, p.FpTe)
+        self.ce = (1-p.Ktrans/self.Fp)*cp
         self.ch = nh/self.vh
-        self.cl = (ne + nh)/(self.veL+self.vh)
+        self.cl = ne + nh
 
         # Relaxation rate
         return self.R10 + self.aorta.rp*ne + self.rh*nh
@@ -978,9 +981,11 @@ class LiverTwoShotOneScan(LiverOneShotOneScan):
             ['S0', "Liver signal amplitude S0", 1000.0, "a.u.", 0, np.inf, False, 3], 
             ['FA', "Flip angle", self.aorta.FA, "deg", 0, 180, False, 4], 
             #['FA', "Flip angle", 180.0, "deg", 0, 180, False, 4], 
-            ['khe', "Intracellular gadoxetate uptake rate", self.khe, 'mL/sec/mL', 0, np.inf, True, 4],
-            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 0, np.inf, True, 3],
-            ['veapp', "Apparent liver extracellular volume", self.ve_app, 'mL/mL', 0, 1, True, 3],
+            ['Ktrans', "Extraction fraction", self.Ktrans, '', 0, np.inf, True, 5],
+            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 0, np.inf, True, 5],
+            ['FpTe', "Apparent liver extracellular volume", self.veL, 'mL/mL', 0, 1, True, 3],
+            # ['MTTa', "Arterial mean transit time", 5.0, 'sec', 0, np.inf, True, 5],
+            # ['AFF', "Arterial flow fraction", 0.2, '', 0, 1, True, 5],
             ['TTDgut', "Gut transit time dispersion", 31.0, 'sec', 0, np.inf, True, 3],
             ['MTTgut', "Gut mean transit time", 43.0, 'sec', 0, np.inf, True, 3],
         ]
@@ -991,19 +996,19 @@ class LiverTwoShotOneScan(LiverOneShotOneScan):
     def R1(self):
 
         p = self.p.value
-        self.cb = dcmri.propagate_dd(
+        cv = dcmri.propagate_dd(
             self.aorta.t, self.aorta.cb, p.MTTgut, p.TTDgut)
+        # ca = dcmri.propagate_delay(self.aorta.t, self.aorta.cb, p.MTTa)
+        # self.cb = p.AFF*ca + (1-p.AFF)*cv
+        self.cb = cv
 
-#        AFF = 0.1
-#        c_liver_artery = np.interp(t-MTTla, t, self.cp, left=0) # Delay in arteries
-#        cp = AFF*c_liver_artery + (1-AFF)*c_portal_vein
         #cp = expconv(Te, t, cp)            # Dispersion in liver extracellular space
 
-        ne = p.veapp*self.cb/self.aorta.Hct
-        nh = (p.Th*p.khe)*dcmri.propagate_compartment(self.aorta.t, ne, p.Th)
-        self.ce = ne/self.veL
+        cp = self.cb/self.aorta.Hct
+        ne, nh = dcmri.residue_high_flow_2cfm(self.aorta.t, cp, p.Ktrans, p.Th, p.FpTe)
+        self.ce = (1-p.Ktrans/self.Fp)*cp
         self.ch = nh/self.vh
-        self.cl = (ne + nh)/(self.veL+self.vh)
+        self.cl = ne + nh
         
         # t0 = np.nonzero(self.aorta.t >= self.R12[0])[0][0]
         # R10 = self.R12[1] - self.aorta.rp*ne[t0] - self.rh*nh[t0]

@@ -197,9 +197,11 @@ if __name__ == "__main__":
             pass
 
         lp = [
-            ['khe', lp22.value.khe, lp11.value.khe, lp12.value.khe, lp21.value.khe],
+            ['Ktrans', lp22.value.Ktrans, lp11.value.Ktrans, lp12.value.Ktrans, lp21.value.Ktrans],
             ['Th', lp22.value.Th, lp11.value.Th, lp12.value.Th, lp21.value.Th], 
-            ['veapp', lp22.value.veapp, lp11.value.veapp, lp12.value.veapp, lp21.value.veapp], 
+            ['FpTe', lp22.value.FpTe, lp11.value.FpTe, lp12.value.FpTe, lp21.value.FpTe], 
+            # ['MTTa', lp22.value.MTTa, lp11.value.MTTa, lp12.value.MTTa, lp21.value.MTTa],
+            # ['AFF', lp22.value.AFF, lp11.value.AFF, lp12.value.AFF, lp21.value.AFF],
             ['TTDgut', lp22.value.TTDgut, lp11.value.TTDgut, lp12.value.TTDgut, lp21.value.TTDgut], 
             ['MTTgut', lp22.value.MTTgut, lp11.value.MTTgut, lp12.value.MTTgut, lp21.value.MTTgut],
         ]
