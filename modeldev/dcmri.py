@@ -165,6 +165,45 @@ def propagate_simple_body(t, c_vena_cava,
 
     return c_vena_cava_total, c_aorta_total
 
+def residue_high_flow_2cfm(t, ci, Ktrans, Te, FiTi):
+    """Central compartment i with high flow (Ti=0) and filtration compartment e"""
+
+    ni = FiTi*ci
+    ne = (Te*Ktrans)*propagate_compartment(t, ci, Te)
+    return ni, ne
+
+def residue_high_flow_2cfm_varT(t, ci, Ktrans, Te1, Te2, FiTi, dt=None):
+    """Central compartment i with high flow (Ti=0) and filtration compartment e"""
+
+    # ve dce/dt = Ktrans*ci - k*ce
+    # dne/dt = Ktrans * ci - ne / Te
+    # Analytical solution with constant Te:
+    #   ne(t) = exp(-t/Te) * Ktrans ci(t) 
+    #   ne(t) = Te Ktrans P(Te, t) * ci(t)
+    # Numerical solution with variable Te
+    #   (ne(t+dt)-ne(t))/dt = Ktrans ci(t) - ne(t) / Te(t)
+    #   ne(t+dt) = ne(t) + dt Ktrans ci(t) - ne(t) dt/Te(t)
+    #   ne(t+dt) = dt Ktrans ci(t) + (1-dt/Te(t) * ne(t)
+
+    # Build time-varying Te (step function)
+    Te = np.empty(len(t))
+    tmid = math.floor(len(t)/2)
+    Te[:tmid] = Te1
+    Te[tmid:] = Te2
+
+    if dt is None:
+        T = np.append(Te, 1/Ktrans)
+        dt = np.amin(T)/10
+
+    ni = FiTi*ci
+    ji = dt*Ktrans*ci
+    Re = 1-dt/Te
+    ne = np.empty(len(t))
+    ne[0] = 0
+    for k in range(t)-1:
+        ne[k+1] = ji[k] + Re[k] * ne[k]
+    return ni, ne
+
 
 def injection(t, weight, conc, dose, rate, start1, start2=None):
     """dose injected per unit time (mM/sec)"""
