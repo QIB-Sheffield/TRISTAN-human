@@ -1,13 +1,10 @@
-import os
+
 import numpy as np
 
 import mdreg
 from mdreg.models import constant
 import dbdicom as db
 import weasel
-
-
-
 
 
 class MDRegDynamics(weasel.Action):
@@ -46,7 +43,7 @@ class MDRegDynamics(weasel.Action):
         fit.set_array(array, dataset, pixels_first=True)
 
         #TO REPLACE BY:
-        #xarray = db.array(series, sortby=['SliceLocation', 'AcquisitionTime'], pixels_first=True)
+        #dbarray = db.array(series, sortby=['SliceLocation', 'AcquisitionTime'], pixels_first=True)
         #perform mdreg on dbarray.tonumpy()
         #fit = series.new_sibling(SeriesDescription = series.SeriesDescription + '_array')
         #fit.write_array(xarray, pixels_first=True)
