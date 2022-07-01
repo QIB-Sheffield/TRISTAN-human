@@ -1,4 +1,9 @@
 xnat
-requests
 mdreg
 dipy
+wezel
+dbdicom
+numpy
+scipy
+pandas
+matplotlib

@@ -4,10 +4,10 @@ import numpy as np
 import mdreg
 from mdreg.models import constant
 import dbdicom as db
-import weasel
+import wezel
 
 
-class MDRegDynamics(weasel.Action):
+class MDRegDynamics(wezel.Action):
 
     def enable(self, app):
 
@@ -31,7 +31,7 @@ class MDRegDynamics(weasel.Action):
 
         for z in range(array.shape[2]):
             mdr.pinned_message = 'MDR for slice ' + str(z) + ' of ' + str(array.shape[2])
-            # weasel.status.progress(z, array.shape[2], 'Fitting model..')
+            # wezel.status.progress(z, array.shape[2], 'Fitting model..')
             mdr.pixel_spacing = dataset[z,0,0].PixelSpacing
             mdr.set_array(np.squeeze(array[:,:,z,:,0]))
             mdr.fit()   # Add status bar option like in dbdicom

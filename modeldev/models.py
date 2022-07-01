@@ -211,9 +211,12 @@ class LiverOneShotOneScan(CurveFit):
             ['S0', "Signal amplitude S0", 1200, "a.u.", 0, np.inf, False, 4],
             ['FA', "Flip angle", self.aorta.FA, "deg", 0, 180, False, 4],
             #['FA', "Flip angle", 180.0, "deg", 0, 180, False, 4],
-            ['Ktrans', "Extraction fraction", self.Ktrans, '', 0, np.inf, True, 5],
-            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 0, np.inf, True, 5],
+            ['Ktrans', "Blood transfer rate Ktrans", self.Ktrans, 'mL/sec/mL', 0, np.inf, True, 7],
+            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 10*self.aorta.dt, np.inf, True, 5],
+            ['Tb', "Bile mean transit time", 2*60., 'sec', 10*self.aorta.dt, np.inf, True, 5],
+            ['Db', "Bile flow dispersion", 50, '%', 0, 100, True, 5],
             ['FpTe', "Apparent liver extracellular volume", self.veL, 'mL/mL', 0, 1, True, 3],
+            ['vbh', "Bile-to-hepatocyte volume ratio", 0.1, '', 0, np.inf, True, 5],
             # ['MTTa', "Arterial mean transit time", 5.0, 'sec', 0, np.inf, True, 5],
             # ['AFF', "Arterial flow fraction", 0.2, '', 0, 1, True, 5],
             ['TTDgut', "Gut transit time dispersion", 31.0, 'sec', 0, np.inf, True, 3],
@@ -255,13 +258,16 @@ class LiverOneShotOneScan(CurveFit):
         #cp = expconv(Te, t, cp)            # Dispersion in liver extracellular space
 
         cp = self.cb/self.aorta.Hct
-        ne, nh = dcmri.residue_high_flow_2cfm(self.aorta.t, cp, p.Ktrans, p.Th, p.FpTe)
+
+        ne = p.FpTe*cp
+        nh = p.Th*dcmri.propagate_compartment(self.aorta.t, p.Ktrans*cp, p.Th)
+        nb = p.vbh*dcmri.residue_chain(self.aorta.t, nh, p.Tb, p.Db)
 
         self.ce = (1-p.Ktrans/self.Fp)*cp
         self.ch = nh/self.vh
-        self.cl = ne + nh
+        self.cl = ne + nh + nb
 
-        return self.R10 + self.aorta.rp*ne + self.rh*nh
+        return self.R10 + self.aorta.rp*ne + self.rh*nh + self.rh*nb
 
     def signal_smooth(self):
 
@@ -573,9 +579,12 @@ class LiverTwoShotTwoScan(LiverOneShotOneScan):
             ['S02', "Signal amplitude S0", 1200, "a.u.", 0, np.inf, False, 4],
             ['FA2', "Flip angle 2", self.aorta.FA, "deg", 0, 180, False, 4],
             #['FA2', "Flip angle", 180.0, "deg", 0, 180, False, 4],
-            ['Ktrans', "Extraction fraction", self.Ktrans, '', 0, np.inf, True, 5],
-            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 0, np.inf, True, 5],
+            ['Ktrans', "Blood transfer rate Ktrans", self.Ktrans, 'mL/sec/mL', 0, np.inf, True, 7],
+            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 10*self.aorta.dt, np.inf, True, 5],
+            ['Tb', "Bile mean transit time", 2*60., 'sec', 10*self.aorta.dt, np.inf, True, 5],
+            ['Db', "Bile flow dispersion", 50, '%', 0, 100, True, 5],
             ['FpTe', "Apparent liver extracellular volume", self.veL, 'mL/mL', 0, 1, True, 3],
+            ['vbh', "Bile-to-hepatocyte volume ratio", 0.1, '', 0, np.inf, True, 5],
             # ['MTTa', "Arterial mean transit time", 5.0, 'sec', 0, np.inf, True, 5],
             # ['AFF', "Arterial flow fraction", 0.2, '', 0, 1, True, 5],
             ['TTDgut', "Gut transit time dispersion", 31.0, 'sec', 0, np.inf, True, 3],
@@ -594,13 +603,17 @@ class LiverTwoShotTwoScan(LiverOneShotOneScan):
         #cp = expconv(Te, t, cp)            # Dispersion in liver extracellular space
 
         cp = self.cb/self.aorta.Hct
-        ne, nh = dcmri.residue_high_flow_2cfm(self.aorta.t, cp, p.Ktrans, p.Th, p.FpTe)
+
+        ne = p.FpTe*cp
+        nh = p.Th*dcmri.propagate_compartment(self.aorta.t, p.Ktrans*cp, p.Th)
+        nb = p.vbh*dcmri.residue_chain(self.aorta.t, nh, p.Tb, p.Db)
+
         self.ce = (1-p.Ktrans/self.Fp)*cp
         self.ch = nh/self.vh
-        self.cl = ne + nh
+        self.cl = ne + nh + nb
 
         # Relaxation rate
-        return self.R10 + self.aorta.rp*ne + self.rh*nh
+        return self.R10 + self.aorta.rp*ne + self.rh*nh + self.rh*nb
 
     def signal_smooth(self):
 
@@ -981,9 +994,12 @@ class LiverTwoShotOneScan(LiverOneShotOneScan):
             ['S0', "Liver signal amplitude S0", 1000.0, "a.u.", 0, np.inf, False, 3], 
             ['FA', "Flip angle", self.aorta.FA, "deg", 0, 180, False, 4], 
             #['FA', "Flip angle", 180.0, "deg", 0, 180, False, 4], 
-            ['Ktrans', "Extraction fraction", self.Ktrans, '', 0, np.inf, True, 5],
-            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 0, np.inf, True, 5],
+            ['Ktrans', "Blood transfer rate Ktrans", self.Ktrans, 'mL/sec/mL', 0, np.inf, True, 7],
+            ['Th', "Hepatocellular mean transit time", 20*60., 'sec', 10*self.aorta.dt, np.inf, True, 5],
+            ['Tb', "Bile mean transit time", 2*60., 'sec', 10*self.aorta.dt, np.inf, True, 5],
+            ['Db', "Bile flow dispersion", 50, '%', 0, 100, True, 5],
             ['FpTe', "Apparent liver extracellular volume", self.veL, 'mL/mL', 0, 1, True, 3],
+            ['vbh', "Bile-to-hepatocyte volume ratio", 0.1, '', 0, np.inf, True, 5],
             # ['MTTa', "Arterial mean transit time", 5.0, 'sec', 0, np.inf, True, 5],
             # ['AFF', "Arterial flow fraction", 0.2, '', 0, 1, True, 5],
             ['TTDgut', "Gut transit time dispersion", 31.0, 'sec', 0, np.inf, True, 3],
@@ -1005,17 +1021,21 @@ class LiverTwoShotOneScan(LiverOneShotOneScan):
         #cp = expconv(Te, t, cp)            # Dispersion in liver extracellular space
 
         cp = self.cb/self.aorta.Hct
-        ne, nh = dcmri.residue_high_flow_2cfm(self.aorta.t, cp, p.Ktrans, p.Th, p.FpTe)
+
+        ne = p.FpTe*cp
+        nh = p.Th*dcmri.propagate_compartment(self.aorta.t, p.Ktrans*cp, p.Th)
+        nb = p.vbh*dcmri.residue_chain(self.aorta.t, nh, p.Tb, p.Db)
+
         self.ce = (1-p.Ktrans/self.Fp)*cp
         self.ch = nh/self.vh
-        self.cl = ne + nh
+        self.cl = ne + nh + nb
         
         # t0 = np.nonzero(self.aorta.t >= self.R12[0])[0][0]
         # R10 = self.R12[1] - self.aorta.rp*ne[t0] - self.rh*nh[t0]
         # if R10 <= 0: 
         #     R10=0
         #R1 = R10 + self.aorta.rp*ne + self.rh*nh
-        R1 = self.R10lit + self.aorta.rp*ne + self.rh*nh
+        R1 = self.R10lit + self.aorta.rp*ne + self.rh*nh + self.rh*nb
         return R1
 
     def estimate_p(self):

@@ -40,6 +40,8 @@ from models import (
     LiverTwoShotOneScan,  
 )
 
+subject = ['v4_1_rifampicin', 'v4_1']
+#subject = ['v4_1_rifampicin']
 
 def oneshot_onescan(subj, path, show):
 
@@ -164,7 +166,6 @@ def twoshot_onescan(subj, path, show):
 if __name__ == "__main__":
 
     filepath = os.path.dirname(__file__)
-    subject = ['v4_1', 'v4_1_rifampicin']
     show = False
 
     for s in subject:
@@ -179,15 +180,11 @@ if __name__ == "__main__":
 
         cols = ['symbol', '2shot2scan', '1shot1scan', '1shot2scan', '2shot1scan2']   
 
-        ap = [
-            ['CO', ap22.value.CO, ap11.value.CO, ap12.value.CO, ap21.value.CO],
-            ['MTThl', ap22.value.MTThl, ap11.value.MTThl, ap12.value.MTThl, ap21.value.MTThl], 
-            ['MTTo', ap22.value.MTTo, ap11.value.MTTo, ap12.value.MTTo, ap21.value.MTTo], 
-            ['TTDo', ap22.value.TTDo, ap11.value.TTDo, ap12.value.TTDo, ap21.value.TTDo], 
-            ['MTTe', ap22.value.MTTe, ap11.value.MTTe, ap12.value.MTTe, ap21.value.MTTe],
-            ['El', ap22.value.El, ap11.value.El, ap12.value.El, ap21.value.El],
-            ['Ee', ap22.value.Ee, ap11.value.Ee, ap12.value.Ee, ap21.value.Ee], 
-        ]
+        pars = ['CO', 'MTThl', 'MTTo', 'TTDo', 'MTTe', 'El', 'Ee']
+        ap = []
+        for p in pars:
+            row = [p, ap22.value[p], ap11.value[p], ap12.value[p], ap21.value[p]]
+            ap.append(row)
         ap = pd.DataFrame(ap, columns=cols)
         ap.set_index('symbol', inplace=True)
         save_file = os.path.join(path, 'summary_aorta.csv')
@@ -196,15 +193,11 @@ if __name__ == "__main__":
         except:
             pass
 
-        lp = [
-            ['Ktrans', lp22.value.Ktrans, lp11.value.Ktrans, lp12.value.Ktrans, lp21.value.Ktrans],
-            ['Th', lp22.value.Th, lp11.value.Th, lp12.value.Th, lp21.value.Th], 
-            ['FpTe', lp22.value.FpTe, lp11.value.FpTe, lp12.value.FpTe, lp21.value.FpTe], 
-            # ['MTTa', lp22.value.MTTa, lp11.value.MTTa, lp12.value.MTTa, lp21.value.MTTa],
-            # ['AFF', lp22.value.AFF, lp11.value.AFF, lp12.value.AFF, lp21.value.AFF],
-            ['TTDgut', lp22.value.TTDgut, lp11.value.TTDgut, lp12.value.TTDgut, lp21.value.TTDgut], 
-            ['MTTgut', lp22.value.MTTgut, lp11.value.MTTgut, lp12.value.MTTgut, lp21.value.MTTgut],
-        ]
+        pars = ['FpTe', 'Ktrans', 'Th', 'Tb', 'Db', 'TTDgut', 'MTTgut']
+        lp = []
+        for p in pars:
+            row = [p, lp22.value[p], lp11.value[p], lp12.value[p], lp21.value[p]]
+            lp.append(row)
         lp = pd.DataFrame(lp, columns=cols)
         lp.set_index('symbol', inplace=True)
         save_file = os.path.join(path, 'summary_liver.csv')

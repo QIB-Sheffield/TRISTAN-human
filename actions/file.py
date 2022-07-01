@@ -1,9 +1,9 @@
 import os
-import weasel
+import wezel
 
 
-class Open(weasel.Action):
-    """Generalizes the current open action in weasel
+class Open(wezel.Action):
+    """Generalizes the current open action in wezel
     to allow setting of general attributes"""
 
     def enable(self, app):
@@ -28,7 +28,7 @@ class Open(weasel.Action):
         app.status.cursorToNormal()
 
 
-class OpenSubFolders(weasel.Action):
+class OpenSubFolders(wezel.Action):
 
     def enable(self, app):
 
@@ -56,7 +56,7 @@ class OpenSubFolders(weasel.Action):
         app.status.cursorToNormal()
         app.display(app.folder)
 
-class ExportSeries(weasel.Action):
+class ExportSeries(wezel.Action):
     """Export selected series"""
 
     def enable(self, app):

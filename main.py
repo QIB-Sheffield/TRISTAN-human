@@ -1,12 +1,12 @@
 import numpy as np
-import weasel
+import wezel
 import dbdicom as db
 from mdreg import MDReg
-from weasel.apps.dicom import Windows
+from wezel.apps.dicom import Windows
 
 import menu as tristan
 
-wsl = weasel.app(Windows)
+wsl = wezel.app(Windows)
 wsl.set_menu(tristan.dev)
 wsl.show()
 exit()
@@ -35,8 +35,8 @@ array[...,0] = mdr.coreg
 fit = series.new_cousin(SeriesDescription = series.SeriesDescription + '_coreg')
 fit.set_array(array, dataset, pixels_first=True)
 
-# Display results in weasel
-wsl = weasel.app(Windows)
+# Display results in wezel
+wsl = wezel.app(Windows)
 wsl.set_menu(tristan.dev)
 wsl.set_data(folder)
 wsl.show()

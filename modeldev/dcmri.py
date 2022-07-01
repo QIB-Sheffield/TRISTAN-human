@@ -46,17 +46,29 @@ def expconv(T, time, a):
         f[i+1] = E[i]*f[i] + add[i]      
     return f
 
-def convolve(t, ci, H):
+def convolve(u, tc, c, th, h):
 
-    co = np.empty(len(t))
-    ci = np.flip(ci)
-    for k in range(t):
-        co[k] = np.trapz(H[0:k]*ci[-k:], t[0:k]) #needs checking
+#    co(t) = int_0^t du h(u) c(t-u) 
+
+    co = np.zeros(len(u))
+    h = np.interp(u, th, h, left=0, right=0)
+    c = np.interp(u, tc, c, left=0, right=0)
+    for k, t in enumerate(u):
+        if k != 0:
+            ct = np.interp(t-u, u, c, left=0, right=0)
+            co[k] = np.trapz(h[:k]*ct[:k], u[:k])
     return co   
 
-def propagate_compartment(t, c, MTT):
+def compartment_propagator(t, MTT):
+    return np.exp(-t/MTT)/MTT
 
+def propagate_compartment(t, c, MTT):
+    """Returns the average concentration at the outlet given the concentration at the inlet"""
     return expconv(MTT, t, c)
+
+def residue_compartment(t, c, MTT):
+    """Returns the concentration inside the system given the concentration at the inlet"""
+    return propagate_compartment(t, c, MTT)
 
 def propagate_dd(t, c, MTT, TTD):
     """
@@ -79,16 +91,25 @@ def propagate_dd(t, c, MTT, TTD):
     c = np.interp(t-delay, t, c, left=0)
     return c
 
-def propagate_chain(t, ci, MTT, n): # 1 <= n 
+def chain_propagator(t, MTT, dispersion): # dispersion in %
+    # Needs error handling for dispersion=0 case - not numerically feasible.
+    n = 100/dispersion
+    Tx = MTT/n
+    return (np.exp(-t/Tx)/Tx) * (t/Tx)**(n-1)/gamma(n)
 
-    # MTT = n * Tx
-    # TTD = sqrt(n) * Tx = MTT / sqrt(n)
-    # n = (MTT/TTD)^2
+def propagate_chain(t, ci, MTT, dispersion): # dispersion in % 
+
     if MTT == 0:
         return ci
-    Tx = MTT/n
-    H = (np.exp(-t/Tx)/Tx) * (t/Tx)^(n-1)/gamma(n)  
-    return convolve(t, ci, H)
+    if dispersion == 0:
+        return np.interp(t-MTT, t, ci, left=0)
+    H = chain_propagator(t, MTT, dispersion)
+    return convolve(t, t, ci, t, H)
+
+def residue_chain(t, ci, MTT, dispersion):
+    """Returns the (average) concentration inside the system given the concentration at the inlet"""
+    co = propagate_chain(t, ci, MTT, dispersion)
+    return np.trapz(ci-co, t)/MTT
 
 def propagate_delay(t, c, delay):
 
@@ -165,6 +186,13 @@ def propagate_simple_body(t, c_vena_cava,
 
     return c_vena_cava_total, c_aorta_total
 
+def residue_high_flow_ccf(t, ci, Ktrans, Te, De, FiTi):
+    """Residue for a compartment i with high flow (Ti=0) and a chain e"""
+
+    ni = FiTi*ci
+    ne = (Te*Ktrans)*residue_chain(t, ci, Te, De)
+    return ni, ne
+
 def residue_high_flow_2cfm(t, ci, Ktrans, Te, FiTi):
     """Central compartment i with high flow (Ti=0) and filtration compartment e"""
 
@@ -172,7 +200,7 @@ def residue_high_flow_2cfm(t, ci, Ktrans, Te, FiTi):
     ne = (Te*Ktrans)*propagate_compartment(t, ci, Te)
     return ni, ne
 
-def residue_high_flow_2cfm_varT(t, ci, Ktrans, Te1, Te2, FiTi, dt=None):
+def residue_high_flow_2cfm_varK(t, ci, Ktrans1, Ktrans2, Ktrans3, Te, FiTi):
     """Central compartment i with high flow (Ti=0) and filtration compartment e"""
 
     # ve dce/dt = Ktrans*ci - k*ce
@@ -183,24 +211,91 @@ def residue_high_flow_2cfm_varT(t, ci, Ktrans, Te1, Te2, FiTi, dt=None):
     # Numerical solution with variable Te
     #   (ne(t+dt)-ne(t))/dt = Ktrans ci(t) - ne(t) / Te(t)
     #   ne(t+dt) = ne(t) + dt Ktrans ci(t) - ne(t) dt/Te(t)
-    #   ne(t+dt) = dt Ktrans ci(t) + (1-dt/Te(t) * ne(t)
+    #   ne(t+dt) = dt Ktrans ci(t) + (1-dt/Te(t)) * ne(t)
 
     # Build time-varying Te (step function)
-    Te = np.empty(len(t))
-    tmid = math.floor(len(t)/2)
-    Te[:tmid] = Te1
-    Te[tmid:] = Te2
+    # Te = np.empty(len(t))
+    # tmid = math.floor(len(t)/2)
+    # Te[:tmid] = Te1
+    # Te[tmid:] = Te2
+    mid = math.floor(len(t)/2)
+    Ktrans = quadratic(t, t[0], t[mid], t[-1], Ktrans1, Ktrans2, Ktrans3)
 
-    if dt is None:
-        T = np.append(Te, 1/Ktrans)
-        dt = np.amin(T)/10
+    dt = t[1]-t[0]
+    nt = len(t)
 
     ni = FiTi*ci
     ji = dt*Ktrans*ci
     Re = 1-dt/Te
-    ne = np.empty(len(t))
+    ne = np.empty(nt)
     ne[0] = 0
-    for k in range(t)-1:
+    for k in range(nt-1):
+        ne[k+1] = ji[k] + Re * ne[k]
+    return ni, ne, Ktrans
+
+def residue_high_flow_2cfm_varT(t, ci, Ktrans, Te1, Te2, Te3, FiTi):
+    """Central compartment i with high flow (Ti=0) and filtration compartment e"""
+
+    # ve dce/dt = Ktrans*ci - k*ce
+    # dne/dt = Ktrans * ci - ne / Te
+    # Analytical solution with constant Te:
+    #   ne(t) = exp(-t/Te) * Ktrans ci(t) 
+    #   ne(t) = Te Ktrans P(Te, t) * ci(t)
+    # Numerical solution with variable Te
+    #   (ne(t+dt)-ne(t))/dt = Ktrans ci(t) - ne(t) / Te(t)
+    #   ne(t+dt) = ne(t) + dt Ktrans ci(t) - ne(t) dt/Te(t)
+    #   ne(t+dt) = dt Ktrans ci(t) + (1-dt/Te(t)) * ne(t)
+
+    # Build time-varying Te (step function)
+    # Te = np.empty(len(t))
+    # tmid = math.floor(len(t)/2)
+    # Te[:tmid] = Te1
+    # Te[tmid:] = Te2
+    mid = math.floor(len(t)/2)
+    Te = quadratic(t, t[0], t[mid], t[-1], Te1, Te2, Te3)
+
+    dt = t[1]-t[0]
+    nt = len(t)
+
+    ni = FiTi*ci
+    ji = dt*Ktrans*ci
+    Re = 1-dt/Te
+    ne = np.empty(nt)
+    ne[0] = 0
+    for k in range(nt-1):
+        ne[k+1] = ji[k] + Re[k] * ne[k]
+    return ni, ne
+
+
+def residue_high_flow_2cfm_varlinT(t, ci, Ktrans, Te1, Te2, FiTi):
+    """Central compartment i with high flow (Ti=0) and filtration compartment e"""
+
+    # ve dce/dt = Ktrans*ci - k*ce
+    # dne/dt = Ktrans * ci - ne / Te
+    # Analytical solution with constant Te:
+    #   ne(t) = exp(-t/Te) * Ktrans ci(t) 
+    #   ne(t) = Te Ktrans P(Te, t) * ci(t)
+    # Numerical solution with variable Te
+    #   (ne(t+dt)-ne(t))/dt = Ktrans ci(t) - ne(t) / Te(t)
+    #   ne(t+dt) = ne(t) + dt Ktrans ci(t) - ne(t) dt/Te(t)
+    #   ne(t+dt) = dt Ktrans ci(t) + (1-dt/Te(t)) * ne(t)
+
+    # Build time-varying Te (step function)
+    # Te = np.empty(len(t))
+    # tmid = math.floor(len(t)/2)
+    # Te[:tmid] = Te1
+    # Te[tmid:] = Te2
+    Te = linear(t, t[0], t[-1], Te1, Te2)
+
+    dt = t[1]-t[0]
+    nt = len(t)
+
+    ni = FiTi*ci
+    ji = dt*Ktrans*ci
+    Re = 1-dt/Te
+    ne = np.empty(nt)
+    ne[0] = 0
+    for k in range(nt-1):
         ne[k+1] = ji[k] + Re[k] * ne[k]
     return ni, ne
 
@@ -213,6 +308,19 @@ def injection(t, weight, conc, dose, rate, start1, start2=None):
     t_inject = (t > 0) & (t < duration)
     J = np.zeros(t.size)
     J[np.nonzero(t_inject)[0]] = Jmax
+    J1 = propagate_delay(t, J, start1)
+    if start2 is None:
+        return J1
+    else:
+        J2 = propagate_delay(t, J, start2)
+        return J1 + J2
+
+def injection_gv(t, weight, conc, dose, rate, start1, start2=None, dispersion=0.5):
+    """dose injected per unit time (mM/sec)"""
+
+    duration = weight*dose/rate     # sec = kg * (mL/kg) / (mL/sec)
+    amount = conc*weight*dose       # mmol = (mmol/ml) * kg * (ml/kg)
+    J = amount * chain_propagator(t, duration, dispersion) # mmol/sec
     J1 = propagate_delay(t, J, start1)
     if start2 is None:
         return J1
@@ -279,7 +387,7 @@ def quadratic(x, x1, x2, x3, y1, y2, y3):
 
 def linear(x, x1, x2, y1, y2):
     """returns a linear function of x 
-    that goes through the three points (xi, yi)"""
+    that goes through the two points (xi, yi)"""
 
     b = (y2-y1)/(x2-x1)
     c = y1-b*x1

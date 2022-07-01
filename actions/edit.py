@@ -2,9 +2,9 @@ import os
 import numpy as np
 
 import dbdicom as db
-import weasel
+import wezel
 
-class ExtractSeries(weasel.Action):
+class ExtractSeries(wezel.Action):
 
     def run(self, app):
 
@@ -35,7 +35,7 @@ class ExtractSeries(weasel.Action):
         app.refresh()
 
 
-class RenameSeries(weasel.Action):
+class RenameSeries(wezel.Action):
 
     def enable(self, app):
         if not hasattr(app, 'folder'):
@@ -55,7 +55,7 @@ class RenameSeries(weasel.Action):
         app.refresh()
 
 
-class MergeDynamics(weasel.Action):
+class MergeDynamics(wezel.Action):
 
     def enable(self, app):
 

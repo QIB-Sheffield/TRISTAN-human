@@ -5,7 +5,7 @@
 .venv/*
 docs/*
 dbdicom/*
-weasel/*
+wezel/*
 mdreg/*
 
 ### Python ###
