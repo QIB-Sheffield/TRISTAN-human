@@ -1,9 +1,9 @@
 
 import numpy as np
-import weasel
+import wezel
 
 
-class Region(weasel.Action):
+class Region(wezel.Action):
     """Generalises Region view with dimensions as options"""
 
     def enable(self, app):
@@ -19,12 +19,12 @@ class Region(weasel.Action):
                 dim = self.options
             else:
                 dim = []
-            viewer = weasel.widgets.SeriesViewerROI(series, dimensions=dim)
+            viewer = wezel.widgets.SeriesViewerROI(series, dimensions=dim)
             viewer.dataWritten.connect(app.treeView.setFolder)
             app.addAsSubWindow(viewer, title=series.label())
 
 
-class FourDimArrayDisplay(weasel.Action):
+class FourDimArrayDisplay(wezel.Action):
     """Extends 4D viewer with numpy save for rapid access 
     - needs some mechanism for cleaning up storage when closing."""
 
@@ -42,7 +42,7 @@ class FourDimArrayDisplay(weasel.Action):
         if array.ndim != 4:
             app.dialog.information("Please select a 4D array for this viewer")
             return
-        viewer = weasel.widgets.FourDimViewer(app.status, array)
+        viewer = wezel.widgets.FourDimViewer(app.status, array)
         app.addAsSubWindow(viewer, title=series.label())
         app.status.message('Saving array for rapid access..')
         if no_array:

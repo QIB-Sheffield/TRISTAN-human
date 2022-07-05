@@ -4,9 +4,7 @@
 ### package builds
 .venv/*
 docs/*
-dbdicom/*
-weasel/*
-mdreg/*
+modeldev/sourcedata/*
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
