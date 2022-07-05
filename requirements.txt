@@ -1,9 +1,8 @@
-xnat
-mdreg
 dipy
-wezel
-dbdicom
 numpy
 scipy
 pandas
 matplotlib
+wezel
+dbdicom
+mdreg

@@ -2,11 +2,9 @@ import numpy as np
 import wezel
 import dbdicom as db
 from mdreg import MDReg
-from wezel.apps.dicom import Windows
 
 import menu as tristan
-
-wsl = wezel.app(Windows)
+wsl = wezel.app(wezel.apps.dicom.Windows)
 wsl.set_menu(tristan.dev)
 wsl.show()
 exit()
