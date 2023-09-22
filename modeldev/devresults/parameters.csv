@@ -1,0 +1,12 @@
+name,value,unit,subject,visit,structure,parameter
+Precontrast liver R1,1.3441221891077535,1/sec,008,baseline,liver,R10
+Signal amplitude S0,1824.3867978935696,a.u.,008,baseline,liver,S01
+Signal amplitude S0,1912.5859001657882,a.u.,008,baseline,liver,S02
+Gut delay time,7.719522127275041,sec,008,baseline,liver,Tdel
+Gut-liver dispersion time,0.45129901976934583,min,008,baseline,liver,Tdisp
+Extracellular volume fraction,49.99999999999999,mL/100mL,008,baseline,liver,ve
+Hepatocellular tissue uptake rate,20.84350245645661,mL/min/100mL,008,baseline,liver,k_he
+Hepatocellular transit time,36.96713403220035,min,008,baseline,liver,Th
+Biliary tissue excretion rate,2.705105565200014,mL/min/100mL,008,baseline,liver,Kbh
+Hepatocellular tissue uptake rate,41.687004912913224,mL/min/100mL,008,baseline,liver,Khe
+Biliary excretion rate,1.352552782600007,mL/min/100mL,008,baseline,liver,k_bh

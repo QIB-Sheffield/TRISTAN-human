@@ -46,10 +46,34 @@ def expconv(T, time, a):
         f[i+1] = E[i]*f[i] + add[i]      
     return f
 
-def convolve(u, tc, c, th, h):
 
+def trapz(t, f):
+    n = len(f)
+    g = np.empty(n)
+    g[0] = 0
+    for i in range(n-1):
+        g[i+1] = g[i] + (t[i+1]-t[i]) * (f[i+1]+f[i]) / 2
+    return g
+
+def utrapz(dt, f):
+    n = len(f)
+    g = np.empty(n)
+    g[0] = 0
+    for i in range(n-1):
+        g[i+1] = g[i] + dt * (f[i+1]+f[i]) / 2
+    return g
+
+def uconv(dt, f, h):
+    n = len(f) 
+    g = np.empty(n)
+    h = np.flip(h)
+    g[0] = 0
+    for i in np.arange(1, n):
+        g[i] = np.trapz(f[:i+1]*h[-(i+1):], dx=dt)
+    return g
+
+def convolve(u, tc, c, th, h): # WIP
 #    co(t) = int_0^t du h(u) c(t-u) 
-
     co = np.zeros(len(u))
     h = np.interp(u, th, h, left=0, right=0)
     c = np.interp(u, tc, c, left=0, right=0)
@@ -57,8 +81,60 @@ def convolve(u, tc, c, th, h):
         if k != 0:
             ct = np.interp(t-u, u, c, left=0, right=0)
             co[k] = np.trapz(h[:k]*ct[:k], u[:k])
-    return co   
+    return co  
 
+def prop_plug(t, J, T):
+    if T==0:
+        return J
+    return np.interp(t-T, t, J, left=0) 
+
+def prop_comp(t, J, T):
+    if T == np.inf:
+        return np.zeros(len(t))
+    return expconv(T, t, J)
+
+def uprop_chain(dt, J, T, D):
+    C = ures_chain(dt, J, T, D)
+    return J - np.gradient(C, dt)
+
+def ures_chain(dt, J, T, D):
+    t = dt*np.arange(len(J))
+    R = chain_residue(t, T, D)
+    return uconv(dt, R, J)
+
+def res_plug(t, J, T):
+    Jo = prop_plug(t, J, T)
+    return trapz(t, J-Jo)
+
+def res_comp(t, J, T):
+    if T == np.inf:
+        return trapz(t, J)
+    return T*expconv(T, t, J)
+
+def prop_2cfm(t, J, Ta, Tb, Eba):
+    Ja = prop_comp(t, J, Ta)
+    Jb = prop_comp(t, Eba*Ja, Tb)
+    return (1-Eba)*Ja, Jb
+
+def res_2cfm(t, J, Ta, Tb, Eba):
+    Ja = prop_comp(t, J, Ta) 
+    Jb = prop_comp(t, Eba*Ja, Tb)
+    return Ta*Ja, Tb*Jb
+
+def liver_2cfm_pars(fp, ve, kbh, khe, v=1):
+    E = khe/(fp+khe)
+    Te = ve/(fp+khe)
+    vh = v-ve
+    Th = vh/kbh
+    return Te, Th, E
+
+def liver_2cfm_invpars(ve, Te, E, Th, v=1):
+    khe = E*ve/Te
+    fp = (1-E)*ve/Te
+    vh = v - ve
+    kbh = vh/Th
+    return fp, khe, vh, kbh
+  
 def compartment_propagator(t, MTT):
     return np.exp(-t/MTT)/MTT
 
@@ -70,32 +146,53 @@ def residue_compartment(t, c, MTT):
     """Returns the concentration inside the system given the concentration at the inlet"""
     return propagate_compartment(t, c, MTT)
 
-def propagate_dd(t, c, MTT, TTD):
-    """
-    Propagate concentration through a serial arrangement of a plug flow and a compartment.
-
-    Arguments
-    ---------
-    TTD : Transit Time Dispersion of the system
-        This is the mean transit time of the compartment
-    MTT : Mean Transit Time of the system
-        This is the sum of delay and MTT of the compartment
-
-    Returns
-    -------
-    Concentration at the outlet
-    """
-
-    delay = MTT - TTD 
-    c = expconv(TTD, t, c)
-    c = np.interp(t-delay, t, c, left=0)
+def propagate_dd(t, c, tdel, tdisp): 
+    c = expconv(tdisp, t, c)
+    if tdel != 0:
+        c = np.interp(t-tdel, t, c, left=0)
     return c
 
-def chain_propagator(t, MTT, dispersion): # dispersion in %
-    # Needs error handling for dispersion=0 case - not numerically feasible.
-    n = 100/dispersion
+def plug_residue(t, T):
+    g = np.ones(len(t))
+    g[np.where(t>T)] = 0
+    return g
+
+def comp_residue(t, T):
+    return np.exp(-t/T)
+
+def chain_residue(t, MTT, disp):
+    if disp==0:
+        return plug_residue(t, MTT)
+    if disp==100:
+        return comp_residue(t, MTT)
+    n = 100/disp
     Tx = MTT/n
-    return (np.exp(-t/Tx)/Tx) * (t/Tx)**(n-1)/gamma(n)
+    norm = Tx*gamma(n)
+    if norm == np.inf:
+        return plug_residue(t, MTT)
+    u = t/Tx  
+    nt = len(t)
+    g = np.ones(nt)
+    g[0] = 0
+    fnext = u[0]**(n-1)*np.exp(-u[0])/norm
+    for i in range(nt-1):
+        fi = fnext
+        pow = u[i+1]**(n-1)
+        if pow == np.inf:
+            return 1-g
+        fnext = pow * np.exp(-u[i+1])/norm
+        g[i+1] = g[i] + (t[i+1]-t[i]) * (fnext+fi) / 2
+    return 1-g
+
+def chain_propagator(t, MTT, disp): # dispersion in %
+    n = 100/disp
+    Tx = MTT/n
+    u = t/Tx
+    return u**(n-1) * np.exp(-u)/Tx/gamma(n)
+
+def residue_chain(t, ci, MTT, dispersion):
+    co = propagate_chain(t, ci, MTT, dispersion)
+    return np.trapz(ci-co, t)/MTT
 
 def propagate_chain(t, ci, MTT, dispersion): # dispersion in % 
 
@@ -106,13 +203,9 @@ def propagate_chain(t, ci, MTT, dispersion): # dispersion in %
     H = chain_propagator(t, MTT, dispersion)
     return convolve(t, t, ci, t, H)
 
-def residue_chain(t, ci, MTT, dispersion):
-    """Returns the (average) concentration inside the system given the concentration at the inlet"""
-    co = propagate_chain(t, ci, MTT, dispersion)
-    return np.trapz(ci-co, t)/MTT
+
 
 def propagate_delay(t, c, delay):
-
     return np.interp(t-delay, t, c, left=0) 
 
 def propagate_2cxm(t, ca, KP, KE, KB):
@@ -165,12 +258,12 @@ def propagate_2cxm(t, ca, KP, KE, KB):
     return cp, ce
 
 def propagate_simple_body(t, c_vena_cava, 
-    MTTlh, Eint, MTTe, MTTo, TTDo, Eext):
+    MTTlh, Eint, MTTe, MTTo, TTDo, Eext, tol=0.001):
     """Propagation through a 2-site model of the body."""
 
     dose0 = np.trapz(c_vena_cava, t)
     dose = dose0
-    min_dose = 10**(-3)*dose0
+    min_dose = tol*dose0
 
     c_vena_cava_total = 0*t
     c_aorta_total = 0*t
@@ -200,24 +293,26 @@ def residue_high_flow_2cfm(t, ci, Ktrans, Te, FiTi):
     ne = (Te*Ktrans)*propagate_compartment(t, ci, Te)
     return ni, ne
 
+
+
+def res_nscomp(t, J, K, C0=0):
+    #dtK must be >= 0 everywhere
+    #dC(t)/dt = -K(t)C(t) + J(t)
+    #C(t+dt)-C(t) = -dtK(t)C(t) + dtJ(t)
+    #C(t+dt) = C(t) - dtK(t)C(t) + dtJ(t)
+    #C(t+dt) = (1-dtK(t))C(t) + dtJ(t)
+    n = len(t)
+    C = np.zeros(n)
+    C[0] = C0
+    for i in range(n-1):
+        dt = t[i+1]-t[i]
+        R = 1-dt*K[i]
+        C[i+1] = R*C[i] + dt*J[i] 
+    return C
+
 def residue_high_flow_2cfm_varK(t, ci, Ktrans1, Ktrans2, Ktrans3, Te, FiTi):
     """Central compartment i with high flow (Ti=0) and filtration compartment e"""
 
-    # ve dce/dt = Ktrans*ci - k*ce
-    # dne/dt = Ktrans * ci - ne / Te
-    # Analytical solution with constant Te:
-    #   ne(t) = exp(-t/Te) * Ktrans ci(t) 
-    #   ne(t) = Te Ktrans P(Te, t) * ci(t)
-    # Numerical solution with variable Te
-    #   (ne(t+dt)-ne(t))/dt = Ktrans ci(t) - ne(t) / Te(t)
-    #   ne(t+dt) = ne(t) + dt Ktrans ci(t) - ne(t) dt/Te(t)
-    #   ne(t+dt) = dt Ktrans ci(t) + (1-dt/Te(t)) * ne(t)
-
-    # Build time-varying Te (step function)
-    # Te = np.empty(len(t))
-    # tmid = math.floor(len(t)/2)
-    # Te[:tmid] = Te1
-    # Te[tmid:] = Te2
     mid = math.floor(len(t)/2)
     Ktrans = quadratic(t, t[0], t[mid], t[-1], Ktrans1, Ktrans2, Ktrans3)
 
@@ -300,10 +395,10 @@ def residue_high_flow_2cfm_varlinT(t, ci, Ktrans, Te1, Te2, FiTi):
     return ni, ne
 
 
-def injection(t, weight, conc, dose, rate, start1, start2=None):
+def injection(t, weight, conc, dose1, rate, start1, dose2=None, start2=None):
     """dose injected per unit time (mM/sec)"""
 
-    duration = weight*dose/rate     # sec = kg * (mL/kg) / (mL/sec)
+    duration = weight*dose1/rate     # sec = kg * (mL/kg) / (mL/sec)
     Jmax = conc*rate                # mmol/sec = (mmol/ml) * (ml/sec)
     t_inject = (t > 0) & (t < duration)
     J = np.zeros(t.size)
@@ -311,9 +406,13 @@ def injection(t, weight, conc, dose, rate, start1, start2=None):
     J1 = propagate_delay(t, J, start1)
     if start2 is None:
         return J1
-    else:
-        J2 = propagate_delay(t, J, start2)
-        return J1 + J2
+    duration = weight*dose2/rate     # sec = kg * (mL/kg) / (mL/sec)
+    Jmax = conc*rate                # mmol/sec = (mmol/ml) * (ml/sec)
+    t_inject = (t > 0) & (t < duration)
+    J = np.zeros(t.size)
+    J[np.nonzero(t_inject)[0]] = Jmax
+    J2 = propagate_delay(t, J, start2)
+    return J1 + J2
 
 def injection_gv(t, weight, conc, dose, rate, start1, start2=None, dispersion=0.5):
     """dose injected per unit time (mM/sec)"""
@@ -374,6 +473,14 @@ def signalBiExp(TR, R1, S0, A, a, b):
     Ea = np.exp(-a*x)
     Eb = np.exp(-b*x)
     return S0 * (1 - A*Ea - (1-A)*Eb)
+
+def quad(t, K):
+    nt = len(t)
+    mid = math.floor(nt/2)
+    return quadratic(t, t[0], t[mid], t[-1], K[0], K[1], K[2])
+
+def lin(t, K):
+    return linear(t, t[0], t[-1], K[0], K[1])
 
 def quadratic(x, x1, x2, x3, y1, y2, y3):
     """returns a quadratic function of x 

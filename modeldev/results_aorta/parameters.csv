@@ -1,0 +1,199 @@
+subject,visit,structure,name,value,unit,parameter
+001,baseline,aorta,Signal amplitude S0,2166.914225722522,a.u.,S01
+001,baseline,aorta,Signal amplitude S0,2536.067009775403,a.u.,S02
+001,baseline,aorta,Bolus arrival time,81.43471956519211,sec,BAT1
+001,baseline,aorta,Bolus arrival time - second shot,8611.88548276564,sec,BAT2
+001,baseline,aorta,Cardiac output,120.83275036271743,mL/sec,CO
+001,baseline,aorta,Heart & lung mean transit time,21.99726708429465,sec,MTThl
+001,baseline,aorta,Other organs mean transit time,13.250667059983106,sec,MTTo
+001,baseline,aorta,Other organs transit time dispersion,23.751113271130475,sec,TTDo
+001,baseline,aorta,Extravascular mean transit time,550.548937798792,sec,MTTe
+001,baseline,aorta,Leakage fraction,0.17024851443638256,,El
+001,baseline,aorta,Extraction fraction,0.07202936624245261,,Ee
+002,baseline,aorta,Signal amplitude S0,2538.4634178991955,a.u.,S01
+002,baseline,aorta,Signal amplitude S0,2756.9643361929056,a.u.,S02
+002,baseline,aorta,Bolus arrival time,87.32069072786317,sec,BAT1
+002,baseline,aorta,Bolus arrival time - second shot,17170.754637680315,sec,BAT2
+002,baseline,aorta,Cardiac output,34.07232236743167,mL/sec,CO
+002,baseline,aorta,Heart & lung mean transit time,11.935062970986559,sec,MTThl
+002,baseline,aorta,Other organs mean transit time,10.431903954133626,sec,MTTo
+002,baseline,aorta,Other organs transit time dispersion,32.10578461977609,sec,TTDo
+002,baseline,aorta,Extravascular mean transit time,526.4932118207075,sec,MTTe
+002,baseline,aorta,Leakage fraction,0.25055820418228414,,El
+002,baseline,aorta,Extraction fraction,0.08267320153740795,,Ee
+003,baseline,aorta,Signal amplitude S0,1545.8406285414567,a.u.,S01
+003,baseline,aorta,Signal amplitude S0,1463.4570686606996,a.u.,S02
+003,baseline,aorta,Bolus arrival time,78.86798946311457,sec,BAT1
+003,baseline,aorta,Bolus arrival time - second shot,180940.9831061692,sec,BAT2
+003,baseline,aorta,Cardiac output,25.70335311971074,mL/sec,CO
+003,baseline,aorta,Heart & lung mean transit time,6.757020255104944,sec,MTThl
+003,baseline,aorta,Other organs mean transit time,10.758059544834005,sec,MTTo
+003,baseline,aorta,Other organs transit time dispersion,26.804202549020527,sec,TTDo
+003,baseline,aorta,Extravascular mean transit time,343.1209619682045,sec,MTTe
+003,baseline,aorta,Leakage fraction,0.1914128175564059,,El
+003,baseline,aorta,Extraction fraction,0.10865344200875802,,Ee
+004,baseline,aorta,Signal amplitude S0,1427.8779412971953,a.u.,S01
+004,baseline,aorta,Signal amplitude S0,1623.4098797812112,a.u.,S02
+004,baseline,aorta,Bolus arrival time,78.71988565966566,sec,BAT1
+004,baseline,aorta,Bolus arrival time - second shot,9553.597310614803,sec,BAT2
+004,baseline,aorta,Cardiac output,42.95594711353892,mL/sec,CO
+004,baseline,aorta,Heart & lung mean transit time,6.077212868528607,sec,MTThl
+004,baseline,aorta,Other organs mean transit time,11.958751435148102,sec,MTTo
+004,baseline,aorta,Other organs transit time dispersion,28.264150432261605,sec,TTDo
+004,baseline,aorta,Extravascular mean transit time,493.2443734134642,sec,MTTe
+004,baseline,aorta,Leakage fraction,0.3186320499932686,,El
+004,baseline,aorta,Extraction fraction,0.17889070282415145,,Ee
+005,baseline,aorta,Signal amplitude S0,2292.782105092811,a.u.,S01
+005,baseline,aorta,Signal amplitude S0,1997.2662730241175,a.u.,S02
+005,baseline,aorta,Bolus arrival time,80.95731452314992,sec,BAT1
+005,baseline,aorta,Bolus arrival time - second shot,10035.005786593267,sec,BAT2
+005,baseline,aorta,Cardiac output,49.13324549959633,mL/sec,CO
+005,baseline,aorta,Heart & lung mean transit time,12.521791151312144,sec,MTThl
+005,baseline,aorta,Other organs mean transit time,10.746972743100596,sec,MTTo
+005,baseline,aorta,Other organs transit time dispersion,36.56010242479769,sec,TTDo
+005,baseline,aorta,Extravascular mean transit time,490.67230820013464,sec,MTTe
+005,baseline,aorta,Leakage fraction,0.20637849604775263,,El
+005,baseline,aorta,Extraction fraction,0.08953558481147324,,Ee
+006,baseline,aorta,Signal amplitude S0,1749.6372924977422,a.u.,S01
+006,baseline,aorta,Signal amplitude S0,1630.0476611633512,a.u.,S02
+006,baseline,aorta,Bolus arrival time,81.72127408298782,sec,BAT1
+006,baseline,aorta,Bolus arrival time - second shot,8596.762414822391,sec,BAT2
+006,baseline,aorta,Cardiac output,50.46161267357385,mL/sec,CO
+006,baseline,aorta,Heart & lung mean transit time,5.00757990926611,sec,MTThl
+006,baseline,aorta,Other organs mean transit time,12.000387688978885,sec,MTTo
+006,baseline,aorta,Other organs transit time dispersion,24.36488325184573,sec,TTDo
+006,baseline,aorta,Extravascular mean transit time,404.00656721835276,sec,MTTe
+006,baseline,aorta,Leakage fraction,0.23954818915320092,,El
+006,baseline,aorta,Extraction fraction,0.08342207071010836,,Ee
+007,baseline,aorta,Signal amplitude S0,1321.5674438131537,a.u.,S01
+007,baseline,aorta,Signal amplitude S0,1690.507403273095,a.u.,S02
+007,baseline,aorta,Bolus arrival time,76.65858647311971,sec,BAT1
+007,baseline,aorta,Bolus arrival time - second shot,7278.937667580071,sec,BAT2
+007,baseline,aorta,Cardiac output,98.74046390782782,mL/sec,CO
+007,baseline,aorta,Heart & lung mean transit time,4.787030024860473,sec,MTThl
+007,baseline,aorta,Other organs mean transit time,10.075859001482133,sec,MTTo
+007,baseline,aorta,Other organs transit time dispersion,12.486121014140233,sec,TTDo
+007,baseline,aorta,Extravascular mean transit time,288.2228235206943,sec,MTTe
+007,baseline,aorta,Leakage fraction,0.2607714697663281,,El
+007,baseline,aorta,Extraction fraction,0.03607874554525418,,Ee
+008,baseline,aorta,Signal amplitude S0,2504.7687475660405,a.u.,S01
+008,baseline,aorta,Signal amplitude S0,2534.6776641355536,a.u.,S02
+008,baseline,aorta,Bolus arrival time,84.85892521984272,sec,BAT1
+008,baseline,aorta,Bolus arrival time - second shot,7602.452624169609,sec,BAT2
+008,baseline,aorta,Cardiac output,110.85782848474223,mL/sec,CO
+008,baseline,aorta,Heart & lung mean transit time,7.674450637751137,sec,MTThl
+008,baseline,aorta,Other organs mean transit time,11.502591591469026,sec,MTTo
+008,baseline,aorta,Other organs transit time dispersion,22.04408796116755,sec,TTDo
+008,baseline,aorta,Extravascular mean transit time,323.2468171031068,sec,MTTe
+008,baseline,aorta,Leakage fraction,0.17884444730980747,,El
+008,baseline,aorta,Extraction fraction,0.05211193686206298,,Ee
+009,baseline,aorta,Signal amplitude S0,1516.2218685276164,a.u.,S01
+009,baseline,aorta,Signal amplitude S0,1593.062837162318,a.u.,S02
+009,baseline,aorta,Bolus arrival time,82.03916934247519,sec,BAT1
+009,baseline,aorta,Bolus arrival time - second shot,7769.0876078899155,sec,BAT2
+009,baseline,aorta,Cardiac output,110.13351011087818,mL/sec,CO
+009,baseline,aorta,Heart & lung mean transit time,7.706753143592735,sec,MTThl
+009,baseline,aorta,Other organs mean transit time,13.465647155301163,sec,MTTo
+009,baseline,aorta,Other organs transit time dispersion,27.380658974025906,sec,TTDo
+009,baseline,aorta,Extravascular mean transit time,420.5011698940399,sec,MTTe
+009,baseline,aorta,Leakage fraction,0.19405468119311708,,El
+009,baseline,aorta,Extraction fraction,0.06536460537204491,,Ee
+010,baseline,aorta,Signal amplitude S0,1570.3146932088744,a.u.,S01
+010,baseline,aorta,Signal amplitude S0,1646.4345118847477,a.u.,S02
+010,baseline,aorta,Bolus arrival time,82.31002082505036,sec,BAT1
+010,baseline,aorta,Bolus arrival time - second shot,8517.136313193341,sec,BAT2
+010,baseline,aorta,Cardiac output,64.30461775976183,mL/sec,CO
+010,baseline,aorta,Heart & lung mean transit time,7.235225119171313,sec,MTThl
+010,baseline,aorta,Other organs mean transit time,13.062307435735706,sec,MTTo
+010,baseline,aorta,Other organs transit time dispersion,49.482426903508035,sec,TTDo
+010,baseline,aorta,Extravascular mean transit time,1482.2932115268757,sec,MTTe
+010,baseline,aorta,Leakage fraction,0.18553573785390515,,El
+010,baseline,aorta,Extraction fraction,5.685055342548506e-35,,Ee
+002,rifampicin,aorta,Signal amplitude S0,2360.9233047453376,a.u.,S01
+002,rifampicin,aorta,Signal amplitude S0,2660.8058211477965,a.u.,S02
+002,rifampicin,aorta,Bolus arrival time,81.09009336586877,sec,BAT1
+002,rifampicin,aorta,Bolus arrival time - second shot,10287.693890522383,sec,BAT2
+002,rifampicin,aorta,Cardiac output,43.80207878070801,mL/sec,CO
+002,rifampicin,aorta,Heart & lung mean transit time,10.13579291242159,sec,MTThl
+002,rifampicin,aorta,Other organs mean transit time,10.42093607648884,sec,MTTo
+002,rifampicin,aorta,Other organs transit time dispersion,34.19916651451651,sec,TTDo
+002,rifampicin,aorta,Extravascular mean transit time,452.92879863487343,sec,MTTe
+002,rifampicin,aorta,Leakage fraction,0.18568001553261912,,El
+002,rifampicin,aorta,Extraction fraction,0.07709840923539847,,Ee
+003,rifampicin,aorta,Signal amplitude S0,1815.5802858076709,a.u.,S01
+003,rifampicin,aorta,Signal amplitude S0,2111.4964370644716,a.u.,S02
+003,rifampicin,aorta,Bolus arrival time,74.77346863984224,sec,BAT1
+003,rifampicin,aorta,Bolus arrival time - second shot,7316.982929410229,sec,BAT2
+003,rifampicin,aorta,Cardiac output,37.505790853982354,mL/sec,CO
+003,rifampicin,aorta,Heart & lung mean transit time,6.0010020579151195,sec,MTThl
+003,rifampicin,aorta,Other organs mean transit time,7.9287061582600105,sec,MTTo
+003,rifampicin,aorta,Other organs transit time dispersion,25.99626404024637,sec,TTDo
+003,rifampicin,aorta,Extravascular mean transit time,425.20641674664336,sec,MTTe
+003,rifampicin,aorta,Leakage fraction,0.12211239885056316,,El
+003,rifampicin,aorta,Extraction fraction,0.03405702038821929,,Ee
+004,rifampicin,aorta,Signal amplitude S0,1770.1612399879293,a.u.,S01
+004,rifampicin,aorta,Signal amplitude S0,1823.2860916789007,a.u.,S02
+004,rifampicin,aorta,Bolus arrival time,76.10740618181461,sec,BAT1
+004,rifampicin,aorta,Bolus arrival time - second shot,9221.547911765017,sec,BAT2
+004,rifampicin,aorta,Cardiac output,66.12112081733625,mL/sec,CO
+004,rifampicin,aorta,Heart & lung mean transit time,7.135277174823639,sec,MTThl
+004,rifampicin,aorta,Other organs mean transit time,12.996549566743079,sec,MTTo
+004,rifampicin,aorta,Other organs transit time dispersion,37.7910704265812,sec,TTDo
+004,rifampicin,aorta,Extravascular mean transit time,461.9212521687754,sec,MTTe
+004,rifampicin,aorta,Leakage fraction,0.23185233668890684,,El
+004,rifampicin,aorta,Extraction fraction,0.050549004259717825,,Ee
+006,rifampicin,aorta,Signal amplitude S0,1878.1643256870036,a.u.,S01
+006,rifampicin,aorta,Signal amplitude S0,2156.766605552528,a.u.,S02
+006,rifampicin,aorta,Bolus arrival time,80.2431631578422,sec,BAT1
+006,rifampicin,aorta,Bolus arrival time - second shot,9509.427345753818,sec,BAT2
+006,rifampicin,aorta,Cardiac output,83.94186629764822,mL/sec,CO
+006,rifampicin,aorta,Heart & lung mean transit time,6.908898699674928,sec,MTThl
+006,rifampicin,aorta,Other organs mean transit time,11.504101122624219,sec,MTTo
+006,rifampicin,aorta,Other organs transit time dispersion,25.191185887114315,sec,TTDo
+006,rifampicin,aorta,Extravascular mean transit time,365.55876516606486,sec,MTTe
+006,rifampicin,aorta,Leakage fraction,0.15315848111634794,,El
+006,rifampicin,aorta,Extraction fraction,0.03369638536035053,,Ee
+007,rifampicin,aorta,Signal amplitude S0,1262.624819527222,a.u.,S01
+007,rifampicin,aorta,Signal amplitude S0,1283.2787232663504,a.u.,S02
+007,rifampicin,aorta,Bolus arrival time,75.07701693223302,sec,BAT1
+007,rifampicin,aorta,Bolus arrival time - second shot,8068.925705484305,sec,BAT2
+007,rifampicin,aorta,Cardiac output,78.64801193654004,mL/sec,CO
+007,rifampicin,aorta,Heart & lung mean transit time,5.956233126453847,sec,MTThl
+007,rifampicin,aorta,Other organs mean transit time,8.000573450516482,sec,MTTo
+007,rifampicin,aorta,Other organs transit time dispersion,20.58994202377213,sec,TTDo
+007,rifampicin,aorta,Extravascular mean transit time,339.07277932776856,sec,MTTe
+007,rifampicin,aorta,Leakage fraction,0.21648259036525594,,El
+007,rifampicin,aorta,Extraction fraction,0.035160810248869696,,Ee
+008,rifampicin,aorta,Signal amplitude S0,1811.62274686415,a.u.,S01
+008,rifampicin,aorta,Signal amplitude S0,1883.4921174840463,a.u.,S02
+008,rifampicin,aorta,Bolus arrival time,79.70546590310221,sec,BAT1
+008,rifampicin,aorta,Bolus arrival time - second shot,8214.867744355895,sec,BAT2
+008,rifampicin,aorta,Cardiac output,95.63363054173253,mL/sec,CO
+008,rifampicin,aorta,Heart & lung mean transit time,8.432458333499179,sec,MTThl
+008,rifampicin,aorta,Other organs mean transit time,10.05607798542427,sec,MTTo
+008,rifampicin,aorta,Other organs transit time dispersion,25.366573774032737,sec,TTDo
+008,rifampicin,aorta,Extravascular mean transit time,563.8361399278523,sec,MTTe
+008,rifampicin,aorta,Leakage fraction,0.10753565608064104,,El
+008,rifampicin,aorta,Extraction fraction,0.030987741278130886,,Ee
+009,rifampicin,aorta,Signal amplitude S0,1655.5003384511958,a.u.,S01
+009,rifampicin,aorta,Signal amplitude S0,1750.3624428892765,a.u.,S02
+009,rifampicin,aorta,Bolus arrival time,84.01563218073319,sec,BAT1
+009,rifampicin,aorta,Bolus arrival time - second shot,9229.289931473482,sec,BAT2
+009,rifampicin,aorta,Cardiac output,112.9414189284329,mL/sec,CO
+009,rifampicin,aorta,Heart & lung mean transit time,11.253056101777313,sec,MTThl
+009,rifampicin,aorta,Other organs mean transit time,14.700977944170788,sec,MTTo
+009,rifampicin,aorta,Other organs transit time dispersion,37.20595784319066,sec,TTDo
+009,rifampicin,aorta,Extravascular mean transit time,513.9646875486031,sec,MTTe
+009,rifampicin,aorta,Leakage fraction,0.12412630868863703,,El
+009,rifampicin,aorta,Extraction fraction,0.02852422052314289,,Ee
+010,rifampicin,aorta,Signal amplitude S0,2200.7695831168962,a.u.,S01
+010,rifampicin,aorta,Signal amplitude S0,1934.1348324755033,a.u.,S02
+010,rifampicin,aorta,Bolus arrival time,90.64406754957054,sec,BAT1
+010,rifampicin,aorta,Bolus arrival time - second shot,7714.230234689127,sec,BAT2
+010,rifampicin,aorta,Cardiac output,79.35013251616978,mL/sec,CO
+010,rifampicin,aorta,Heart & lung mean transit time,8.821877969339916,sec,MTThl
+010,rifampicin,aorta,Other organs mean transit time,12.000209452434468,sec,MTTo
+010,rifampicin,aorta,Other organs transit time dispersion,40.03362159797179,sec,TTDo
+010,rifampicin,aorta,Extravascular mean transit time,665.661010563323,sec,MTTe
+010,rifampicin,aorta,Leakage fraction,0.1686698643909988,,El
+010,rifampicin,aorta,Extraction fraction,0.03634938170235793,,Ee

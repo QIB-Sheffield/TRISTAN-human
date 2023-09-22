@@ -1,0 +1,403 @@
+subject,visit,structure,name,value,unit,parameter
+1,baseline,aorta,Bolus arrival time,81.42584773,sec,BAT1
+2,baseline,aorta,Bolus arrival time,89.01379047,sec,BAT1
+3,baseline,aorta,Bolus arrival time,78.86459739,sec,BAT1
+4,baseline,aorta,Bolus arrival time,78.72194413,sec,BAT1
+5,baseline,aorta,Bolus arrival time,82.05224069,sec,BAT1
+6,baseline,aorta,Bolus arrival time,81.68758821,sec,BAT1
+7,baseline,aorta,Bolus arrival time,76.02856287,sec,BAT1
+8,baseline,aorta,Bolus arrival time,84.85774214,sec,BAT1
+9,baseline,aorta,Bolus arrival time,82.06251675,sec,BAT1
+10,baseline,aorta,Bolus arrival time,82.31850377,sec,BAT1
+2,rifampicin,aorta,Bolus arrival time,81.06820473,sec,BAT1
+3,rifampicin,aorta,Bolus arrival time,74.77655856,sec,BAT1
+4,rifampicin,aorta,Bolus arrival time,76.0958534,sec,BAT1
+6,rifampicin,aorta,Bolus arrival time,80.2263058,sec,BAT1
+7,rifampicin,aorta,Bolus arrival time,75.00527031,sec,BAT1
+8,rifampicin,aorta,Bolus arrival time,79.71717758,sec,BAT1
+9,rifampicin,aorta,Bolus arrival time,84.01239477,sec,BAT1
+10,rifampicin,aorta,Bolus arrival time,90.62762788,sec,BAT1
+1,baseline,aorta,Bolus arrival time - second shot,8611.88385,sec,BAT2
+2,baseline,aorta,Bolus arrival time - second shot,17170.76431,sec,BAT2
+3,baseline,aorta,Bolus arrival time - second shot,180940.9831,sec,BAT2
+4,baseline,aorta,Bolus arrival time - second shot,9553.618763,sec,BAT2
+5,baseline,aorta,Bolus arrival time - second shot,10035.80164,sec,BAT2
+6,baseline,aorta,Bolus arrival time - second shot,8596.734492,sec,BAT2
+7,baseline,aorta,Bolus arrival time - second shot,7278.80282,sec,BAT2
+8,baseline,aorta,Bolus arrival time - second shot,7602.449236,sec,BAT2
+9,baseline,aorta,Bolus arrival time - second shot,7769.076814,sec,BAT2
+10,baseline,aorta,Bolus arrival time - second shot,8517.178927,sec,BAT2
+2,rifampicin,aorta,Bolus arrival time - second shot,10287.6769,sec,BAT2
+3,rifampicin,aorta,Bolus arrival time - second shot,7316.99674,sec,BAT2
+4,rifampicin,aorta,Bolus arrival time - second shot,9221.536945,sec,BAT2
+6,rifampicin,aorta,Bolus arrival time - second shot,9509.413542,sec,BAT2
+7,rifampicin,aorta,Bolus arrival time - second shot,8068.892969,sec,BAT2
+8,rifampicin,aorta,Bolus arrival time - second shot,8214.86094,sec,BAT2
+9,rifampicin,aorta,Bolus arrival time - second shot,9229.289019,sec,BAT2
+10,rifampicin,aorta,Bolus arrival time - second shot,7714.224495,sec,BAT2
+1,baseline,aorta,Cardiac output,120.8648959,mL/sec,CO
+2,baseline,aorta,Cardiac output,34.88144426,mL/sec,CO
+3,baseline,aorta,Cardiac output,25.61496633,mL/sec,CO
+4,baseline,aorta,Cardiac output,43.41292854,mL/sec,CO
+5,baseline,aorta,Cardiac output,53.39018817,mL/sec,CO
+6,baseline,aorta,Cardiac output,49.28395999,mL/sec,CO
+7,baseline,aorta,Cardiac output,90.87921301,mL/sec,CO
+8,baseline,aorta,Cardiac output,110.8369098,mL/sec,CO
+9,baseline,aorta,Cardiac output,110.9143448,mL/sec,CO
+10,baseline,aorta,Cardiac output,68.88294885,mL/sec,CO
+2,rifampicin,aorta,Cardiac output,42.87303071,mL/sec,CO
+3,rifampicin,aorta,Cardiac output,37.93220439,mL/sec,CO
+4,rifampicin,aorta,Cardiac output,65.61792456,mL/sec,CO
+6,rifampicin,aorta,Cardiac output,81.49460967,mL/sec,CO
+7,rifampicin,aorta,Cardiac output,76.74500227,mL/sec,CO
+8,rifampicin,aorta,Cardiac output,94.88323001,mL/sec,CO
+9,rifampicin,aorta,Cardiac output,112.5728447,mL/sec,CO
+10,rifampicin,aorta,Cardiac output,78.22710816,mL/sec,CO
+1,baseline,aorta,Extraction fraction,0.069787234,,Ee
+2,baseline,aorta,Extraction fraction,0.093850985,,Ee
+3,baseline,aorta,Extraction fraction,0.109328287,,Ee
+4,baseline,aorta,Extraction fraction,0.175575862,,Ee
+5,baseline,aorta,Extraction fraction,0.088814914,,Ee
+6,baseline,aorta,Extraction fraction,0.083871496,,Ee
+7,baseline,aorta,Extraction fraction,0.039166146,,Ee
+8,baseline,aorta,Extraction fraction,0.052410241,,Ee
+9,baseline,aorta,Extraction fraction,0.064890562,,Ee
+10,baseline,aorta,Extraction fraction,0.024819981,,Ee
+2,rifampicin,aorta,Extraction fraction,0.076662376,,Ee
+3,rifampicin,aorta,Extraction fraction,0.033220509,,Ee
+4,rifampicin,aorta,Extraction fraction,0.051551217,,Ee
+6,rifampicin,aorta,Extraction fraction,0.035438061,,Ee
+7,rifampicin,aorta,Extraction fraction,0.036110245,,Ee
+8,rifampicin,aorta,Extraction fraction,0.031446687,,Ee
+9,rifampicin,aorta,Extraction fraction,0.028480886,,Ee
+10,rifampicin,aorta,Extraction fraction,0.036915527,,Ee
+1,baseline,aorta,Leakage fraction,0.169483177,,El
+2,baseline,aorta,Leakage fraction,0.286974288,,El
+3,baseline,aorta,Leakage fraction,0.190583761,,El
+4,baseline,aorta,Leakage fraction,0.309607672,,El
+5,baseline,aorta,Leakage fraction,0.206155181,,El
+6,baseline,aorta,Leakage fraction,0.223095443,,El
+7,baseline,aorta,Leakage fraction,0.251674258,,El
+8,baseline,aorta,Leakage fraction,0.169621429,,El
+9,baseline,aorta,Leakage fraction,0.190324701,,El
+10,baseline,aorta,Leakage fraction,0.17179744,,El
+2,rifampicin,aorta,Leakage fraction,0.177733559,,El
+3,rifampicin,aorta,Leakage fraction,0.119633273,,El
+4,rifampicin,aorta,Leakage fraction,0.227966691,,El
+6,rifampicin,aorta,Leakage fraction,0.152364698,,El
+7,rifampicin,aorta,Leakage fraction,0.219192714,,El
+8,rifampicin,aorta,Leakage fraction,0.10769593,,El
+9,rifampicin,aorta,Leakage fraction,0.12500446,,El
+10,rifampicin,aorta,Leakage fraction,0.166706502,,El
+1,baseline,aorta,Extravascular mean transit time,574.6149071,sec,MTTe
+2,baseline,aorta,Extravascular mean transit time,372.1236827,sec,MTTe
+3,baseline,aorta,Extravascular mean transit time,343.1200404,sec,MTTe
+4,baseline,aorta,Extravascular mean transit time,505.8149651,sec,MTTe
+5,baseline,aorta,Extravascular mean transit time,398.3596613,sec,MTTe
+6,baseline,aorta,Extravascular mean transit time,460.07603,sec,MTTe
+7,baseline,aorta,Extravascular mean transit time,307.4085686,sec,MTTe
+8,baseline,aorta,Extravascular mean transit time,334.0822477,sec,MTTe
+9,baseline,aorta,Extravascular mean transit time,421.3064282,sec,MTTe
+10,baseline,aorta,Extravascular mean transit time,928.5902639,sec,MTTe
+2,rifampicin,aorta,Extravascular mean transit time,448.2009449,sec,MTTe
+3,rifampicin,aorta,Extravascular mean transit time,432.8029383,sec,MTTe
+4,rifampicin,aorta,Extravascular mean transit time,461.8935681,sec,MTTe
+6,rifampicin,aorta,Extravascular mean transit time,360.5399953,sec,MTTe
+7,rifampicin,aorta,Extravascular mean transit time,339.2760546,sec,MTTe
+8,rifampicin,aorta,Extravascular mean transit time,562.0792942,sec,MTTe
+9,rifampicin,aorta,Extravascular mean transit time,513.9597828,sec,MTTe
+10,rifampicin,aorta,Extravascular mean transit time,677.5711209,sec,MTTe
+1,baseline,aorta,Heart & lung mean transit time,21.99151478,sec,MTThl
+2,baseline,aorta,Heart & lung mean transit time,12.24462593,sec,MTThl
+3,baseline,aorta,Heart & lung mean transit time,6.817665125,sec,MTThl
+4,baseline,aorta,Heart & lung mean transit time,5.997044811,sec,MTThl
+5,baseline,aorta,Heart & lung mean transit time,10.8595423,sec,MTThl
+6,baseline,aorta,Heart & lung mean transit time,5.311396682,sec,MTThl
+7,baseline,aorta,Heart & lung mean transit time,6.07867854,sec,MTThl
+8,baseline,aorta,Heart & lung mean transit time,7.784626657,sec,MTThl
+9,baseline,aorta,Heart & lung mean transit time,7.646619604,sec,MTThl
+10,baseline,aorta,Heart & lung mean transit time,7.059952794,sec,MTThl
+2,rifampicin,aorta,Heart & lung mean transit time,10.43667089,sec,MTThl
+3,rifampicin,aorta,Heart & lung mean transit time,5.839158765,sec,MTThl
+4,rifampicin,aorta,Heart & lung mean transit time,7.339663794,sec,MTThl
+6,rifampicin,aorta,Heart & lung mean transit time,7.359381109,sec,MTThl
+7,rifampicin,aorta,Heart & lung mean transit time,6.333649283,sec,MTThl
+8,rifampicin,aorta,Heart & lung mean transit time,8.633506027,sec,MTThl
+9,rifampicin,aorta,Heart & lung mean transit time,11.34558267,sec,MTThl
+10,rifampicin,aorta,Heart & lung mean transit time,9.114299643,sec,MTThl
+1,baseline,aorta,Other organs mean transit time,12.84072911,sec,MTTo
+2,baseline,aorta,Other organs mean transit time,11.41770332,sec,MTTo
+3,baseline,aorta,Other organs mean transit time,11.15314132,sec,MTTo
+4,baseline,aorta,Other organs mean transit time,10.43507959,sec,MTTo
+5,baseline,aorta,Other organs mean transit time,9.681533396,sec,MTTo
+6,baseline,aorta,Other organs mean transit time,12.96305223,sec,MTTo
+7,baseline,aorta,Other organs mean transit time,7.931725771,sec,MTTo
+8,baseline,aorta,Other organs mean transit time,11.96134568,sec,MTTo
+9,baseline,aorta,Other organs mean transit time,11.68261266,sec,MTTo
+10,baseline,aorta,Other organs mean transit time,11.5163378,sec,MTTo
+2,rifampicin,aorta,Other organs mean transit time,9.268908593,sec,MTTo
+3,rifampicin,aorta,Other organs mean transit time,6.93586058,sec,MTTo
+4,rifampicin,aorta,Other organs mean transit time,13.81844104,sec,MTTo
+6,rifampicin,aorta,Other organs mean transit time,12.95683774,sec,MTTo
+7,rifampicin,aorta,Other organs mean transit time,8.87455273,sec,MTTo
+8,rifampicin,aorta,Other organs mean transit time,11.17540691,sec,MTTo
+9,rifampicin,aorta,Other organs mean transit time,15.7494793,sec,MTTo
+10,rifampicin,aorta,Other organs mean transit time,12.84483985,sec,MTTo
+1,baseline,aorta,Signal amplitude S0,2166.914226,a.u.,S01
+2,baseline,aorta,Signal amplitude S0,2538.463418,a.u.,S01
+3,baseline,aorta,Signal amplitude S0,1545.840629,a.u.,S01
+4,baseline,aorta,Signal amplitude S0,1427.877941,a.u.,S01
+5,baseline,aorta,Signal amplitude S0,2292.782105,a.u.,S01
+6,baseline,aorta,Signal amplitude S0,1749.637292,a.u.,S01
+7,baseline,aorta,Signal amplitude S0,1321.567444,a.u.,S01
+8,baseline,aorta,Signal amplitude S0,2504.768748,a.u.,S01
+9,baseline,aorta,Signal amplitude S0,1516.221869,a.u.,S01
+10,baseline,aorta,Signal amplitude S0,1570.314693,a.u.,S01
+2,rifampicin,aorta,Signal amplitude S0,2360.923305,a.u.,S01
+3,rifampicin,aorta,Signal amplitude S0,1815.580286,a.u.,S01
+4,rifampicin,aorta,Signal amplitude S0,1770.16124,a.u.,S01
+6,rifampicin,aorta,Signal amplitude S0,1878.164326,a.u.,S01
+7,rifampicin,aorta,Signal amplitude S0,1262.62482,a.u.,S01
+8,rifampicin,aorta,Signal amplitude S0,1811.622747,a.u.,S01
+9,rifampicin,aorta,Signal amplitude S0,1655.500338,a.u.,S01
+10,rifampicin,aorta,Signal amplitude S0,2200.769583,a.u.,S01
+1,baseline,aorta,Signal amplitude S0,2535.943197,a.u.,S02
+2,baseline,aorta,Signal amplitude S0,2762.4927,a.u.,S02
+3,baseline,aorta,Signal amplitude S0,1463.457072,a.u.,S02
+4,baseline,aorta,Signal amplitude S0,1623.912201,a.u.,S02
+5,baseline,aorta,Signal amplitude S0,1999.546969,a.u.,S02
+6,baseline,aorta,Signal amplitude S0,1630.639863,a.u.,S02
+7,baseline,aorta,Signal amplitude S0,1690.58961,a.u.,S02
+8,baseline,aorta,Signal amplitude S0,2536.065072,a.u.,S02
+9,baseline,aorta,Signal amplitude S0,1593.193599,a.u.,S02
+10,baseline,aorta,Signal amplitude S0,1759.289435,a.u.,S02
+2,rifampicin,aorta,Signal amplitude S0,2661.283728,a.u.,S02
+3,rifampicin,aorta,Signal amplitude S0,2111.708248,a.u.,S02
+4,rifampicin,aorta,Signal amplitude S0,1824.812228,a.u.,S02
+6,rifampicin,aorta,Signal amplitude S0,2158.114969,a.u.,S02
+7,rifampicin,aorta,Signal amplitude S0,1283.386368,a.u.,S02
+8,rifampicin,aorta,Signal amplitude S0,1883.98175,a.u.,S02
+9,rifampicin,aorta,Signal amplitude S0,1749.75952,a.u.,S02
+10,rifampicin,aorta,Signal amplitude S0,1932.642086,a.u.,S02
+1,baseline,aorta,Other organs transit time dispersion,24.36615577,sec,TTDo
+2,baseline,aorta,Other organs transit time dispersion,25.84743783,sec,TTDo
+3,baseline,aorta,Other organs transit time dispersion,26.76751707,sec,TTDo
+4,baseline,aorta,Other organs transit time dispersion,30.40796356,sec,TTDo
+5,baseline,aorta,Other organs transit time dispersion,32.78424369,sec,TTDo
+6,baseline,aorta,Other organs transit time dispersion,27.20030023,sec,TTDo
+7,baseline,aorta,Other organs transit time dispersion,20.60577578,sec,TTDo
+8,baseline,aorta,Other organs transit time dispersion,23.10160339,sec,TTDo
+9,baseline,aorta,Other organs transit time dispersion,29.32529928,sec,TTDo
+10,baseline,aorta,Other organs transit time dispersion,46.95977391,sec,TTDo
+2,rifampicin,aorta,Other organs transit time dispersion,37.30650523,sec,TTDo
+3,rifampicin,aorta,Other organs transit time dispersion,26.77049791,sec,TTDo
+4,rifampicin,aorta,Other organs transit time dispersion,39.23505417,sec,TTDo
+6,rifampicin,aorta,Other organs transit time dispersion,26.38901483,sec,TTDo
+7,rifampicin,aorta,Other organs transit time dispersion,20.80330981,sec,TTDo
+8,rifampicin,aorta,Other organs transit time dispersion,24.80270219,sec,TTDo
+9,rifampicin,aorta,Other organs transit time dispersion,36.16111748,sec,TTDo
+10,rifampicin,aorta,Other organs transit time dispersion,41.20822973,sec,TTDo
+1,baseline,liver,Biliary excretion rate,0.2755204,mL/min/100mL,k_bh
+2,baseline,liver,Biliary excretion rate,2.5322987,mL/min/100mL,k_bh
+3,baseline,liver,Biliary excretion rate,1.6918463,mL/min/100mL,k_bh
+4,baseline,liver,Biliary excretion rate,1.1300886,mL/min/100mL,k_bh
+5,baseline,liver,Biliary excretion rate,1.0378561,mL/min/100mL,k_bh
+6,baseline,liver,Biliary excretion rate,1.0899092,mL/min/100mL,k_bh
+7,baseline,liver,Biliary excretion rate,2.3457498,mL/min/100mL,k_bh
+8,baseline,liver,Biliary excretion rate,1.5289862,mL/min/100mL,k_bh
+9,baseline,liver,Biliary excretion rate,2.4637373,mL/min/100mL,k_bh
+10,baseline,liver,Biliary excretion rate,5.078511,mL/min/100mL,k_bh
+2,rifampicin,liver,Biliary excretion rate,1.5339767,mL/min/100mL,k_bh
+3,rifampicin,liver,Biliary excretion rate,1.3015891,mL/min/100mL,k_bh
+4,rifampicin,liver,Biliary excretion rate,0.7946194,mL/min/100mL,k_bh
+6,rifampicin,liver,Biliary excretion rate,0.4478974,mL/min/100mL,k_bh
+7,rifampicin,liver,Biliary excretion rate,0.5680639,mL/min/100mL,k_bh
+8,rifampicin,liver,Biliary excretion rate,0.3967073,mL/min/100mL,k_bh
+9,rifampicin,liver,Biliary excretion rate,1.6205308,mL/min/100mL,k_bh
+10,rifampicin,liver,Biliary excretion rate,0.2922026,mL/min/100mL,k_bh
+1,baseline,liver,Hepatocellular uptake rate,5.8385947,mL/min/100mL,k_he
+2,baseline,liver,Hepatocellular uptake rate,8.9927062,mL/min/100mL,k_he
+3,baseline,liver,Hepatocellular uptake rate,6.7586544,mL/min/100mL,k_he
+4,baseline,liver,Hepatocellular uptake rate,7.0682361,mL/min/100mL,k_he
+5,baseline,liver,Hepatocellular uptake rate,6.4915915,mL/min/100mL,k_he
+6,baseline,liver,Hepatocellular uptake rate,9.5287002,mL/min/100mL,k_he
+7,baseline,liver,Hepatocellular uptake rate,9.4925495,mL/min/100mL,k_he
+8,baseline,liver,Hepatocellular uptake rate,7.2318313,mL/min/100mL,k_he
+9,baseline,liver,Hepatocellular uptake rate,6.2119989,mL/min/100mL,k_he
+10,baseline,liver,Hepatocellular uptake rate,8.3776913,mL/min/100mL,k_he
+2,rifampicin,liver,Hepatocellular uptake rate,1.027818,mL/min/100mL,k_he
+3,rifampicin,liver,Hepatocellular uptake rate,0.6470234,mL/min/100mL,k_he
+4,rifampicin,liver,Hepatocellular uptake rate,0.6677588,mL/min/100mL,k_he
+6,rifampicin,liver,Hepatocellular uptake rate,0.5433057,mL/min/100mL,k_he
+7,rifampicin,liver,Hepatocellular uptake rate,0.5079455,mL/min/100mL,k_he
+8,rifampicin,liver,Hepatocellular uptake rate,0.5477949,mL/min/100mL,k_he
+9,rifampicin,liver,Hepatocellular uptake rate,0.3161645,mL/min/100mL,k_he
+10,rifampicin,liver,Hepatocellular uptake rate,0.4397253,mL/min/100mL,k_he
+2,rifampicin,liver,Hepatocellular uptake rate,4.6218739,mL/min/100mL,Khe1
+3,rifampicin,liver,Hepatocellular uptake rate,5.882716635,mL/min/100mL,Khe1
+4,rifampicin,liver,Hepatocellular uptake rate,3.031461659,mL/min/100mL,Khe1
+6,rifampicin,liver,Hepatocellular uptake rate,1.108837021,mL/min/100mL,Khe1
+7,rifampicin,liver,Hepatocellular uptake rate,3.316969986,mL/min/100mL,Khe1
+8,rifampicin,liver,Hepatocellular uptake rate,1.638463051,mL/min/100mL,Khe1
+9,rifampicin,liver,Hepatocellular uptake rate,1.202961323,mL/min/100mL,Khe1
+10,rifampicin,liver,Hepatocellular uptake rate,1.733095969,mL/min/100mL,Khe1
+2,rifampicin,liver,Hepatocellular uptake rate,16.99172051,mL/min/100mL,Khe2
+3,rifampicin,liver,Hepatocellular uptake rate,7.098542814,mL/min/100mL,Khe2
+4,rifampicin,liver,Hepatocellular uptake rate,4.060177904,mL/min/100mL,Khe2
+6,rifampicin,liver,Hepatocellular uptake rate,3.268027835,mL/min/100mL,Khe2
+7,rifampicin,liver,Hepatocellular uptake rate,2.638216019,mL/min/100mL,Khe2
+8,rifampicin,liver,Hepatocellular uptake rate,6.860578735,mL/min/100mL,Khe2
+9,rifampicin,liver,Hepatocellular uptake rate,2.187459315,mL/min/100mL,Khe2
+10,rifampicin,liver,Hepatocellular uptake rate,1.357574101,mL/min/100mL,Khe2
+2,rifampicin,liver,Hepatocellular uptake rate,0.0227348,mL/min/100mL,Khe3
+3,rifampicin,liver,Hepatocellular uptake rate,7.335700475,mL/min/100mL,Khe3
+4,rifampicin,liver,Hepatocellular uptake rate,5.083657609,mL/min/100mL,Khe3
+6,rifampicin,liver,Hepatocellular uptake rate,1.712415895,mL/min/100mL,Khe3
+7,rifampicin,liver,Hepatocellular uptake rate,3.88889901,mL/min/100mL,Khe3
+8,rifampicin,liver,Hepatocellular uptake rate,3.027951516,mL/min/100mL,Khe3
+9,rifampicin,liver,Hepatocellular uptake rate,1.800211468,mL/min/100mL,Khe3
+10,rifampicin,liver,Hepatocellular uptake rate,3.395288568,mL/min/100mL,Khe3
+1,baseline,liver,Signal amplitude S0,1503.661309,a.u.,S01
+2,baseline,liver,Signal amplitude S0,2014.647107,a.u.,S01
+3,baseline,liver,Signal amplitude S0,2325.176875,a.u.,S01
+4,baseline,liver,Signal amplitude S0,1710.727772,a.u.,S01
+5,baseline,liver,Signal amplitude S0,2096.979053,a.u.,S01
+6,baseline,liver,Signal amplitude S0,1560.727957,a.u.,S01
+7,baseline,liver,Signal amplitude S0,1749.797049,a.u.,S01
+8,baseline,liver,Signal amplitude S0,1824.386798,a.u.,S01
+9,baseline,liver,Signal amplitude S0,1180.696599,a.u.,S01
+10,baseline,liver,Signal amplitude S0,1307.178964,a.u.,S01
+2,rifampicin,liver,Signal amplitude S0,2303.230935,a.u.,S01
+3,rifampicin,liver,Signal amplitude S0,2455.659039,a.u.,S01
+4,rifampicin,liver,Signal amplitude S0,1473.758816,a.u.,S01
+6,rifampicin,liver,Signal amplitude S0,1458.51058,a.u.,S01
+7,rifampicin,liver,Signal amplitude S0,1341.277199,a.u.,S01
+8,rifampicin,liver,Signal amplitude S0,1517.391308,a.u.,S01
+9,rifampicin,liver,Signal amplitude S0,1293.148904,a.u.,S01
+10,rifampicin,liver,Signal amplitude S0,1472.512948,a.u.,S01
+1,baseline,liver,Signal amplitude S0,1379.808353,a.u.,S02
+2,baseline,liver,Signal amplitude S0,2273.171702,a.u.,S02
+3,baseline,liver,Signal amplitude S0,2237.923031,a.u.,S02
+4,baseline,liver,Signal amplitude S0,1841.052734,a.u.,S02
+5,baseline,liver,Signal amplitude S0,2080.704176,a.u.,S02
+6,baseline,liver,Signal amplitude S0,1529.695403,a.u.,S02
+7,baseline,liver,Signal amplitude S0,1972.886055,a.u.,S02
+8,baseline,liver,Signal amplitude S0,1871.35436,a.u.,S02
+9,baseline,liver,Signal amplitude S0,1157.007018,a.u.,S02
+10,baseline,liver,Signal amplitude S0,1432.885787,a.u.,S02
+2,rifampicin,liver,Signal amplitude S0,2269.245831,a.u.,S02
+3,rifampicin,liver,Signal amplitude S0,2400.123435,a.u.,S02
+4,rifampicin,liver,Signal amplitude S0,1599.9596,a.u.,S02
+6,rifampicin,liver,Signal amplitude S0,1540.92234,a.u.,S02
+7,rifampicin,liver,Signal amplitude S0,1303.526305,a.u.,S02
+8,rifampicin,liver,Signal amplitude S0,1512.140056,a.u.,S02
+9,rifampicin,liver,Signal amplitude S0,1288.138881,a.u.,S02
+10,rifampicin,liver,Signal amplitude S0,1321.012454,a.u.,S02
+1,baseline,liver,Gut delay time,1.62E-05,sec,Tdel
+2,baseline,liver,Gut delay time,12.44049042,sec,Tdel
+3,baseline,liver,Gut delay time,9.054347731,sec,Tdel
+4,baseline,liver,Gut delay time,4.913241322,sec,Tdel
+5,baseline,liver,Gut delay time,3.755119821,sec,Tdel
+6,baseline,liver,Gut delay time,10.20739852,sec,Tdel
+7,baseline,liver,Gut delay time,6.427125426,sec,Tdel
+8,baseline,liver,Gut delay time,2.23E-10,sec,Tdel
+9,baseline,liver,Gut delay time,9.892795048,sec,Tdel
+10,baseline,liver,Gut delay time,1.15E-05,sec,Tdel
+2,rifampicin,liver,Gut delay time,11.67803357,sec,Tdel
+3,rifampicin,liver,Gut delay time,9.807880313,sec,Tdel
+4,rifampicin,liver,Gut delay time,10.31218477,sec,Tdel
+6,rifampicin,liver,Gut delay time,14.66105776,sec,Tdel
+7,rifampicin,liver,Gut delay time,11.03247434,sec,Tdel
+8,rifampicin,liver,Gut delay time,13.2224897,sec,Tdel
+9,rifampicin,liver,Gut delay time,17.35792242,sec,Tdel
+10,rifampicin,liver,Gut delay time,14.70343167,sec,Tdel
+1,baseline,liver,Gut-liver dispersion time,3.507166732,min,Tdisp
+2,baseline,liver,Gut-liver dispersion time,7.734165388,min,Tdisp
+3,baseline,liver,Gut-liver dispersion time,0.004629307,min,Tdisp
+4,baseline,liver,Gut-liver dispersion time,12.74404925,min,Tdisp
+5,baseline,liver,Gut-liver dispersion time,5.047405483,min,Tdisp
+6,baseline,liver,Gut-liver dispersion time,4.44318815,min,Tdisp
+7,baseline,liver,Gut-liver dispersion time,0.5076973,min,Tdisp
+8,baseline,liver,Gut-liver dispersion time,4.812643267,min,Tdisp
+9,baseline,liver,Gut-liver dispersion time,0.446901398,min,Tdisp
+10,baseline,liver,Gut-liver dispersion time,9.917551375,min,Tdisp
+2,rifampicin,liver,Gut-liver dispersion time,0.47146396,min,Tdisp
+3,rifampicin,liver,Gut-liver dispersion time,0.321781277,min,Tdisp
+4,rifampicin,liver,Gut-liver dispersion time,0.704629156,min,Tdisp
+6,rifampicin,liver,Gut-liver dispersion time,0.485712329,min,Tdisp
+7,rifampicin,liver,Gut-liver dispersion time,0.522021179,min,Tdisp
+8,rifampicin,liver,Gut-liver dispersion time,0.326859675,min,Tdisp
+9,rifampicin,liver,Gut-liver dispersion time,0.620189745,min,Tdisp
+10,rifampicin,liver,Gut-liver dispersion time,0.66522375,min,Tdisp
+1,baseline,liver,Hepatocellular mean transit time,262.0495317,min,Th
+2,baseline,liver,Hepatocellular mean transit time,28.51164414,min,Th
+3,baseline,liver,Hepatocellular mean transit time,42.67527058,min,Th
+4,baseline,liver,Hepatocellular mean transit time,63.88879335,min,Th
+5,baseline,liver,Hepatocellular mean transit time,69.56648664,min,Th
+6,baseline,liver,Hepatocellular mean transit time,66.24404881,min,Th
+7,baseline,liver,Hepatocellular mean transit time,30.77907079,min,Th
+8,baseline,liver,Hepatocellular mean transit time,47.22083197,min,Th
+9,baseline,liver,Hepatocellular mean transit time,29.30507288,min,Th
+10,baseline,liver,Hepatocellular mean transit time,14.21676541,min,Th
+2,rifampicin,liver,Hepatocellular mean transit time,47.0672075,min,Th
+3,rifampicin,liver,Hepatocellular mean transit time,55.47065327,min,Th
+4,rifampicin,liver,Hepatocellular mean transit time,90.86111456,min,Th
+6,rifampicin,liver,Hepatocellular mean transit time,161.1976174,min,Th
+7,rifampicin,liver,Hepatocellular mean transit time,127.0983685,min,Th
+8,rifampicin,liver,Hepatocellular mean transit time,181.9981688,min,Th
+9,rifampicin,liver,Hepatocellular mean transit time,44.5533032,min,Th
+10,rifampicin,liver,Hepatocellular mean transit time,247.0888349,min,Th
+1,baseline,liver,Extracellular volume,99.9991852,mL/100mL,ve
+2,baseline,liver,Extracellular volume,99.998297,mL/100mL,ve
+3,baseline,liver,Extracellular volume,0.6470104,mL/100mL,ve
+4,baseline,liver,Extracellular volume,100,mL/100mL,ve
+5,baseline,liver,Extracellular volume,99.9999828,mL/100mL,ve
+6,baseline,liver,Extracellular volume,99.9892521,mL/100mL,ve
+7,baseline,liver,Extracellular volume,14.4702354,mL/100mL,ve
+8,baseline,liver,Extracellular volume,99.9998787,mL/100mL,ve
+9,baseline,liver,Extracellular volume,14.2853951,mL/100mL,ve
+10,baseline,liver,Extracellular volume,99.9999855,mL/100mL,ve
+2,rifampicin,liver,Extracellular volume,14.2512802,mL/100mL,ve
+3,rifampicin,liver,Extracellular volume,9.5539397,mL/100mL,ve
+4,rifampicin,liver,Extracellular volume,16.453614,mL/100mL,ve
+6,rifampicin,liver,Extracellular volume,26.7669905,mL/100mL,ve
+7,rifampicin,liver,Extracellular volume,15.479718,mL/100mL,ve
+8,rifampicin,liver,Extracellular volume,14.2568366,mL/100mL,ve
+9,rifampicin,liver,Extracellular volume,18.273181,mL/100mL,ve
+10,rifampicin,liver,Extracellular volume,20.3389487,mL/100mL,ve
+1,baseline,liver,Biliary excretion rate,0.381607202,mL/min/100mL,Kbh
+2,baseline,liver,Biliary excretion rate,3.50733892,mL/min/100mL,Kbh
+3,baseline,liver,Biliary excretion rate,2.343277424,mL/min/100mL,Kbh
+4,baseline,liver,Biliary excretion rate,1.565219668,mL/min/100mL,Kbh
+5,baseline,liver,Biliary excretion rate,1.437473823,mL/min/100mL,Kbh
+6,baseline,liver,Biliary excretion rate,1.509569529,mL/min/100mL,Kbh
+7,baseline,liver,Biliary excretion rate,3.248960942,mL/min/100mL,Kbh
+8,baseline,liver,Biliary excretion rate,2.117709418,mL/min/100mL,Kbh
+9,baseline,liver,Biliary excretion rate,3.412378532,mL/min/100mL,Kbh
+10,baseline,liver,Biliary excretion rate,7.033948753,mL/min/100mL,Kbh
+2,rifampicin,liver,Biliary excretion rate,2.124621468,mL/min/100mL,Kbh
+3,rifampicin,liver,Biliary excretion rate,1.802754986,mL/min/100mL,Kbh
+4,rifampicin,liver,Biliary excretion rate,1.100580886,mL/min/100mL,Kbh
+6,rifampicin,liver,Biliary excretion rate,0.62035651,mL/min/100mL,Kbh
+7,rifampicin,liver,Biliary excretion rate,0.786792105,mL/min/100mL,Kbh
+8,rifampicin,liver,Biliary excretion rate,0.549456094,mL/min/100mL,Kbh
+9,rifampicin,liver,Biliary excretion rate,2.244502493,mL/min/100mL,Kbh
+10,rifampicin,liver,Biliary excretion rate,0.404712742,mL/min/100mL,Kbh
+1,baseline,liver,Hepatocellular uptake rate,5.838642273,mL/min/100mL,Khe
+2,baseline,liver,Hepatocellular uptake rate,8.992859348,mL/min/100mL,Khe
+3,baseline,liver,Hepatocellular uptake rate,1044.59749,mL/min/100mL,Khe
+4,baseline,liver,Hepatocellular uptake rate,7.0682361,mL/min/100mL,Khe
+5,baseline,liver,Hepatocellular uptake rate,6.491592617,mL/min/100mL,Khe
+6,baseline,liver,Hepatocellular uptake rate,9.529724445,mL/min/100mL,Khe
+7,baseline,liver,Hepatocellular uptake rate,65.60051884,mL/min/100mL,Khe
+8,baseline,liver,Hepatocellular uptake rate,7.231840072,mL/min/100mL,Khe
+9,baseline,liver,Hepatocellular uptake rate,43.48496388,mL/min/100mL,Khe
+10,baseline,liver,Hepatocellular uptake rate,8.377692515,mL/min/100mL,Khe
+2,rifampicin,liver,Hepatocellular uptake rate,7.212109969,mL/min/100mL,Khe
+3,rifampicin,liver,Hepatocellular uptake rate,6.772320324,mL/min/100mL,Khe
+4,rifampicin,liver,Hepatocellular uptake rate,4.058432391,mL/min/100mL,Khe
+6,rifampicin,liver,Hepatocellular uptake rate,2.029760126,mL/min/100mL,Khe
+7,rifampicin,liver,Hepatocellular uptake rate,3.281361456,mL/min/100mL,Khe
+8,rifampicin,liver,Hepatocellular uptake rate,3.842331335,mL/min/100mL,Khe
+9,rifampicin,liver,Hepatocellular uptake rate,1.73021052,mL/min/100mL,Khe
+10,rifampicin,liver,Hepatocellular uptake rate,2.161986376,mL/min/100mL,Khe
