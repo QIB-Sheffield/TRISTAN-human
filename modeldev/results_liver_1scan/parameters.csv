@@ -1,0 +1,145 @@
+subject,visit,structure,name,value,unit,parameter
+001,baseline,liver,Gut delay time,11.31156977167663,sec,Tdel
+001,baseline,liver,Extracellular transit time,0.4500730188435997,min,Te
+001,baseline,liver,Extracellular volume fraction,59.999999999999986,mL/100mL,ve
+001,baseline,liver,Hepatocellular uptake rate,21.317830865041277,mL/min/100mL,k_he
+001,baseline,liver,Biliary tissue excretion rate,2.5365930211758765,mL/min/100mL,Kbh
+001,baseline,liver,Hepatocellular tissue uptake rate,35.529718108402136,mL/min/100mL,Khe
+001,baseline,liver,Biliary excretion rate,1.014637208470351,mL/min/100mL,k_bh
+001,baseline,liver,Hepatocellular transit time,39.42295794602615,min,Th
+002,baseline,liver,Gut delay time,10.269594687522899,sec,Tdel
+002,baseline,liver,Extracellular transit time,0.9999999992929939,min,Te
+002,baseline,liver,Extracellular volume fraction,30.274642450750072,mL/100mL,ve
+002,baseline,liver,Hepatocellular uptake rate,26.25006764512912,mL/min/100mL,k_he
+002,baseline,liver,Biliary tissue excretion rate,3.745904653535033,mL/min/100mL,Kbh
+002,baseline,liver,Hepatocellular tissue uptake rate,86.7064497552101,mL/min/100mL,Khe
+002,baseline,liver,Biliary excretion rate,2.611845413131294,mL/min/100mL,k_bh
+002,baseline,liver,Hepatocellular transit time,26.695820969609944,min,Th
+003,baseline,liver,Gut delay time,9.803402201274357,sec,Tdel
+003,baseline,liver,Extracellular transit time,0.2925973170101417,min,Te
+003,baseline,liver,Extracellular volume fraction,9.160124943989393,mL/100mL,ve
+003,baseline,liver,Hepatocellular uptake rate,14.66814932530532,mL/min/100mL,k_he
+003,baseline,liver,Biliary tissue excretion rate,2.2085267076088466,mL/min/100mL,Kbh
+003,baseline,liver,Hepatocellular tissue uptake rate,160.13045034860724,mL/min/100mL,Khe
+003,baseline,liver,Biliary excretion rate,2.006222901770501,mL/min/100mL,k_bh
+003,baseline,liver,Hepatocellular transit time,45.27905397543014,min,Th
+004,baseline,liver,Gut delay time,7.760084532030186,sec,Tdel
+004,baseline,liver,Extracellular transit time,0.9999999999123751,min,Te
+004,baseline,liver,Extracellular volume fraction,18.062025454194906,mL/100mL,ve
+004,baseline,liver,Hepatocellular uptake rate,13.577688706246045,mL/min/100mL,k_he
+004,baseline,liver,Biliary tissue excretion rate,0.5688979348512374,mL/min/100mL,Kbh
+004,baseline,liver,Hepatocellular tissue uptake rate,75.17256987971206,mL/min/100mL,Khe
+004,baseline,liver,Biliary excretion rate,0.46614344505001776,mL/min/100mL,k_bh
+004,baseline,liver,Hepatocellular transit time,175.77845492821,min,Th
+005,baseline,liver,Gut delay time,10.450721993910449,sec,Tdel
+005,baseline,liver,Extracellular transit time,0.5661944577973437,min,Te
+005,baseline,liver,Extracellular volume fraction,43.74354929366057,mL/100mL,ve
+005,baseline,liver,Hepatocellular uptake rate,24.053586776330857,mL/min/100mL,k_he
+005,baseline,liver,Biliary tissue excretion rate,3.50215340641853,mL/min/100mL,Kbh
+005,baseline,liver,Hepatocellular tissue uptake rate,54.987734568252705,mL/min/100mL,Khe
+005,baseline,liver,Biliary excretion rate,1.970187204742227,mL/min/100mL,k_bh
+005,baseline,liver,Hepatocellular transit time,28.553860552403613,min,Th
+006,baseline,liver,Gut delay time,17.785685858271275,sec,Tdel
+006,baseline,liver,Extracellular transit time,0.6697272405170704,min,Te
+006,baseline,liver,Extracellular volume fraction,48.18478931300933,mL/100mL,ve
+006,baseline,liver,Hepatocellular uptake rate,28.251462543592968,mL/min/100mL,k_he
+006,baseline,liver,Biliary tissue excretion rate,2.6518061730787,mL/min/100mL,Kbh
+006,baseline,liver,Hepatocellular tissue uptake rate,58.631495429129956,mL/min/100mL,Khe
+006,baseline,liver,Biliary excretion rate,1.3740389555913526,mL/min/100mL,k_bh
+006,baseline,liver,Hepatocellular transit time,37.71014677286982,min,Th
+007,baseline,liver,Gut delay time,7.127556840235246e-08,sec,Tdel
+007,baseline,liver,Extracellular transit time,0.9999999992946684,min,Te
+007,baseline,liver,Extracellular volume fraction,7.7565652997892425,mL/100mL,ve
+007,baseline,liver,Hepatocellular uptake rate,22.117160073597805,mL/min/100mL,k_he
+007,baseline,liver,Biliary tissue excretion rate,3.1663473979819305,mL/min/100mL,Kbh
+007,baseline,liver,Hepatocellular tissue uptake rate,285.1411574424412,mL/min/100mL,Khe
+007,baseline,liver,Biliary excretion rate,2.9207475944392844,mL/min/100mL,k_bh
+007,baseline,liver,Hepatocellular transit time,31.58213153229331,min,Th
+008,baseline,liver,Gut delay time,11.304888920418616,sec,Tdel
+008,baseline,liver,Extracellular transit time,0.20362043792681328,min,Te
+008,baseline,liver,Extracellular volume fraction,32.57074101670426,mL/100mL,ve
+008,baseline,liver,Hepatocellular uptake rate,25.61244585842273,mL/min/100mL,k_he
+008,baseline,liver,Biliary tissue excretion rate,3.797532030570002,mL/min/100mL,Kbh
+008,baseline,liver,Hepatocellular tissue uptake rate,78.63636214259634,mL/min/100mL,Khe
+008,baseline,liver,Biliary excretion rate,2.560647707866656,mL/min/100mL,k_bh
+008,baseline,liver,Hepatocellular transit time,26.33289178208464,min,Th
+009,baseline,liver,Gut delay time,9.865029864397545,sec,Tdel
+009,baseline,liver,Extracellular transit time,0.31918417248350905,min,Te
+009,baseline,liver,Extracellular volume fraction,23.406586148575588,mL/100mL,ve
+009,baseline,liver,Hepatocellular uptake rate,13.381067676429943,mL/min/100mL,k_he
+009,baseline,liver,Biliary tissue excretion rate,3.074285222434051,mL/min/100mL,Kbh
+009,baseline,liver,Hepatocellular tissue uptake rate,57.16795944309141,mL/min/100mL,Khe
+009,baseline,liver,Biliary excretion rate,2.354700003392096,mL/min/100mL,k_bh
+009,baseline,liver,Hepatocellular transit time,32.52788624499371,min,Th
+010,baseline,liver,Gut delay time,8.539763206593843,sec,Tdel
+010,baseline,liver,Extracellular transit time,0.9999999999999999,min,Te
+010,baseline,liver,Extracellular volume fraction,18.60081607513402,mL/100mL,ve
+010,baseline,liver,Hepatocellular uptake rate,15.873900523331775,mL/min/100mL,k_he
+010,baseline,liver,Biliary tissue excretion rate,3.0837152704461164,mL/min/100mL,Kbh
+010,baseline,liver,Hepatocellular tissue uptake rate,85.33980691606513,mL/min/100mL,Khe
+010,baseline,liver,Biliary excretion rate,2.5101190647096128,mL/min/100mL,k_bh
+010,baseline,liver,Hepatocellular transit time,32.42841547609327,min,Th
+002,rifampicin,liver,Gut delay time,12.390583171639403,sec,Tdel
+002,rifampicin,liver,Extracellular transit time,0.4673773328963489,min,Te
+002,rifampicin,liver,Extracellular volume fraction,28.797109137437438,mL/100mL,ve
+002,rifampicin,liver,Hepatocellular uptake rate,1.9030902530648741,mL/min/100mL,k_he
+002,rifampicin,liver,Biliary tissue excretion rate,0.1388888888888889,mL/min/100mL,Kbh
+002,rifampicin,liver,Hepatocellular tissue uptake rate,6.60861562173537,mL/min/100mL,Khe
+002,rifampicin,liver,Biliary excretion rate,0.09889290397578133,mL/min/100mL,k_bh
+002,rifampicin,liver,Hepatocellular transit time,719.9999999999999,min,Th
+003,rifampicin,liver,Gut delay time,10.820468881302416,sec,Tdel
+003,rifampicin,liver,Extracellular transit time,0.3150694609192937,min,Te
+003,rifampicin,liver,Extracellular volume fraction,20.10519685163044,mL/100mL,ve
+003,rifampicin,liver,Hepatocellular uptake rate,1.1314576861198637,mL/min/100mL,k_he
+003,rifampicin,liver,Biliary tissue excretion rate,0.8700896158368129,mL/min/100mL,Kbh
+003,rifampicin,liver,Hepatocellular tissue uptake rate,5.627687679308187,mL/min/100mL,Khe
+003,rifampicin,liver,Biliary excretion rate,0.6951563857872266,mL/min/100mL,k_bh
+003,rifampicin,liver,Hepatocellular transit time,114.9306901034838,min,Th
+004,rifampicin,liver,Gut delay time,12.09773266193541,sec,Tdel
+004,rifampicin,liver,Extracellular transit time,0.8426960107478829,min,Te
+004,rifampicin,liver,Extracellular volume fraction,36.2150178689981,mL/100mL,ve
+004,rifampicin,liver,Hepatocellular uptake rate,1.1785488399249902,mL/min/100mL,k_he
+004,rifampicin,liver,Biliary tissue excretion rate,1.0440176277981261,mL/min/100mL,Kbh
+004,rifampicin,liver,Hepatocellular tissue uptake rate,3.254309701539283,mL/min/100mL,Khe
+004,rifampicin,liver,Biliary excretion rate,0.6659264573355447,mL/min/100mL,k_bh
+004,rifampicin,liver,Hepatocellular transit time,95.78382331618663,min,Th
+006,rifampicin,liver,Gut delay time,14.47416670229548,sec,Tdel
+006,rifampicin,liver,Extracellular transit time,0.5083518908433485,min,Te
+006,rifampicin,liver,Extracellular volume fraction,52.283753150390154,mL/100mL,ve
+006,rifampicin,liver,Hepatocellular uptake rate,0.9887338045840837,mL/min/100mL,k_he
+006,rifampicin,liver,Biliary tissue excretion rate,0.1388888888888889,mL/min/100mL,Kbh
+006,rifampicin,liver,Hepatocellular tissue uptake rate,1.8910918689025014,mL/min/100mL,Khe
+006,rifampicin,liver,Biliary excretion rate,0.06627256506890257,mL/min/100mL,k_bh
+006,rifampicin,liver,Hepatocellular transit time,719.9999999999999,min,Th
+007,rifampicin,liver,Gut delay time,11.87530574892841,sec,Tdel
+007,rifampicin,liver,Extracellular transit time,0.6478666412026788,min,Te
+007,rifampicin,liver,Extracellular volume fraction,30.780478761238506,mL/100mL,ve
+007,rifampicin,liver,Hepatocellular uptake rate,1.005905272637781,mL/min/100mL,k_he
+007,rifampicin,liver,Biliary tissue excretion rate,0.18008526206066233,mL/min/100mL,Kbh
+007,rifampicin,liver,Hepatocellular tissue uptake rate,3.2679974877600206,mL/min/100mL,Khe
+007,rifampicin,liver,Biliary excretion rate,0.12465415621995946,mL/min/100mL,k_bh
+007,rifampicin,liver,Hepatocellular transit time,555.2925256388536,min,Th
+008,rifampicin,liver,Gut delay time,14.793953943064475,sec,Tdel
+008,rifampicin,liver,Extracellular transit time,0.2648297135118038,min,Te
+008,rifampicin,liver,Extracellular volume fraction,26.24558491784207,mL/100mL,ve
+008,rifampicin,liver,Hepatocellular uptake rate,0.9534697916335491,mL/min/100mL,k_he
+008,rifampicin,liver,Biliary tissue excretion rate,0.13888888888888914,mL/min/100mL,Kbh
+008,rifampicin,liver,Hepatocellular tissue uptake rate,3.6328768995556606,mL/min/100mL,Khe
+008,rifampicin,liver,Biliary excretion rate,0.10243668761410843,mL/min/100mL,k_bh
+008,rifampicin,liver,Hepatocellular transit time,719.9999999999986,min,Th
+009,rifampicin,liver,Gut delay time,17.865463697331357,sec,Tdel
+009,rifampicin,liver,Extracellular transit time,0.7423662913297107,min,Te
+009,rifampicin,liver,Extracellular volume fraction,35.95187407320529,mL/100mL,ve
+009,rifampicin,liver,Hepatocellular uptake rate,0.6822888403553302,mL/min/100mL,k_he
+009,rifampicin,liver,Biliary tissue excretion rate,1.5899452657577262,mL/min/100mL,Kbh
+009,rifampicin,liver,Hepatocellular tissue uptake rate,1.8977837955430419,mL/min/100mL,Khe
+009,rifampicin,liver,Biliary excretion rate,1.0183301459796192,mL/min/100mL,k_bh
+009,rifampicin,liver,Hepatocellular transit time,62.89524687023903,min,Th
+010,rifampicin,liver,Gut delay time,19.99999999999953,sec,Tdel
+010,rifampicin,liver,Extracellular transit time,0.6132734400698533,min,Te
+010,rifampicin,liver,Extracellular volume fraction,37.94428682890306,mL/100mL,ve
+010,rifampicin,liver,Hepatocellular uptake rate,0.8851788855290367,mL/min/100mL,k_he
+010,rifampicin,liver,Biliary tissue excretion rate,0.981634999662354,mL/min/100mL,Kbh
+010,rifampicin,liver,Hepatocellular tissue uptake rate,2.3328383783320317,mL/min/100mL,Khe
+010,rifampicin,liver,Biliary excretion rate,0.6091605997775689,mL/min/100mL,k_bh
+010,rifampicin,liver,Hepatocellular transit time,101.87085834795651,min,Th

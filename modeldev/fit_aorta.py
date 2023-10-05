@@ -17,12 +17,13 @@ def read(data, params):
         T1time1, T1aorta1, T1liver1, T1portal1,
         T1time2, T1aorta2, T1liver2, T1portal2,
         T1time3, T1aorta3, T1liver3, T1portal3, 
-        weight, dose1, dose2) = data
+        weight, dose1, dose2, t0) = data
 
     print('Reading aorta...')
     aorta = Aorta()
     # Set constants
     aorta.weight = weight
+    aorta.t0 = t0
     aorta.set_dose(dose1, dose2)
     aorta.set_R10(T1time1, 1000.0/T1aorta1)
     aorta.set_R11(T1time2, 1000.0/T1aorta2)
@@ -49,13 +50,14 @@ def fit_aorta(data):
         T1time1, T1aorta1, T1liver1, T1portal1,
         T1time2, T1aorta2, T1liver2, T1portal2,
         T1time3, T1aorta3, T1liver3, T1portal3, 
-        weight, dose1, dose2) = data
+        weight, dose1, dose2, t0) = data
 
     # Fit aorta
     print('Fitting aorta...')
     aorta = Aorta()
     # Set data
     aorta.weight = weight
+    aorta.t0 = t0
     aorta.set_dose(dose1, dose2)
     aorta.set_x(time1, time2, valid=np.append(aorta_valid1, aorta_valid2))
     aorta.set_y(aorta1, aorta2)
@@ -112,7 +114,7 @@ if __name__ == "__main__":
     #filepath = os.path.abspath("")
     filepath = os.path.dirname(__file__)
     datapath = os.path.join(filepath, 'data')
-    resultspath = os.path.join(filepath, 'results_aorta')
+    resultspath = os.path.join(filepath, 'results')
     output_file = os.path.join(resultspath, 'parameters.csv')
 
     fit_data(datapath, output_file)

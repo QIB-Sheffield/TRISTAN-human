@@ -51,25 +51,24 @@ class OneShotOneScan(CurveFit):
         self.export_pars = self.p.drop(['initial value','lower bound','upper bound','fit','digits'], axis=1)
         self.export_pars.drop(['FA'],inplace=True)
 
-    # Default values for experimental parameters
-    tacq = 1.64             # Time to acquire a single datapoint (sec)
-    field_strength = 3.0    # Field strength (T)
-    weight = 70.0           # Patient weight in kg
-    conc = 0.25             # mmol/mL (https://www.bayer.com/sites/default/files/2020-11/primovist-pm-en.pdf)
-    dose = 0.025            # mL per kg bodyweight (quarter dose)
-    rate = 1                # Injection rate (mL/sec)
-    TR = 3.71/1000.0        # Repetition time (sec)
-    FA = 15.0               # Nominal flip angle (degrees)
-
-    # Internal time resolution & acquisition time
-    dt = 0.5                # sec
-    tmax = 40*60.0          # Total acquisition time (sec)
-
-    # Physiological parameters
-    Hct = 0.45
-
-    # Optimization parameters
-    dose_tolerance = 0.001
+    def set_const(self):
+        # Default values for experimental parameters
+        self.t0 = 0      # Start of acquisition (sec since midnight)
+        self.tacq = 1.64             # Time to acquire a single datapoint (sec)
+        self.field_strength = 3.0    # Field strength (T)
+        self.weight = 70.0           # Patient weight in kg
+        self.conc = 0.25             # mmol/mL (https://www.bayer.com/sites/default/files/2020-11/primovist-pm-en.pdf)
+        self.dose = 0.025            # mL per kg bodyweight (quarter dose)
+        self.rate = 1                # Injection rate (mL/sec)
+        self.TR = 3.71/1000.0        # Repetition time (sec)
+        self.FA = 15.0               # Nominal flip angle (degrees)
+        # Internal time resolution & acquisition time
+        self.dt = 0.5                # sec
+        self.tmax = 40*60.0          # Total acquisition time (sec)
+        # Physiological parameters
+        self.Hct = 0.45
+        # Optimization parameters
+        self.dose_tolerance = 0.001
 
     @property
     def rp(self):
@@ -188,6 +187,22 @@ class OneShotOneScan(CurveFit):
 
 class TwoShotTwoScan(OneShotOneScan):
 
+    def set_dose(self, dose1, dose2):
+        self.dose = [dose1, dose2]
+        # adjust internal time resolution
+        duration1 = self.weight*dose1/self.rate
+        duration2 = self.weight*dose2/self.rate
+        min_duration = np.amin([duration1, duration2])
+        if min_duration == 0:
+            return
+        if self.dt > min_duration/5:
+            self.dt = min_duration/5
+
+    def set_const(self):
+        super().set_const()
+        self.set_dose(0.025, 0.025)
+        
+
     def function(self, x, p):
 
         R1 = self.R1()
@@ -201,19 +216,19 @@ class TwoShotTwoScan(OneShotOneScan):
     def parameters(self):
 
         return [
-            ['S01', "Signal amplitude S0", 1200, "a.u.", 0, np.inf, False, 4],
             ['FA1', "Flip angle 1", self.FA, "deg", 0, 180, False, 4],
-            ['S02', "Signal amplitude S0", 1200, "a.u.", 0, np.inf, True, 4],
             ['FA2', "Flip angle 2", self.FA, "deg", 0, 180, False, 4],
+            ['S01', "Signal amplitude S0", 1200, "a.u.", 0, np.inf, False, 4],
+            ['S02', "Signal amplitude S0", 1200, "a.u.", 0, np.inf, True, 4],
             ['BAT1', "Bolus arrival time", 60, "sec", 0, np.inf, True, 3],
             ['BAT2', "Bolus arrival time - second shot", 10000, "sec", 0, np.inf, True, 3],
-            ['CO', "Cardiac output", 3000.0/60.0, "mL/sec", 0, np.inf, True, 3],
-            ['MTThl', "Heart & lung mean transit time", 6.0, "sec", 0, np.inf, True, 2],
-            ['MTTo', "Other organs mean transit time", 20.0, "sec", 0, np.inf, True, 2],
-            ['TTDo', "Other organs transit time dispersion", 10.0, "sec", 0, np.inf, True, 3],
-            ['MTTe', "Extravascular mean transit time", 120.0, "sec", 0, np.inf, True, 3],
-            ['El', "Leakage fraction", 0.5, "", 0, 1, True, 4],
-            ['Ee',"Extraction fraction", 0.2,"", 0, 1, True, 4],
+            ['CO', "Cardiac output", 3000.0/60.0, "mL/sec", 0, np.inf, True, 3], # 6 L/min = 100 mL/sec
+            ['MTThl', "Heart & lung mean transit time", 8.0, "sec", 0, 30, True, 2],
+            ['MTTo', "Other organs mean transit time", 10.0, "sec", 0, 30, True, 2],
+            ['TTDo', "Other organs transit time dispersion", 20.0, "sec", 0, 60, True, 3],
+            ['MTTe', "Storage compartment mean transit time", 120.0, "sec", 0, 800.0, True, 3],
+            ['El', "Storage compartment leakage fraction", 0.15, "", 0, 0.50, True, 4],
+            ['Ee',"Kidney & Liver Extraction fraction", 0.05,"", 0.01, 0.15, True, 4],
         ]
     
     def set_export_pars(self):
@@ -221,12 +236,6 @@ class TwoShotTwoScan(OneShotOneScan):
         self.export_pars.drop(['FA1', 'FA2'],inplace=True)
 
     def R1(self):
-
-        # k1 = np.nonzero(self.t <= self.R11[0])[0][-1]
-        # Delta_R1b = (Jb/Jb[k1])*(self.R11[1]-self.R10)
-        # self.cb = Delta_R1b/self.rp
-        # R1 = self.R10 + Delta_R1b
-
         p = self.p.value
         Ji = dcmri.injection(self.t, 
             self.weight, self.conc, self.dose[0], self.rate, p.BAT1, dose2=self.dose[1], start2=p.BAT2)
@@ -268,30 +277,21 @@ class TwoShotTwoScan(OneShotOneScan):
     def set_R12(self, t, R1):
         self.R12 = [t, R1]
 
-    def set_dose(self, dose1, dose2):
-        self.dose = [dose1, dose2]
-        # adjust internal time resolution
-        duration1 = self.weight*dose1/self.rate
-        duration2 = self.weight*dose2/self.rate
-        min_duration = np.amin([duration1, duration2])
-        if min_duration == 0:
-            return
-        if self.dt > min_duration/5:
-            self.dt = min_duration/5
+
 
     def set_x(self, x1, x2, **kwargs):
         self.tacq = x1[1] - x1[0]
         self.tmax = x2[-1] + self.tacq
         self.x1 = x1
         self.x2 = x2
-        x = np.append(x1, x2)
+        x = np.concatenate([x1, x2])
         super().set_x(x, **kwargs)
 
-    def set_y(self, y1, y2):
-
-        self.y = np.append(y1, y2)
+    def set_y(self, y1, y2, **kwargs):
         self.y1 = y1
         self.y2 = y2
+        y = np.concatenate([y1, y2])
+        super().set_y(y, **kwargs)
 
     def plot_fit(self, xrange=None, show=True, save=False, path=None, prefix=''):
 

@@ -1,5 +1,0 @@
-symbol,name,initial value,value,unit,lower bound,upper bound,fit,digits
-A,A,0,97.40384474967786,not provided,-inf,inf,True,3
-a,a,0,-0.006367012615440981,not provided,-inf,inf,True,3
-B,B,0,97.40384473677798,not provided,-inf,inf,True,3
-b,b,0,-0.0063670340823681615,not provided,-inf,inf,True,3

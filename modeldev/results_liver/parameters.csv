@@ -1,0 +1,385 @@
+subject,visit,structure,name,value,unit,parameter
+001,baseline,liver,Signal amplitude correction,1.0,,S01_corr
+001,baseline,liver,Signal amplitude correction,1.4489233057138287,,S02_corr
+001,baseline,liver,Gut delay time,11.248167504019316,sec,Tdel
+001,baseline,liver,Extracellular transit time,0.36962380979061377,min,Te
+001,baseline,liver,Extracellular volume fraction,45.67219851809611,mL/100mL,ve
+001,baseline,liver,Hepatocellular uptake rate,22.6903463773416,mL/min/100mL,k_he_i
+001,baseline,liver,Hepatocellular uptake rate,4.375704635519181,mL/min/100mL,k_he_f
+001,baseline,liver,Biliary tissue excretion rate,2.6162783120969277,mL/min/100mL,Kbh_i
+001,baseline,liver,Biliary tissue excretion rate,0.8987350745033678,mL/min/100mL,Kbh_f
+001,baseline,liver,Hepatocellular uptake rate,13.533025506430391,mL/min/100mL,k_he
+001,baseline,liver,Hepatocellular uptake rate variance,135.33294334751668,%,k_he_var
+001,baseline,liver,Biliary tissue excretion rate,1.7575066933001473,mL/min/100mL,Kbh
+001,baseline,liver,Biliary tissue excretion rate variance,97.72612782307267,%,Kbh_var
+001,baseline,liver,Hepatocellular tissue uptake rate,29.6307730863194,mL/min/100mL,Khe
+001,baseline,liver,Biliary excretion rate,0.9548147473672773,mL/min/100mL,k_bh
+001,baseline,liver,Hepatocellular transit time,56.89878757288009,min,Th
+001,baseline,liver,Start time first acquisition,9.63231597222222,hrs,t0
+001,baseline,liver,End time first acquisition,10.336781944444443,hrs,t1
+001,baseline,liver,Start time second acquisition,11.73944722222222,hrs,t2
+001,baseline,liver,End time second acquisition,12.572475694444448,hrs,t3
+001,baseline,liver,Time step first acquisition,2.180000000014843,sec,dt1
+001,baseline,liver,Time step second acquisition,2.1775000000125146,sec,dt2
+002,baseline,liver,Signal amplitude correction,1.0,,S01_corr
+002,baseline,liver,Signal amplitude correction,1.0190384629603528,,S02_corr
+002,baseline,liver,Gut delay time,3.2859729398373005,sec,Tdel
+002,baseline,liver,Extracellular transit time,8.151902131576822e-09,min,Te
+002,baseline,liver,Extracellular volume fraction,1.0000000326162133,mL/100mL,ve
+002,baseline,liver,Hepatocellular uptake rate,16.5229398403995,mL/min/100mL,k_he_i
+002,baseline,liver,Hepatocellular uptake rate,40.13860064534119,mL/min/100mL,k_he_f
+002,baseline,liver,Biliary tissue excretion rate,2.016830779716391,mL/min/100mL,Kbh_i
+002,baseline,liver,Biliary tissue excretion rate,3.2762403623501584,mL/min/100mL,Kbh_f
+002,baseline,liver,Hepatocellular uptake rate,28.330770242870344,mL/min/100mL,k_he
+002,baseline,liver,Hepatocellular uptake rate variance,83.3569317123835,%,k_he_var
+002,baseline,liver,Biliary tissue excretion rate,2.6465355710332745,mL/min/100mL,Kbh
+002,baseline,liver,Biliary tissue excretion rate variance,47.58710203702502,%,Kbh_var
+002,baseline,liver,Hepatocellular tissue uptake rate,2833.0769318827925,mL/min/100mL,Khe
+002,baseline,liver,Biliary excretion rate,2.620070214459742,mL/min/100mL,k_bh
+002,baseline,liver,Hepatocellular transit time,37.785246907132056,min,Th
+002,baseline,liver,Start time first acquisition,10.831897916666666,hrs,t0
+002,baseline,liver,End time first acquisition,11.536601388888888,hrs,t1
+002,baseline,liver,Start time second acquisition,15.417507638888887,hrs,t2
+002,baseline,liver,End time second acquisition,16.16719791666667,hrs,t3
+002,baseline,liver,Time step first acquisition,2.1774999999906868,sec,dt1
+002,baseline,liver,Time step second acquisition,2.179999999993015,sec,dt2
+003,baseline,liver,Signal amplitude correction,1.0,,S01_corr
+003,baseline,liver,Signal amplitude correction,1.0488521540033533,,S02_corr
+003,baseline,liver,Gut delay time,4.9286196351198805,sec,Tdel
+003,baseline,liver,Extracellular transit time,0.9999999999986329,min,Te
+003,baseline,liver,Extracellular volume fraction,20.298488180577326,mL/100mL,ve
+003,baseline,liver,Hepatocellular uptake rate,14.986923233896627,mL/min/100mL,k_he
+003,baseline,liver,Biliary tissue excretion rate,2.4470239850306164,mL/min/100mL,Kbh
+003,baseline,liver,Hepatocellular tissue uptake rate,73.83270665564598,mL/min/100mL,Khe
+003,baseline,liver,Biliary excretion rate,1.9503151106532846,mL/min/100mL,k_bh
+003,baseline,liver,Hepatocellular transit time,40.865966419511345,min,Th
+004,baseline,liver,Signal amplitude correction,1.0,,S01_corr
+004,baseline,liver,Signal amplitude correction,0.9203663451682981,,S02_corr
+004,baseline,liver,Gut delay time,6.804117287326387,sec,Tdel
+004,baseline,liver,Extracellular transit time,0.9999999999999111,min,Te
+004,baseline,liver,Extracellular volume fraction,18.79549016353238,mL/100mL,ve
+004,baseline,liver,Hepatocellular uptake rate,13.883216636314334,mL/min/100mL,k_he_i
+004,baseline,liver,Hepatocellular uptake rate,18.058989650946184,mL/min/100mL,k_he_f
+004,baseline,liver,Biliary tissue excretion rate,0.8333333333333335,mL/min/100mL,Kbh_i
+004,baseline,liver,Biliary tissue excretion rate,0.8333333333333335,mL/min/100mL,Kbh_f
+004,baseline,liver,Hepatocellular uptake rate,15.971103143630259,mL/min/100mL,k_he
+004,baseline,liver,Hepatocellular uptake rate variance,26.1458020593729,%,k_he_var
+004,baseline,liver,Biliary tissue excretion rate,0.8333333333333335,mL/min/100mL,Kbh
+004,baseline,liver,Biliary tissue excretion rate variance,0.0,%,Kbh_var
+004,baseline,liver,Hepatocellular tissue uptake rate,84.97306005148997,mL/min/100mL,Khe
+004,baseline,liver,Biliary excretion rate,0.6767042486372303,mL/min/100mL,k_bh
+004,baseline,liver,Hepatocellular transit time,119.99999999999997,min,Th
+004,baseline,liver,Start time first acquisition,9.95161875,hrs,t0
+004,baseline,liver,End time first acquisition,10.616713888888889,hrs,t1
+004,baseline,liver,Start time second acquisition,12.43306875,hrs,t2
+004,baseline,liver,End time second acquisition,13.098650694444444,hrs,t3
+004,baseline,liver,Time step first acquisition,1.639999999999418,sec,dt1
+004,baseline,liver,Time step second acquisition,1.639999999999418,sec,dt2
+005,baseline,liver,Signal amplitude correction,1.0,,S01_corr
+005,baseline,liver,Signal amplitude correction,1.1230744232732661,,S02_corr
+005,baseline,liver,Gut delay time,10.296261622843318,sec,Tdel
+005,baseline,liver,Extracellular transit time,0.47791507332280575,min,Te
+005,baseline,liver,Extracellular volume fraction,30.02134911326111,mL/100mL,ve
+005,baseline,liver,Hepatocellular uptake rate,22.618842037261476,mL/min/100mL,k_he_i
+005,baseline,liver,Hepatocellular uptake rate,16.058898232435787,mL/min/100mL,k_he_f
+005,baseline,liver,Biliary tissue excretion rate,3.1684641219503855,mL/min/100mL,Kbh_i
+005,baseline,liver,Biliary tissue excretion rate,2.6410215219331947,mL/min/100mL,Kbh_f
+005,baseline,liver,Hepatocellular uptake rate,19.338870134848634,mL/min/100mL,k_he
+005,baseline,liver,Hepatocellular uptake rate variance,33.92102930048988,%,k_he_var
+005,baseline,liver,Biliary tissue excretion rate,2.90474282194179,mL/min/100mL,Kbh
+005,baseline,liver,Biliary tissue excretion rate variance,18.157979289354113,%,Kbh_var
+005,baseline,liver,Hepatocellular tissue uptake rate,64.41705887996292,mL/min/100mL,Khe
+005,baseline,liver,Biliary excretion rate,2.0326998385242527,mL/min/100mL,k_bh
+005,baseline,liver,Hepatocellular transit time,34.4264556726406,min,Th
+005,baseline,liver,Start time first acquisition,11.020598611111112,hrs,t0
+005,baseline,liver,End time first acquisition,11.724524999999998,hrs,t1
+005,baseline,liver,Start time second acquisition,13.60780972222222,hrs,t2
+005,baseline,liver,End time second acquisition,14.332372222222224,hrs,t3
+005,baseline,liver,Time step first acquisition,2.180000000007567,sec,dt1
+005,baseline,liver,Time step second acquisition,2.180000000022119,sec,dt2
+006,baseline,liver,Signal amplitude correction,1.0,,S01_corr
+006,baseline,liver,Signal amplitude correction,1.0872707779958533,,S02_corr
+006,baseline,liver,Gut delay time,14.94664690415872,sec,Tdel
+006,baseline,liver,Extracellular transit time,0.5024468066029345,min,Te
+006,baseline,liver,Extracellular volume fraction,35.897622188479716,mL/100mL,ve
+006,baseline,liver,Hepatocellular uptake rate,26.268228706839196,mL/min/100mL,k_he_i
+006,baseline,liver,Hepatocellular uptake rate,21.06143809082018,mL/min/100mL,k_he_f
+006,baseline,liver,Biliary tissue excretion rate,2.1171644959954783,mL/min/100mL,Kbh_i
+006,baseline,liver,Biliary tissue excretion rate,2.5593126170554905,mL/min/100mL,Kbh_f
+006,baseline,liver,Hepatocellular uptake rate,23.664833398829696,mL/min/100mL,k_he
+006,baseline,liver,Hepatocellular uptake rate variance,22.002228066716533,%,k_he_var
+006,baseline,liver,Biliary tissue excretion rate,2.338238556525485,mL/min/100mL,Kbh
+006,baseline,liver,Biliary tissue excretion rate variance,18.909453007952443,%,Kbh_var
+006,baseline,liver,Hepatocellular tissue uptake rate,65.92312235773718,mL/min/100mL,Khe
+006,baseline,liver,Biliary excretion rate,1.4988665136386046,mL/min/100mL,k_bh
+006,baseline,liver,Hepatocellular transit time,42.76723592677191,min,Th
+006,baseline,liver,Start time first acquisition,12.965188194444448,hrs,t0
+006,baseline,liver,End time first acquisition,13.629750000000003,hrs,t1
+006,baseline,liver,Start time second acquisition,15.180714583333335,hrs,t2
+006,baseline,liver,End time second acquisition,15.863111111111115,hrs,t3
+006,baseline,liver,Time step first acquisition,1.639999999984866,sec,dt1
+006,baseline,liver,Time step second acquisition,1.63999999997759,sec,dt2
+007,baseline,liver,Signal amplitude correction,1.0,,S01_corr
+007,baseline,liver,Signal amplitude correction,1.1500765330893947,,S02_corr
+007,baseline,liver,Gut delay time,3.001969678934118,sec,Tdel
+007,baseline,liver,Extracellular transit time,0.9999999999957635,min,Te
+007,baseline,liver,Extracellular volume fraction,41.147705947805576,mL/100mL,ve
+007,baseline,liver,Hepatocellular uptake rate,23.137530552903982,mL/min/100mL,k_he_i
+007,baseline,liver,Hepatocellular uptake rate,17.477707989915434,mL/min/100mL,k_he_f
+007,baseline,liver,Biliary tissue excretion rate,3.87949220765248,mL/min/100mL,Kbh_i
+007,baseline,liver,Biliary tissue excretion rate,2.728587205754034,mL/min/100mL,Kbh_f
+007,baseline,liver,Hepatocellular uptake rate,20.30761927140971,mL/min/100mL,k_he
+007,baseline,liver,Hepatocellular uptake rate variance,27.87043861392846,%,k_he_var
+007,baseline,liver,Biliary tissue excretion rate,3.304039706703257,mL/min/100mL,Kbh
+007,baseline,liver,Biliary tissue excretion rate variance,34.83326788002827,%,Kbh_var
+007,baseline,liver,Hepatocellular tissue uptake rate,49.35298044845857,mL/min/100mL,Khe
+007,baseline,liver,Biliary excretion rate,1.944503163790263,mL/min/100mL,k_bh
+007,baseline,liver,Hepatocellular transit time,30.26598009615906,min,Th
+007,baseline,liver,Start time first acquisition,15.300554861111111,hrs,t0
+007,baseline,liver,End time first acquisition,16.156451388888893,hrs,t1
+007,baseline,liver,Start time second acquisition,17.149264583333334,hrs,t2
+007,baseline,liver,End time second acquisition,18.06257777777778,hrs,t3
+007,baseline,liver,Time step first acquisition,2.017500000009022,sec,dt1
+007,baseline,liver,Time step second acquisition,2.0199999999895226,sec,dt2
+008,baseline,liver,Signal amplitude correction,1.0,,S01_corr
+008,baseline,liver,Signal amplitude correction,1.1635369402625784,,S02_corr
+008,baseline,liver,Gut delay time,9.808955066989423,sec,Tdel
+008,baseline,liver,Extracellular transit time,0.15644111759846727,min,Te
+008,baseline,liver,Extracellular volume fraction,25.642856372758217,mL/100mL,ve
+008,baseline,liver,Hepatocellular uptake rate,25.307066328549634,mL/min/100mL,k_he_i
+008,baseline,liver,Hepatocellular uptake rate,15.998376272278971,mL/min/100mL,k_he_f
+008,baseline,liver,Biliary tissue excretion rate,3.8683906092027653,mL/min/100mL,Kbh_i
+008,baseline,liver,Biliary tissue excretion rate,2.2376312973862995,mL/min/100mL,Kbh_f
+008,baseline,liver,Hepatocellular uptake rate,20.652721300414303,mL/min/100mL,k_he
+008,baseline,liver,Hepatocellular uptake rate variance,45.072462465679656,%,k_he_var
+008,baseline,liver,Biliary tissue excretion rate,3.0530109532945326,mL/min/100mL,Kbh
+008,baseline,liver,Biliary tissue excretion rate variance,53.41478745946516,%,Kbh_var
+008,baseline,liver,Hepatocellular tissue uptake rate,80.53986264320693,mL/min/100mL,Khe
+008,baseline,liver,Biliary excretion rate,2.270131739496639,mL/min/100mL,k_bh
+008,baseline,liver,Hepatocellular transit time,32.754550026127184,min,Th
+008,baseline,liver,Start time first acquisition,14.62266805555556,hrs,t0
+008,baseline,liver,End time first acquisition,15.326749999999997,hrs,t1
+008,baseline,liver,Start time second acquisition,16.562825000000004,hrs,t2
+008,baseline,liver,End time second acquisition,17.31208125,hrs,t3
+008,baseline,liver,Time step first acquisition,2.179999999993015,sec,dt1
+008,baseline,liver,Time step second acquisition,2.180000000000291,sec,dt2
+009,baseline,liver,Signal amplitude correction,1.0,,S01_corr
+009,baseline,liver,Signal amplitude correction,1.1056692170439988,,S02_corr
+009,baseline,liver,Gut delay time,10.864977176946642,sec,Tdel
+009,baseline,liver,Extracellular transit time,0.37132403400731556,min,Te
+009,baseline,liver,Extracellular volume fraction,26.364213903783305,mL/100mL,ve
+009,baseline,liver,Hepatocellular uptake rate,14.216493626822016,mL/min/100mL,k_he_i
+009,baseline,liver,Hepatocellular uptake rate,13.435487643918972,mL/min/100mL,k_he_f
+009,baseline,liver,Biliary tissue excretion rate,3.375608336958802,mL/min/100mL,Kbh_i
+009,baseline,liver,Biliary tissue excretion rate,3.9606247736301605,mL/min/100mL,Kbh_f
+009,baseline,liver,Hepatocellular uptake rate,13.825990635370491,mL/min/100mL,k_he
+009,baseline,liver,Hepatocellular uptake rate variance,5.64882476417297,%,k_he_var
+009,baseline,liver,Biliary tissue excretion rate,3.6681165552944814,mL/min/100mL,Kbh
+009,baseline,liver,Biliary tissue excretion rate variance,15.948687230970307,%,Kbh_var
+009,baseline,liver,Hepatocellular tissue uptake rate,52.44226391816082,mL/min/100mL,Khe
+009,baseline,liver,Biliary excretion rate,2.7010464604165563,mL/min/100mL,k_bh
+009,baseline,liver,Hepatocellular transit time,27.261947239834058,min,Th
+009,baseline,liver,Start time first acquisition,14.234743750000002,hrs,t0
+009,baseline,liver,End time first acquisition,15.06007291666667,hrs,t1
+009,baseline,liver,Start time second acquisition,16.22125833333333,hrs,t2
+009,baseline,liver,End time second acquisition,17.043949305555554,hrs,t3
+009,baseline,liver,Time step first acquisition,1.9549999999944703,sec,dt1
+009,baseline,liver,Time step second acquisition,1.9549999999944703,sec,dt2
+010,baseline,liver,Signal amplitude correction,1.0,,S01_corr
+010,baseline,liver,Signal amplitude correction,0.8819467721973029,,S02_corr
+010,baseline,liver,Gut delay time,12.299718508742378,sec,Tdel
+010,baseline,liver,Extracellular transit time,0.2977054637609869,min,Te
+010,baseline,liver,Extracellular volume fraction,20.56795360627906,mL/100mL,ve
+010,baseline,liver,Hepatocellular uptake rate,17.601595626839483,mL/min/100mL,k_he_i
+010,baseline,liver,Hepatocellular uptake rate,23.576314063519554,mL/min/100mL,k_he_f
+010,baseline,liver,Biliary tissue excretion rate,3.983611853950002,mL/min/100mL,Kbh_i
+010,baseline,liver,Biliary tissue excretion rate,3.605215886912525,mL/min/100mL,Kbh_f
+010,baseline,liver,Hepatocellular uptake rate,20.588954845179522,mL/min/100mL,k_he
+010,baseline,liver,Hepatocellular uptake rate variance,29.019046773415646,%,k_he_var
+010,baseline,liver,Biliary tissue excretion rate,3.7944138704312635,mL/min/100mL,Kbh
+010,baseline,liver,Biliary tissue excretion rate variance,9.972448445495207,%,Kbh_var
+010,baseline,liver,Hepatocellular tissue uptake rate,100.10210660380939,mL/min/100mL,Khe
+010,baseline,liver,Biliary excretion rate,3.013980585930744,mL/min/100mL,k_bh
+010,baseline,liver,Hepatocellular transit time,26.354531533650082,min,Th
+010,baseline,liver,Start time first acquisition,14.110215277777774,hrs,t0
+010,baseline,liver,End time first acquisition,14.936165972222225,hrs,t1
+010,baseline,liver,Start time second acquisition,16.302099305555558,hrs,t2
+010,baseline,liver,End time second acquisition,17.136295833333335,hrs,t3
+010,baseline,liver,Time step first acquisition,2.017500000023574,sec,dt1
+010,baseline,liver,Time step second acquisition,2.017500000009022,sec,dt2
+002,rifampicin,liver,Signal amplitude correction,1.0,,S01_corr
+002,rifampicin,liver,Signal amplitude correction,1.0667032734820725,,S02_corr
+002,rifampicin,liver,Gut delay time,11.39449150667438,sec,Tdel
+002,rifampicin,liver,Extracellular transit time,0.41892069803817583,min,Te
+002,rifampicin,liver,Extracellular volume fraction,30.830959347696524,mL/100mL,ve
+002,rifampicin,liver,Hepatocellular uptake rate,2.0189123470284174,mL/min/100mL,k_he_i
+002,rifampicin,liver,Hepatocellular uptake rate,2.3657083564854844,mL/min/100mL,k_he_f
+002,rifampicin,liver,Biliary tissue excretion rate,0.8333333333333335,mL/min/100mL,Kbh_i
+002,rifampicin,liver,Biliary tissue excretion rate,2.8787735574458084,mL/min/100mL,Kbh_f
+002,rifampicin,liver,Hepatocellular uptake rate,2.1923103517569507,mL/min/100mL,k_he
+002,rifampicin,liver,Hepatocellular uptake rate variance,15.818746154217592,%,k_he_var
+002,rifampicin,liver,Biliary tissue excretion rate,1.8560534453895707,mL/min/100mL,Kbh
+002,rifampicin,liver,Biliary tissue excretion rate variance,110.20373519918513,%,Kbh_var
+002,rifampicin,liver,Hepatocellular tissue uptake rate,7.1107432209070875,mL/min/100mL,Khe
+002,rifampicin,liver,Biliary excretion rate,1.2838143621699913,mL/min/100mL,k_bh
+002,rifampicin,liver,Hepatocellular transit time,53.877758880488926,min,Th
+002,rifampicin,liver,Start time first acquisition,9.71985763888889,hrs,t0
+002,rifampicin,liver,End time first acquisition,10.424575694444446,hrs,t1
+002,rifampicin,liver,Start time second acquisition,12.390872222222223,hrs,t2
+002,rifampicin,liver,End time second acquisition,13.110574305555556,hrs,t3
+002,rifampicin,liver,Time step first acquisition,2.180000000000291,sec,dt1
+002,rifampicin,liver,Time step second acquisition,2.180000000007567,sec,dt2
+003,rifampicin,liver,Signal amplitude correction,1.0,,S01_corr
+003,rifampicin,liver,Signal amplitude correction,1.0036375924798124,,S02_corr
+003,rifampicin,liver,Gut delay time,9.490815628747512,sec,Tdel
+003,rifampicin,liver,Extracellular transit time,0.32206036675617605,min,Te
+003,rifampicin,liver,Extracellular volume fraction,21.29769719997005,mL/100mL,ve
+003,rifampicin,liver,Hepatocellular uptake rate,1.2752715083040334,mL/min/100mL,k_he_i
+003,rifampicin,liver,Hepatocellular uptake rate,1.6937031563704008,mL/min/100mL,k_he_f
+003,rifampicin,liver,Biliary tissue excretion rate,1.72103929440894,mL/min/100mL,Kbh_i
+003,rifampicin,liver,Biliary tissue excretion rate,1.9839816032079893,mL/min/100mL,Kbh_f
+003,rifampicin,liver,Hepatocellular uptake rate,1.4844873323372174,mL/min/100mL,k_he
+003,rifampicin,liver,Hepatocellular uptake rate variance,28.186946358617774,%,k_he_var
+003,rifampicin,liver,Biliary tissue excretion rate,1.8525104488084645,mL/min/100mL,Kbh
+003,rifampicin,liver,Biliary tissue excretion rate variance,14.193836745599665,%,Kbh_var
+003,rifampicin,liver,Hepatocellular tissue uptake rate,6.970177660049112,mL/min/100mL,Khe
+003,rifampicin,liver,Biliary excretion rate,1.4579683828234316,mL/min/100mL,k_bh
+003,rifampicin,liver,Hepatocellular transit time,53.98080214031723,min,Th
+003,rifampicin,liver,Start time first acquisition,10.267827083333337,hrs,t0
+003,rifampicin,liver,End time first acquisition,10.97209861111111,hrs,t1
+003,rifampicin,liver,Start time second acquisition,12.29227361111111,hrs,t2
+003,rifampicin,liver,End time second acquisition,12.99678611111111,hrs,t3
+003,rifampicin,liver,Time step first acquisition,2.179999999985739,sec,dt1
+003,rifampicin,liver,Time step second acquisition,2.1775000000052387,sec,dt2
+004,rifampicin,liver,Signal amplitude correction,1.0,,S01_corr
+004,rifampicin,liver,Signal amplitude correction,1.0221918391971891,,S02_corr
+004,rifampicin,liver,Gut delay time,10.283598065971123,sec,Tdel
+004,rifampicin,liver,Extracellular transit time,0.7057943428479123,min,Te
+004,rifampicin,liver,Extracellular volume fraction,36.145976219162776,mL/100mL,ve
+004,rifampicin,liver,Hepatocellular uptake rate,1.125073452131526,mL/min/100mL,k_he_i
+004,rifampicin,liver,Hepatocellular uptake rate,1.8564822963369654,mL/min/100mL,k_he_f
+004,rifampicin,liver,Biliary tissue excretion rate,1.1640285998093898,mL/min/100mL,Kbh_i
+004,rifampicin,liver,Biliary tissue excretion rate,1.1440208902716866,mL/min/100mL,Kbh_f
+004,rifampicin,liver,Hepatocellular uptake rate,1.4907778742342457,mL/min/100mL,k_he
+004,rifampicin,liver,Hepatocellular uptake rate variance,49.06222830689217,%,k_he_var
+004,rifampicin,liver,Biliary tissue excretion rate,1.1540247450405383,mL/min/100mL,Kbh
+004,rifampicin,liver,Biliary tissue excretion rate variance,1.733733147723839,%,Kbh_var
+004,rifampicin,liver,Hepatocellular tissue uptake rate,4.1243259421055845,mL/min/100mL,Khe
+004,rifampicin,liver,Biliary excretion rate,0.7368912351349315,mL/min/100mL,k_bh
+004,rifampicin,liver,Hepatocellular transit time,86.6532545595348,min,Th
+004,rifampicin,liver,Start time first acquisition,10.231128472222222,hrs,t0
+004,rifampicin,liver,End time first acquisition,10.895598611111112,hrs,t1
+004,rifampicin,liver,Start time second acquisition,12.62191736111111,hrs,t2
+004,rifampicin,liver,End time second acquisition,13.396046527777774,hrs,t3
+004,rifampicin,liver,Time step first acquisition,1.639999999999418,sec,dt1
+004,rifampicin,liver,Time step second acquisition,1.8325000000040745,sec,dt2
+006,rifampicin,liver,Signal amplitude correction,1.0,,S01_corr
+006,rifampicin,liver,Signal amplitude correction,1.0272576852590254,,S02_corr
+006,rifampicin,liver,Gut delay time,14.405598598833292,sec,Tdel
+006,rifampicin,liver,Extracellular transit time,0.4749446425550302,min,Te
+006,rifampicin,liver,Extracellular volume fraction,57.3264488214959,mL/100mL,ve
+006,rifampicin,liver,Hepatocellular uptake rate,1.0112535959881925,mL/min/100mL,k_he_i
+006,rifampicin,liver,Hepatocellular uptake rate,1.6102114305867115,mL/min/100mL,k_he_f
+006,rifampicin,liver,Biliary tissue excretion rate,0.8333333333333335,mL/min/100mL,Kbh_i
+006,rifampicin,liver,Biliary tissue excretion rate,1.5136762296718995,mL/min/100mL,Kbh_f
+006,rifampicin,liver,Hepatocellular uptake rate,1.3107325132874523,mL/min/100mL,k_he
+006,rifampicin,liver,Hepatocellular uptake rate variance,45.69642001908314,%,k_he_var
+006,rifampicin,liver,Biliary tissue excretion rate,1.1735047815026165,mL/min/100mL,Kbh
+006,rifampicin,liver,Biliary tissue excretion rate variance,57.97529818902141,%,Kbh_var
+006,rifampicin,liver,Hepatocellular tissue uptake rate,2.286435912625312,mL/min/100mL,Khe
+006,rifampicin,liver,Biliary excretion rate,0.5007761635167117,mL/min/100mL,k_bh
+006,rifampicin,liver,Hepatocellular transit time,85.21482108658714,min,Th
+006,rifampicin,liver,Start time first acquisition,11.36590138888889,hrs,t0
+006,rifampicin,liver,End time first acquisition,12.030290972222222,hrs,t1
+006,rifampicin,liver,Start time second acquisition,13.833558333333333,hrs,t2
+006,rifampicin,liver,End time second acquisition,14.497797222222225,hrs,t3
+006,rifampicin,liver,Time step first acquisition,1.639999999984866,sec,dt1
+006,rifampicin,liver,Time step second acquisition,1.6400000000139698,sec,dt2
+007,rifampicin,liver,Signal amplitude correction,1.0,,S01_corr
+007,rifampicin,liver,Signal amplitude correction,0.990544927782848,,S02_corr
+007,rifampicin,liver,Gut delay time,10.391716875928115,sec,Tdel
+007,rifampicin,liver,Extracellular transit time,0.5269167086702312,min,Te
+007,rifampicin,liver,Extracellular volume fraction,34.06119097660836,mL/100mL,ve
+007,rifampicin,liver,Hepatocellular uptake rate,1.1848218660506395,mL/min/100mL,k_he_i
+007,rifampicin,liver,Hepatocellular uptake rate,1.1497476655758525,mL/min/100mL,k_he_f
+007,rifampicin,liver,Biliary tissue excretion rate,1.3457079073835845,mL/min/100mL,Kbh_i
+007,rifampicin,liver,Biliary tissue excretion rate,0.8333333333333635,mL/min/100mL,Kbh_f
+007,rifampicin,liver,Hepatocellular uptake rate,1.1672847658132461,mL/min/100mL,k_he
+007,rifampicin,liver,Hepatocellular uptake rate variance,3.0047681167457663,%,k_he_var
+007,rifampicin,liver,Biliary tissue excretion rate,1.089520620358474,mL/min/100mL,Kbh
+007,rifampicin,liver,Biliary tissue excretion rate variance,47.027524259397644,%,Kbh_var
+007,rifampicin,liver,Hepatocellular tissue uptake rate,3.427022756235632,mL/min/100mL,Khe
+007,rifampicin,liver,Biliary excretion rate,0.7184169211286461,mL/min/100mL,k_bh
+007,rifampicin,liver,Hepatocellular transit time,91.7834854443581,min,Th
+007,rifampicin,liver,Start time first acquisition,14.741622916666666,hrs,t0
+007,rifampicin,liver,End time first acquisition,15.560892361111108,hrs,t1
+007,rifampicin,liver,Start time second acquisition,16.807867361111114,hrs,t2
+007,rifampicin,liver,End time second acquisition,17.695081944444446,hrs,t3
+007,rifampicin,liver,Time step first acquisition,2.0174999999944703,sec,dt1
+007,rifampicin,liver,Time step second acquisition,2.0174999999871943,sec,dt2
+008,rifampicin,liver,Signal amplitude correction,1.0,,S01_corr
+008,rifampicin,liver,Signal amplitude correction,1.0271889079511023,,S02_corr
+008,rifampicin,liver,Gut delay time,13.333354775827159,sec,Tdel
+008,rifampicin,liver,Extracellular transit time,0.2966840880430383,min,Te
+008,rifampicin,liver,Extracellular volume fraction,28.363658677072202,mL/100mL,ve
+008,rifampicin,liver,Hepatocellular uptake rate,0.9903555126166098,mL/min/100mL,k_he_i
+008,rifampicin,liver,Hepatocellular uptake rate,2.089252157613503,mL/min/100mL,k_he_f
+008,rifampicin,liver,Biliary tissue excretion rate,0.8333333333333335,mL/min/100mL,Kbh_i
+008,rifampicin,liver,Biliary tissue excretion rate,1.7026622484784981,mL/min/100mL,Kbh_f
+008,rifampicin,liver,Hepatocellular uptake rate,1.5398038351150565,mL/min/100mL,k_he
+008,rifampicin,liver,Hepatocellular uptake rate variance,71.36601558826369,%,k_he_var
+008,rifampicin,liver,Biliary tissue excretion rate,1.2679977909059157,mL/min/100mL,Kbh
+008,rifampicin,liver,Biliary tissue excretion rate variance,68.55918215157742,%,Kbh_var
+008,rifampicin,liver,Hepatocellular tissue uptake rate,5.428791301736256,mL/min/100mL,Khe
+008,rifampicin,liver,Biliary excretion rate,0.9083472254605461,mL/min/100mL,k_bh
+008,rifampicin,liver,Hepatocellular transit time,78.86449070905354,min,Th
+008,rifampicin,liver,Start time first acquisition,15.203774999999998,hrs,t0
+008,rifampicin,liver,End time first acquisition,16.061185416666664,hrs,t1
+008,rifampicin,liver,Start time second acquisition,17.31594027777778,hrs,t2
+008,rifampicin,liver,End time second acquisition,18.12817777777778,hrs,t3
+008,rifampicin,liver,Time step first acquisition,1.9550000000162981,sec,dt1
+008,rifampicin,liver,Time step second acquisition,1.9549999999871943,sec,dt2
+009,rifampicin,liver,Signal amplitude correction,1.0,,S01_corr
+009,rifampicin,liver,Signal amplitude correction,1.0414319831393082,,S02_corr
+009,rifampicin,liver,Gut delay time,16.988689655523885,sec,Tdel
+009,rifampicin,liver,Extracellular transit time,0.626996541368041,min,Te
+009,rifampicin,liver,Extracellular volume fraction,40.62744101107057,mL/100mL,ve
+009,rifampicin,liver,Hepatocellular uptake rate,0.4986587607064287,mL/min/100mL,k_he_i
+009,rifampicin,liver,Hepatocellular uptake rate,0.9839061488134795,mL/min/100mL,k_he_f
+009,rifampicin,liver,Biliary tissue excretion rate,1.3121494521179957,mL/min/100mL,Kbh_i
+009,rifampicin,liver,Biliary tissue excretion rate,3.2721413331619016,mL/min/100mL,Kbh_f
+009,rifampicin,liver,Hepatocellular uptake rate,0.7412824547599541,mL/min/100mL,k_he
+009,rifampicin,liver,Hepatocellular uptake rate variance,65.4605252007733,%,k_he_var
+009,rifampicin,liver,Biliary tissue excretion rate,2.2921453926399487,mL/min/100mL,Kbh
+009,rifampicin,liver,Biliary tissue excretion rate variance,85.50905572296662,%,Kbh_var
+009,rifampicin,liver,Hepatocellular tissue uptake rate,1.8245856404245646,mL/min/100mL,Khe
+009,rifampicin,liver,Biliary excretion rate,1.3609053753571818,mL/min/100mL,k_bh
+009,rifampicin,liver,Hepatocellular transit time,43.62724996463958,min,Th
+009,rifampicin,liver,Start time first acquisition,14.272476388888892,hrs,t0
+009,rifampicin,liver,End time first acquisition,15.06698472222222,hrs,t1
+009,rifampicin,liver,Start time second acquisition,16.663223611111114,hrs,t2
+009,rifampicin,liver,End time second acquisition,17.474514583333335,hrs,t3
+009,rifampicin,liver,Time step first acquisition,1.9549999999944703,sec,dt1
+009,rifampicin,liver,Time step second acquisition,1.9574999999895226,sec,dt2
+010,rifampicin,liver,Signal amplitude correction,1.0,,S01_corr
+010,rifampicin,liver,Signal amplitude correction,1.0056047858800061,,S02_corr
+010,rifampicin,liver,Gut delay time,14.455671381268075,sec,Tdel
+010,rifampicin,liver,Extracellular transit time,0.6503841347065112,min,Te
+010,rifampicin,liver,Extracellular volume fraction,44.26825380216491,mL/100mL,ve
+010,rifampicin,liver,Hepatocellular uptake rate,0.7667111765103709,mL/min/100mL,k_he_i
+010,rifampicin,liver,Hepatocellular uptake rate,1.4523319881703396,mL/min/100mL,k_he_f
+010,rifampicin,liver,Biliary tissue excretion rate,1.565778319881867,mL/min/100mL,Kbh_i
+010,rifampicin,liver,Biliary tissue excretion rate,0.8333333333333335,mL/min/100mL,Kbh_f
+010,rifampicin,liver,Hepatocellular uptake rate,1.1095215823403553,mL/min/100mL,k_he
+010,rifampicin,liver,Hepatocellular uptake rate variance,61.794274448791086,%,k_he_var
+010,rifampicin,liver,Biliary tissue excretion rate,1.1995558266076003,mL/min/100mL,Kbh
+010,rifampicin,liver,Biliary tissue excretion rate variance,61.0596831178689,%,Kbh_var
+010,rifampicin,liver,Hepatocellular tissue uptake rate,2.506359494772064,mL/min/100mL,Khe
+010,rifampicin,liver,Biliary excretion rate,0.6685334087862906,mL/min/100mL,k_bh
+010,rifampicin,liver,Hepatocellular transit time,83.36419012927864,min,Th
+010,rifampicin,liver,Start time first acquisition,14.096326388888885,hrs,t0
+010,rifampicin,liver,End time first acquisition,14.940625694444446,hrs,t1
+010,rifampicin,liver,Start time second acquisition,16.064747916666665,hrs,t2
+010,rifampicin,liver,End time second acquisition,16.885713194444445,hrs,t3
+010,rifampicin,liver,Time step first acquisition,2.0200000000259024,sec,dt1
+010,rifampicin,liver,Time step second acquisition,2.0174999999944703,sec,dt2

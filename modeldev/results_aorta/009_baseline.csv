@@ -1,14 +1,14 @@
 symbol,name,initial value,value,unit,lower bound,upper bound,fit,digits
-S01,Signal amplitude S0,1200.0,1516.2218685276164,a.u.,0,inf,False,4
-FA1,Flip angle 1,15.0,15.0,deg,0,180.0,False,4
-S02,Signal amplitude S0,1200.0,1593.062837162318,a.u.,0,inf,True,4
-FA2,Flip angle 2,15.0,15.0,deg,0,180.0,False,4
-BAT1,Bolus arrival time,60.0,82.03916934247519,sec,0,inf,True,3
-BAT2,Bolus arrival time - second shot,10000.0,7769.0876078899155,sec,0,inf,True,3
-CO,Cardiac output,50.0,110.13351011087818,mL/sec,0,inf,True,3
-MTThl,Heart & lung mean transit time,6.0,7.706753143592735,sec,0,inf,True,2
-MTTo,Other organs mean transit time,20.0,13.465647155301163,sec,0,inf,True,2
-TTDo,Other organs transit time dispersion,10.0,27.380658974025906,sec,0,inf,True,3
-MTTe,Extravascular mean transit time,120.0,420.5011698940399,sec,0,inf,True,3
-El,Leakage fraction,0.5,0.19405468119311708,,0,1.0,True,4
-Ee,Extraction fraction,0.2,0.06536460537204491,,0,1.0,True,4
+FA1,Flip angle 1,15.0,15.0,deg,0.0,180.0,False,4
+FA2,Flip angle 2,15.0,15.0,deg,0.0,180.0,False,4
+S01,Signal amplitude S0,1200.0,1516.2218685276164,a.u.,0.0,inf,False,4
+S02,Signal amplitude S0,1200.0,1593.600456431093,a.u.,0.0,inf,True,4
+BAT1,Bolus arrival time,60.0,82.11124157490583,sec,0.0,inf,True,3
+BAT2,Bolus arrival time - second shot,10000.0,7770.041841493807,sec,0.0,inf,True,3
+CO,Cardiac output,50.0,116.99891775773189,mL/sec,0.0,inf,True,3
+MTThl,Heart & lung mean transit time,8.0,6.766603491718662,sec,0.0,30.0,True,2
+MTTo,Other organs mean transit time,10.0,12.500453861432598,sec,0.0,30.0,True,2
+TTDo,Other organs transit time dispersion,20.0,26.19711565884868,sec,0.0,60.0,True,3
+MTTe,Storage compartment mean transit time,120.0,414.13934542579386,sec,0.0,800.0,True,3
+El,Storage compartment leakage fraction,0.15,0.18484438617326665,,0.0,0.5,True,4
+Ee,Kidney & Liver Extraction fraction,0.05,0.062045007033097774,,0.01,0.15,True,4

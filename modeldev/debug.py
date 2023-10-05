@@ -5,9 +5,7 @@ import numpy as np
 
 import data
 import plot
-import fit_aorta
-
-from models.liver_cal_hf2cm_var2k import TwoShotTwoScan as Liver
+from models.aorta import TwoShotTwoScan as Aorta
 
 filepath = os.path.abspath("")
 datapath = os.path.join(filepath, 'devdata')
@@ -26,24 +24,21 @@ subj_data = data.twoshot_twoscan(subj)
     T1time3, T1aorta3, T1liver3, T1portal3, 
     weight, dose1, dose2) = subj_data
 
-visit = 'baseline'
-aortaresults = os.path.join(filepath, 'results_aorta') 
-aortapars = os.path.join(aortaresults, s[:3] + '_' + visit + '.csv')
-aorta = fit_aorta.read(subj_data, aortapars)
-
-
-# Fit liver
-liver = Liver(aorta)
+# Fit aorta
+aorta = Aorta()
 # Set data
-xvalid = np.concatenate([liver_valid1, liver_valid2, np.full(3, True)])
-liver.set_x(time1, time2, [T1time1,T1time2,T1time3], valid=xvalid)
-liver.set_y(liver1, liver2, [1000.0/T1liver1, 1000.0/T1liver2, 1000.0/T1liver3])
+aorta.weight = weight
+aorta.set_dose(dose1, dose2)
+aorta.set_x(time1, time2, valid=np.append(aorta_valid1, aorta_valid2))
+aorta.set_y(aorta1, aorta2)
+aorta.set_R10(T1time1, 1000.0/T1aorta1)
+aorta.set_R11(T1time2, 1000.0/T1aorta2)
+aorta.set_R12(T1time3, 1000.0/T1aorta3)
 # Set fit options
-liver.set_weights(0.1)
-liver.ptol = 1e-6
+aorta.callback = False
+aorta.ptol = 1e-6
+aorta.dose_tolerance = 0.1
+aorta.dt = 0.5
 
-print(liver.x.shape)
-print(liver.valid[0].shape)
-print(liver.xind.shape)
-print(liver.x[liver.valid].shape)
-print(liver.xf)
+aorta.estimate_p()
+aorta.plot_fit()

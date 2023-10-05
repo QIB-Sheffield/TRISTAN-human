@@ -11,13 +11,21 @@ def oneshot_onescan(subj):
     dyn1.sort_values('time', inplace=True)
     molli1.sort_values('time', inplace=True)
     molli2.sort_values('time', inplace=True)
+    if 'aorta_valid' not in dyn1:
+        dyn1['aorta_valid'] = 1
+    if 'liver_valid' not in dyn1:
+        dyn1['liver_valid'] = 1
+    if 'portal_valid' not in dyn1:
+        dyn1['portal_valid'] = 1
     t0 = dyn1.time.values[0]
     return (
-        dyn1.time.values-t0, dyn1.fa.values, dyn1.aorta.values, dyn1.liver.values,
-        molli1.time.values[0]-t0, molli1.aorta.values[0], molli1.liver.values[0],
-        molli2.time.values[0]-t0, molli2.aorta.values[0], molli2.liver.values[0],
-        const.at['weight', 'value'], const.at['dose1', 'value'], 
+        dyn1.time.values-t0, dyn1.fa.values, dyn1.aorta.values, dyn1.liver.values, dyn1['portal-vein'].values, 
+        dyn1.aorta_valid.values, dyn1.liver_valid.values, dyn1.portal_valid.values,
+        molli1.time.values[0]-t0, molli1.aorta.values[0], molli1.liver.values[0], molli1['portal vein'].values[0],
+        molli2.time.values[0]-t0, molli2.aorta.values[0], molli2.liver.values[0], molli2['portal vein'].values[0],
+        const.at['weight', 'value'], const.at['dose1', 'value'], t0,
     )
+
 
 def twoshot_twoscan(subj):
 
@@ -54,7 +62,7 @@ def twoshot_twoscan(subj):
         molli1.time.values[0]-t0, molli1.aorta.values[0], molli1.liver.values[0], molli1['portal vein'].values[0],
         molli2.time.values[0]-t0, molli2.aorta.values[0], molli2.liver.values[0], molli2['portal vein'].values[0],
         molli3.time.values[0]-t0, molli3.aorta.values[0], molli3.liver.values[0], molli3['portal vein'].values[0],
-        const.at['weight', 'value'], const.at['dose1', 'value'], const.at['dose2', 'value'],
+        const.at['weight', 'value'], const.at['dose1', 'value'], const.at['dose2', 'value'], t0,
     )
 
 def oneshot_twoscan(subj):

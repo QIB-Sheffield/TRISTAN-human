@@ -61,6 +61,11 @@ class TwoShotTwoScan(CurveFit):
         self.Ch = dcmri.res_comp(self.aorta.t, p.k_he*ca, p.Th)
         # Return R1
         return p.R10 + self.aorta.rp*self.Ce + self.rh*self.Ch
+    
+        # Liver clearance - mL/min/100mL
+        # Jh = Kbh Ch = Kbh exp(-tKbh) * k_he ca
+        # cl_L = int(Jh)/int(ca) = k_he
+        # Cl_L = k_he vol_L in mL/min
 
     def parameters(self):
         return [
@@ -91,6 +96,8 @@ class TwoShotTwoScan(CurveFit):
         self.export_pars.loc['k_bh'] = ["Biliary excretion rate", np.divide(6000, p.Th)*(1-p.ve), 'mL/min/100mL']
         self.export_pars.loc['Khe'] = ["Hepatocellular tissue uptake rate", 6000*p.k_he/p.ve, 'mL/min/100mL'] # Khe Ce = Khe ve ce = khe ce
         self.export_pars.loc['Kbh'] = ["Biliary tissue excretion rate", np.divide(6000, p.Th), 'mL/min/100mL']
+
+ 
         
     def estimate_p(self):
 

@@ -1,0 +1,8 @@
+symbol,name,initial value,value,unit,lower bound,upper bound,fit,digits
+FA_corr,FA correction factor,1.0,1.0,,0.0,inf,False,6
+S0_corr,Signal amplitude correction,1.0,1.0,,0.0,inf,False,6
+Tdel,Gut delay time,5.0,7.127556840235246e-08,sec,0.0,20.0,True,6
+Te,Extracellular transit time,30.0,59.9999999576801,sec,0.0,60.0,True,6
+ve,Extracellular volume fraction,0.3,0.07756565299789242,mL/mL,0.01,0.6,True,6
+k_he,Hepatocellular uptake rate,0.0033333333333333335,0.0036861933455996343,mL/sec/mL,0.0,inf,True,6
+Kbh,Biliary tissue excretion rate,0.0005555555555555556,0.0005277245663303218,mL/sec/mL,2.3148148148148147e-05,0.0016666666666666668,True,6

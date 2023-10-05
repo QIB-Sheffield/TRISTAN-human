@@ -15,9 +15,10 @@ class TwoShotTwoScan(CurveFit):
         self.aorta.signal_smooth()
         super().__init__()
 
-    # Constants
-    fp_half_width = 20 # sec, half width of the first pass in the aorta
-    baseline2 = 60 # sec, second baseline
+    def set_const(self):
+        self.S01 = 1200
+        self.S02 = 1200
+        self.R10 = 1
 
     @property
     def rh(self):
@@ -39,9 +40,9 @@ class TwoShotTwoScan(CurveFit):
 
     def xy_fitted(self):
         p, a = self.p.value, self.aorta
-        self.y[-3] = dcmri.signalSPGRESS(a.TR, p.FA1_corr*a.FA, self.vR1[0], p.S01)
-        self.y[-2] = dcmri.signalSPGRESS(a.TR, p.FA1_corr*a.FA, self.vR1[1], p.S01)
-        self.y[-1] = dcmri.signalSPGRESS(a.TR, p.FA2_corr*a.FA, self.vR1[2], p.S02)
+        self.y[-3] = dcmri.signalSPGRESS(a.TR, p.FA1_corr*a.FA, self.vR1[0], p.S01_corr*self.S01)
+        self.y[-2] = dcmri.signalSPGRESS(a.TR, p.FA1_corr*a.FA, self.vR1[1], p.S02_corr*self.S02)
+        self.y[-1] = dcmri.signalSPGRESS(a.TR, p.FA2_corr*a.FA, self.vR1[2], p.S02_corr*self.S02)
         return super().xy_fitted()
         
     def function(self, x, p): 
@@ -52,8 +53,8 @@ class TwoShotTwoScan(CurveFit):
         R1 = self.R1()
         p, a = self.p.value, self.aorta
         k2 = np.nonzero(a.t >= self.x[-1]-5*60)[0]
-        signal = dcmri.signalSPGRESS(a.TR, p.FA1_corr*a.FA, R1, p.S01)
-        signal[k2] = dcmri.signalSPGRESS(a.TR, p.FA2_corr*a.FA, R1[k2], p.S02)
+        signal = dcmri.signalSPGRESS(a.TR, p.FA1_corr*a.FA, R1, p.S01_corr*self.S01)
+        signal[k2] = dcmri.signalSPGRESS(a.TR, p.FA2_corr*a.FA, R1[k2], p.S02_corr*self.S02)
         return signal
     
     def R1(self): # slower but more diagnostics
@@ -65,28 +66,28 @@ class TwoShotTwoScan(CurveFit):
         # Tissue concentration in the hepatocytes
         self.Ch = dcmri.res_comp(self.aorta.t, p.k_he*ca, 1/p.Kbh)
         # Return R
-        return p.R10 + self.aorta.rp*self.Ce + self.rh*self.Ch
+        return self.R10 + self.aorta.rp*self.Ce + self.rh*self.Ch
 
     def parameters(self):
         return [
             # Signal parameters
-            ['R10', "Precontrast liver R1", self.R10lit, "1/sec", 0, np.inf, False, 6],
             ['FA1_corr', "FA correction factor", 1, "", 0, np.inf, False, 6],
             ['FA2_corr', "FA correction factor", 1, "", 0, np.inf, False, 6],
-            ['S01', "Signal amplitude S0", 1200, "a.u.", 0, np.inf, True, 6],
-            ['S02', "Signal amplitude S0", 1200, "a.u.", 0, np.inf, True, 6],
+            ['S01_corr', "Signal amplitude correction", 1, "", 0, np.inf, False, 6],
+            ['S02_corr', "Signal amplitude correction", 1, "", 0, np.inf, True, 6],
             # Inlets
             ['Tdel', "Gut delay time", 5.0, 'sec', 0, 20.0, True, 6],  
             ['Te', "Extracellular transit time", 30.0, 'sec', 0, 60, True, 6],
             # Liver tissue
-            ['ve', "Extracellular volume fraction", 0.2, 'mL/mL', 0.0, 1.0, True, 6],
-            ['k_he', "Hepatocellular uptake rate", 0.2*0.04/20, 'mL/sec/mL', 0, np.inf, True, 6],
-            ['Kbh', "Biliary tissue excretion rate", 1/(30*60), 'mL/sec/mL', 0, 1/(10*60), True, 6],
+            ['ve', "Extracellular volume fraction", 0.3, 'mL/mL', 0.01, 0.6, True, 6],
+            ['k_he', "Hepatocellular uptake rate", 20/6000, 'mL/sec/mL', 0, np.inf, True, 6],
+            ['Kbh', "Biliary tissue excretion rate", 1/(30*60), 'mL/sec/mL', 1/(2*60*60), 1/(10*60), True, 6],
         ]
 
     def set_export_pars(self):
         p = self.p.value
         self.export_pars = self.p.drop(['initial value','lower bound','upper bound','fit','digits'], axis=1)
+        self.export_pars.drop(['FA1_corr','FA2_corr'], axis=0, inplace=True)
         # Convert to conventional units
         self.export_pars.loc['Te', ['value', 'unit']] = [p.Te/60, 'min']
         self.export_pars.loc['ve', ['value', 'unit']] = [100*p.ve, 'mL/100mL']
@@ -96,35 +97,18 @@ class TwoShotTwoScan(CurveFit):
         self.export_pars.loc['Khe'] = ["Hepatocellular tissue uptake rate", 6000*p.k_he/p.ve, 'mL/min/100mL']         
         self.export_pars.loc['k_bh'] = ["Biliary excretion rate", 6000*p.Kbh*(1-p.ve), 'mL/min/100mL']
         self.export_pars.loc['Th'] = ["Hepatocellular transit time", np.divide(1, p.Kbh)/60, 'min']
-        
-    # def estimate_p(self):
-    #     p, a = self.p.value, self.aorta
-    #     BAT1 = a.p.value.BAT1
-    #     Sref = dcmri.signalSPGRESS(a.TR, p.FA1_corr*a.FA, self.vR1[0], 1)
-    #     baseline = np.nonzero(self.x1 <= BAT1-self.fp_half_width)[0]
-    #     n0 = baseline.size
-    #     if n0 == 0: 
-    #         n0 = 1
-    #     S01 = np.mean(self.y1[:n0]) / Sref
-    #     self.p.at['S01','value'] = S01
-    #     self.p.at['R10', 'value'] = self.vR1[0]
-
-    #     Sref = dcmri.signalSPGRESS(a.TR, p.FA2_corr*a.FA, self.vR1[2], 1)
-    #     n0 = math.floor(self.baseline2/a.tacq)
-    #     S02 = np.mean(self.y2[:n0]) / Sref
-    #     self.p.at['S02','value'] = S02
 
     def estimate_p(self):
+        self.R10 = self.vR1[0]
         p, a = self.p.value, self.aorta
+
         BAT = a.p.value.BAT1
         Sref = dcmri.signalSPGRESS(a.TR, p.FA1_corr*a.FA, self.vR1[0], 1)
         baseline = np.nonzero(self.x1 <= BAT)[0]
         n0 = baseline.size
         if n0 == 0: 
             n0 = 1
-        S0 = np.mean(self.y1[:n0]) / Sref
-        self.p.at['S01','value'] = S0
-        self.p.at['R10', 'value'] = self.vR1[0]
+        self.S01 = np.mean(self.y1[:n0]) / Sref
 
         BAT = a.p.value.BAT2
         Sref = dcmri.signalSPGRESS(a.TR, p.FA2_corr*a.FA, self.vR1[2], 1)
@@ -132,8 +116,7 @@ class TwoShotTwoScan(CurveFit):
         n0 = baseline.size
         if n0 == 0: 
             n0 = 1
-        S0 = np.mean(self.y2[:n0]) / Sref
-        self.p.at['S02','value'] = S0
+        self.S02 = np.mean(self.y2[:n0]) / Sref
 
     def set_x(self, x1, x2, tR1, **kwargs):
         self.x1 = x1
@@ -150,11 +133,6 @@ class TwoShotTwoScan(CurveFit):
         super().set_y(y, **kwargs)
 
     def set_cweight(self, wcal):
-        # wcal is a number between 0 and 1 that determines the weight of the calibration data in the total.
-        # ncal is the nr of calibration data
-        # ndat is the nr of fit data
-        # wcal = ncal * weight_per_cal_pt
-        # 1 = ncal * weight_per_cal_pt + ndat * weight_per_dat_pt
         n = len(self.x)
         ncal = len(self.vR1)
         ndat = n - ncal

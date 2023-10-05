@@ -26,8 +26,8 @@ class CurveFit():
     xi = None
     xf = None
 
-    # Define constants (if any)
-    power = 3.0
+    def set_const(self):
+        self.power = 3.0
 
     def function(self, x, p):
 
@@ -41,12 +41,12 @@ class CurveFit():
         ]
 
     def __init__(self):
-
         self.reset_p()
 
     def reset_p(self):
         """Reset parameters to factory settings"""
 
+        self.set_const()
         p = self.parameters()
         if type(p[0]) is str:
             p = [[variable, variable, 0, 'not provided', -np.inf, np.inf, True, 3] for variable in p]

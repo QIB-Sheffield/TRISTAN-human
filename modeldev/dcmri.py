@@ -161,9 +161,10 @@ def comp_residue(t, T):
     return np.exp(-t/T)
 
 def chain_residue(t, MTT, disp):
-    if disp==0:
+    if disp==0: # plug flow
+        g = np.ones(len(t))
         return plug_residue(t, MTT)
-    if disp==100:
+    if disp==100: # compartment
         return comp_residue(t, MTT)
     n = 100/disp
     Tx = MTT/n
