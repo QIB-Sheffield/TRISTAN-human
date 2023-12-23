@@ -1,33 +1,10 @@
 import pandas as pd
 import numpy as np
 
-def oneshot_onescan(subj):
-
-    const = pd.read_excel(subj, sheet_name='const')
-    const.set_index('name', inplace=True)
-    dyn1 = pd.read_excel(subj, sheet_name='dyn1')
-    molli1 = pd.read_excel(subj, sheet_name='MOLLI1')
-    molli2 = pd.read_excel(subj, sheet_name='MOLLI2')
-    dyn1.sort_values('time', inplace=True)
-    molli1.sort_values('time', inplace=True)
-    molli2.sort_values('time', inplace=True)
-    if 'aorta_valid' not in dyn1:
-        dyn1['aorta_valid'] = 1
-    if 'liver_valid' not in dyn1:
-        dyn1['liver_valid'] = 1
-    if 'portal_valid' not in dyn1:
-        dyn1['portal_valid'] = 1
-    t0 = dyn1.time.values[0]
-    return (
-        dyn1.time.values-t0, dyn1.fa.values, dyn1.aorta.values, dyn1.liver.values, dyn1['portal-vein'].values, 
-        dyn1.aorta_valid.values, dyn1.liver_valid.values, dyn1.portal_valid.values,
-        molli1.time.values[0]-t0, molli1.aorta.values[0], molli1.liver.values[0], molli1['portal vein'].values[0],
-        molli2.time.values[0]-t0, molli2.aorta.values[0], molli2.liver.values[0], molli2['portal vein'].values[0],
-        const.at['weight', 'value'], const.at['dose1', 'value'], t0,
-    )
+# https://bioxydynltd.sharepoint.com/:f:/s/WP2-TRISTAN/Enz3hJ8UPddEgZxXdaspo5YB7GkeLKsJB5k1Xd2mmr8jPw?e=5%3avvdrgU&at=9
 
 
-def twoshot_twoscan(subj):
+def read(subj):
 
     const = pd.read_excel(subj, sheet_name='const')
     const.set_index('name', inplace=True)
@@ -45,62 +22,63 @@ def twoshot_twoscan(subj):
         dyn1['aorta_valid'] = 1
     if 'liver_valid' not in dyn1:
         dyn1['liver_valid'] = 1
+    if 'kidney_valid' not in dyn1:
+        dyn1['kidney_valid'] = 1
     if 'portal_valid' not in dyn1:
         dyn1['portal_valid'] = 1
     if 'aorta_valid' not in dyn2:
         dyn2['aorta_valid'] = 1
     if 'liver_valid' not in dyn2:
         dyn2['liver_valid'] = 1
+    if 'kidney_valid' not in dyn2:
+        dyn2['kidney_valid'] = 1
     if 'portal_valid' not in dyn2:
         dyn2['portal_valid'] = 1
     t0 = dyn1.time.values[0]
-    return (
-        dyn1.time.values-t0, dyn1.fa.values, dyn1.aorta.values, dyn1.liver.values, dyn1['portal-vein'].values, 
-        dyn1.aorta_valid.values, dyn1.liver_valid.values, dyn1.portal_valid.values,
-        dyn2.time.values-t0, dyn2.fa.values, dyn2.aorta.values, dyn2.liver.values, dyn2['portal-vein'].values, 
-        dyn2.aorta_valid.values, dyn2.liver_valid.values, dyn2.portal_valid.values,
-        molli1.time.values[0]-t0, molli1.aorta.values[0], molli1.liver.values[0], molli1['portal vein'].values[0],
-        molli2.time.values[0]-t0, molli2.aorta.values[0], molli2.liver.values[0], molli2['portal vein'].values[0],
-        molli3.time.values[0]-t0, molli3.aorta.values[0], molli3.liver.values[0], molli3['portal vein'].values[0],
-        const.at['weight', 'value'], const.at['dose1', 'value'], const.at['dose2', 'value'], t0,
-    )
+    
+    return {
+        'time1': dyn1.time.values-t0, 
+        'fa1': dyn1.fa.values, 
+        'aorta1': dyn1.aorta.values, 
+        'liver1': dyn1.liver.values, 
+        'kidney1': dyn1.kidney.values,
+        'portal1': dyn1['portal-vein'].values, 
+        'aorta_valid1': dyn1.aorta_valid.values, 
+        'liver_valid1': dyn1.liver_valid.values, 
+        'portal_valid1': dyn1.portal_valid.values,
+        'kidney_valid1': dyn1.kidney_valid.values,
+        'time2': dyn2.time.values-t0, 
+        'fa2': dyn2.fa.values, 
+        'aorta2': dyn2.aorta.values, 
+        'liver2': dyn2.liver.values, 
+        'kidney2': dyn2.kidney.values,
+        'portal2': dyn2['portal-vein'].values, 
+        'aorta_valid2': dyn2.aorta_valid.values, 
+        'liver_valid2': dyn2.liver_valid.values, 
+        'portal_valid2': dyn2.portal_valid.values,
+        'kidney_valid2': dyn2.kidney_valid.values,
+        'T1time1': molli1.time.values[0]-t0, 
+        'T1aorta1': molli1.aorta.values[0], 
+        'T1liver1': molli1.liver.values[0], 
+        'T1kidney1': molli1['kidney-parenchyma'].values[0], 
+        'T1portal1': molli1['portal vein'].values[0],
+        'T1time2': molli2.time.values[0]-t0, 
+        'T1aorta2': molli2.aorta.values[0], 
+        'T1liver2': molli2.liver.values[0], 
+        'T1kidney2': molli2['kidney-parenchyma'].values[0], 
+        'T1portal2': molli2['portal vein'].values[0],
+        'T1time3': molli3.time.values[0]-t0, 
+        'T1aorta3': molli3.aorta.values[0], 
+        'T1liver3': molli3.liver.values[0], 
+        'T1kidney3': molli3['kidney-parenchyma'].values[0], 
+        'T1portal3': molli3['portal vein'].values[0],
+        'weight': const.at['weight', 'value'], 
+        'dose1': const.at['dose1', 'value'], 
+        'dose2': const.at['dose2', 'value'], 
+        'liver_volume': const.at['liver-volume-mm3','value']/1000,
+        'kidney_volume': const.at['kidney-volume-mm3','value']/1000,
+        't0': t0,
+    }
 
-def oneshot_twoscan(subj):
 
-    (   time1, fa1, aorta1, liver1, 
-        aorta_valid1, liver_valid1, 
-        time2, fa2, aorta2, liver2,
-        aorta_valid2, liver_valid2, 
-        T1time1, T1aorta1, T1liver1, 
-        T1time2, T1aorta2, T1liver2,
-        T1time3, T1aorta3, T1liver3,
-        weight, dose1, dose2) = twoshot_twoscan(subj)
-    i1 = np.nonzero(time2 < time2[0] + 10*60)[0]
-    return (
-        time1, fa1, aorta1, liver1,
-        aorta_valid1, liver_valid1, 
-        time2[i1], fa2[i1], aorta2[i1], liver2[i1], 
-        aorta_valid2[i1], liver_valid2[i1], 
-        T1time1, T1aorta1, T1liver1,
-        T1time2, T1aorta2, T1liver2,
-        T1time3, T1aorta3, T1liver3,
-         weight, dose1, 
-    )
-
-def twoshot_onescan(subj):
-
-    (   time1, fa1, aorta1, liver1, 
-        aorta_valid1, liver_valid1, 
-        time2, fa2, aorta2, liver2,
-        aorta_valid2, liver_valid2, 
-        T1time1, T1aorta1, T1liver1, 
-        T1time2, T1aorta2, T1liver2,
-        T1time3, T1aorta3, T1liver3,
-        weight, dose1, dose2) = twoshot_twoscan(subj)
-    return (
-        time2, fa2, aorta2, liver2, 
-        aorta_valid2, liver_valid2, 
-        T1time3, T1aorta3, T1liver3,
-        weight, dose1, dose2, 
-    )
 

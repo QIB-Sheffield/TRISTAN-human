@@ -27,23 +27,71 @@ class Aorta(lib.SuperModel):
         self._set_df()
         self._set_dt()
 
-    def plot_data_fit(self, ax1, xlim, legend):
-        xf, yf = self.xy_fitted()
-        xi, yi = self.xy_ignored()
-        tacq = self.tdce[1]-self.tdce[0]
-        ax1.set(xlabel='Time (min)', ylabel='MR Signal (a.u.)', xlim=np.array(xlim)/60)
-        ax1.plot((xi+tacq/2)/60, yi, marker='o', color='gray', label='ignored data', linestyle = 'None')
-        ax1.plot((xf+tacq/2)/60, yf, marker='o', color='lightcoral', label='fitted data', linestyle = 'None')
-        ax1.plot(self.t()/60, self.predict_signal(), linestyle='-', color='darkred', linewidth=3.0, label='fit' )
-        ax1.plot(np.array([self.tdce[0]]+self.tR1[1:])/60, self.s_molli(), color='black', marker='x', linestyle='None', label='MOLLI')
-        if legend:
-            ax1.legend()
-
+    def predict_R1(self, Ji):
+        p = self.p.value
+        t = self.t()
+        # Derived constants
+        vp = (1-self.Hct)*p.vb  # Kidney plasma volume
+        Fp = vp/p.Tp/(1+p.FF)   # Kidney plasma flow
+        Ft = p.FF*Fp            # Kidney Tubular flow
+        Ek = Ft/(Ft+Fp)         # Kidney extraction fraction
+        k_he = dcmri.lin(t, [p.k_he_i, p.k_he_f])
+        Kbh = dcmri.lin(t, [p.Kbh_i, p.Kbh_f])
+        Khe = np.mean(k_he)/p.ve
+        Ee = 0
+        # Generate aorta conc
+        _, Jb = dcmri.propagate_simple_body(t, Ji, 
+            p.MTThl, p.El, p.MTTe, p.MTTo, p.TTDo, Ee, tol=self.dose_tolerance)
+        self.cb = Jb*1000/p.CO  # (mM)
+        # Generate liver conc
+        ca = dcmri.propagate_dd(t, self.cb, p.Tdel, p.Te)
+        self.Ce = p.ve*ca/(1-self.Hct)
+        self.Ch = dcmri.res_nscomp(t, k_he*ca, Kbh) 
+        # Generate kidney conc
+        ca = self.cb/(1-self.Hct)
+        self.Cp = dcmri.res_comp(t, Fp*ca, p.Tp)
+        cp = self.Cp/vp
+        self.Ct = dcmri.res_trap(t, Ft*cp)
+        # Return R1
+        rp = lib.rp(self.field_strength)
+        rh = lib.rh(self.field_strength)    
+        R1a = p.R10b + rp*self.cb
+        R1l = p.R10l + rp*self.Ce + rh*self.Ch
+        R1k = p.R10k + rp*(self.Cp + self.Ct)
+        return R1a, R1l, R1k
+    
+    def pars(self):
+        return [
+            # Aorta parameters
+            ['R10b', "Baseline blood R1", lib.R1_blood(), "1/sec", 0, np.inf, False, 4],
+            ['CO', "Cardiac output", 100.0, "mL/sec", 0, np.inf, True, 3], # 6 L/min = 100 mL/sec
+            ['MTThl', "Heart & lung mean transit time", 8.0, "sec", 0, 30, True, 3],
+            ['MTTo', "Other organs mean transit time", 20.0, "sec", 0, 60, True, 3],
+            ['TTDo', "Other organs transit time dispersion", 10.0, "sec", 0, np.inf, True, 2],
+            ['MTTe', "Storage compartment mean transit time", 120.0, "sec", 0, 800.0, True, 3],
+            ['El', "Storage compartment leakage fraction", 0.15, "", 0, 0.50, True, 4],
+            # Liver parameters
+            ['R10l', "Baseline liver R1", lib.R1_liver(), "1/sec", 0, np.inf, False, 4],
+            ['Tdel', "Gut delay time", 5.0, 'sec', 0, 20.0, True, 6],  
+            ['Te', "Extracellular transit time", 30.0, 'sec', 0, 60, True, 6],
+            ['ve', "Extracellular volume fraction", 0.3, 'mL/mL', 0.01, 0.6, True, 6],
+            ['k_he_i', "Hepatocellular uptake rate", 20/6000, 'mL/sec/mL', 0, np.inf, True, 6],
+            ['k_he_f', "Hepatocellular uptake rate", 20/6000, 'mL/sec/mL', 0, np.inf, True, 6],
+            ['Kbh_i', "Biliary tissue excretion rate", 1/(30*60), 'mL/sec/mL', 1/(2*60*60), 1/(10*60), True, 6],
+            ['Kbh_f', "Biliary tissue excretion rate", 1/(30*60), 'mL/sec/mL', 1/(2*60*60), 1/(10*60), True, 6],
+            # Kidney parameters
+            ['R10k', "Baseline kidney R1", lib.R1_kidney(), "1/sec", 0, np.inf, False, 4], 
+            ['vb', "Blood volume", 0.3, 'mL/mL', 0.01, 0.99, True, 6],
+            ['Tp', "Plasma transit time", 5, 'sec', 0, 15, True, 6],
+            ['FF', "Filtration Fraction", 0.1, '', 0.01, 0.99, True, 6],
+        ]
+ 
     def plot_conc_fit(self, ax2, xlim, legend):
-        t = self.t()/60
-        ax2.set(xlabel='Time (min)', ylabel='Concentration (mM)', xlim=np.array(xlim)/60)
-        ax2.plot(t, 0*t, color='gray')
-        ax2.plot(t, self.cb, linestyle='-', color='darkred', linewidth=3.0, label='Blood')
+        t = self.t()
+        ax2.set_title('Reconstructed concentration')
+        ax2.set(xlabel='Time (sec)', ylabel='Concentration (mM)', xlim=xlim)
+        ax2.plot(t, 0*t, color='black')
+        ax2.plot(t, self.cb, 'b-', label=self.plabel())
         if legend:
             ax2.legend()
 
@@ -60,45 +108,22 @@ class AortaOneScan(Aorta):
             tacq = self.tdce[1]-self.tdce[0]
             self.tmax = np.amax([np.amax(self.tdce), np.amax(self.tR1)]) + tacq
 
-    def predict_R1(self):
+    def predict_signal(self):
         p = self.p.value
         t = self.t()
         Ji = dcmri.injection(t, 
             self.weight, self.conc, self.dose, self.rate, p.BAT)
-        _, Jb = dcmri.propagate_simple_body(t, Ji, 
-            p.MTThl, p.El, p.MTTe, p.MTTo, p.TTDo, p.Ee, tol=self.dose_tolerance)
-        self.cb = Jb*1000/p.CO  # (mM)
-        rp = lib.rp(self.field_strength)
-        R1 = p.R10 + rp * self.cb
-        return R1
-    
-    def pars(self):
-        return [
-            ['R10', "Baseline R1", lib.R1_blood(), "1/sec", 0, np.inf, False, 4],
-            ['BAT', "Bolus arrival time", 60, "sec", 0, np.inf, True, 3],
-            ['CO', "Cardiac output", 100.0, "mL/sec", 0, np.inf, True, 3], # 6 L/min = 100 mL/sec
-            ['MTThl', "Heart & lung mean transit time", 8.0, "sec", 0, 30, True, 3],
-            ['MTTo', "Other organs mean transit time", 20.0, "sec", 0, 60, True, 3],
-            ['TTDo', "Other organs transit time dispersion", 10.0, "sec", 0, np.inf, True, 2],
-            ['MTTe', "Storage compartment mean transit time", 120.0, "sec", 0, 800.0, True, 3],
-            ['El', "Storage compartment leakage fraction", 0.15, "", 0, 0.50, True, 4],
-            ['Ee',"Kidney & Liver Extraction fraction", 0.05,"", 0.01, 0.15, True, 4],
-        ]
-
-    def predict_signal(self):
-        R1 = self.predict_R1()
-        p = self.p.value
+        R1 = self.predict_R1(Ji)
         signal = dcmri.signalSPGRESS(p.TR, p.FA, R1, p.S0)
         return signal
     
     def set_pars(self, TR, FA):
-        self.p = self.pars_1scan(TR, FA) + self.pars()
+        self.p = self.pars_1scan(TR, FA) + [
+            ['BAT', "Bolus arrival time", 60, "sec", 0, np.inf, True, 3],
+        ]  + self.pars()
 
     def export_pars(self, export_pars):
-        p = self.p.value
         export_pars.drop(['TR','FA','S0'], axis=0, inplace=True)
-        export_pars.loc['El', ['value', 'unit']] = [100*p.El, '%']
-        export_pars.loc['Ee', ['value', 'unit']] = [100*p.Ee, '%']
         return export_pars
     
     def estimate_p(self):
@@ -132,50 +157,27 @@ class AortaTwoScan(Aorta):
                 self.dt = duration/5  
         if self.tdce is not None:
             tacq = self.tdce[1]-self.tdce[0]
-            self.tmax = np.amax([np.amax(self.tdce), np.amax(self.tR1)]) + tacq   
-
-    def predict_R1(self):
+            self.tmax = np.amax([np.amax(self.tdce), np.amax(self.tR1)]) + tacq     
+  
+    def predict_signal(self):
         p = self.p.value
         t = self.t()
         Ji = dcmri.injection(t, 
             self.weight, self.conc, self.dose[0], self.rate, p.BAT1, self.dose[1], p.BAT2)
-        _, Jb = dcmri.propagate_simple_body(t, Ji, 
-            p.MTThl, p.El, p.MTTe, p.MTTo, p.TTDo, p.Ee, tol=self.dose_tolerance)
-        self.cb = Jb*1000/p.CO  # (mM)
-        rp = lib.rp(self.field_strength)
-        R1 = p.R10 + rp * self.cb
-        return R1
-    
-    def pars(self):
-        return [
-            ['R10', "Baseline R1", lib.R1_blood(), "1/sec", 0, np.inf, False, 4],
-            ['BAT1', "Bolus arrival time 1", 60, "sec", 0, np.inf, True, 3],
-            ['BAT2', "Bolus arrival time 2", 60, "sec", 0, np.inf, True, 3],
-            ['CO', "Cardiac output", 100.0, "mL/sec", 0, np.inf, True, 3], # 6 L/min = 100 mL/sec
-            ['MTThl', "Heart & lung mean transit time", 8.0, "sec", 0, 30, True, 3],
-            ['MTTo', "Other organs mean transit time", 20.0, "sec", 0, 60, True, 3],
-            ['TTDo', "Other organs transit time dispersion", 10.0, "sec", 0, np.inf, True, 2],
-            ['MTTe', "Storage compartment mean transit time", 120.0, "sec", 0, 800.0, True, 3],
-            ['El', "Storage compartmentleakage  fraction", 0.15, "", 0, 0.50, True, 4],
-            ['Ee',"Kidney & Liver Extraction fraction", 0.05,"", 0.01, 0.15, True, 4],
-        ]      
-
-    def predict_signal(self):
-        R1 = self.predict_R1()
-        p = self.p.value
+        R1 = self.predict_R1(Ji)
         signal = dcmri.signalSPGRESS(p.TR, p.FA1, R1, p.S01)
         k2 = np.nonzero(self.t() >= self.t0[1]-self.t0[0])[0]
         signal[k2] = dcmri.signalSPGRESS(p.TR, p.FA2, R1[k2], p.S02)
         return signal
-    
+
     def set_pars(self, TR, FA):
-        self.p = self.pars_2scan(TR, FA) + self.pars()
+        self.p = self.pars_2scan(TR, FA) + [
+            ['BAT1', "Bolus arrival time 1", 60, "sec", 0, np.inf, True, 3],
+            ['BAT2', "Bolus arrival time 2", 60, "sec", 0, np.inf, True, 3],
+        ]  + self.pars() 
 
     def export_pars(self, export_pars):
-        p = self.p.value
-        export_pars.drop(['TR','FA1','FA2','S01'], inplace=True)
-        export_pars.loc['El', ['value', 'unit']] = [100*p.El, '%']
-        export_pars.loc['Ee', ['value', 'unit']] = [100*p.Ee, '%']
+        export_pars.drop(['TR','FA1','FA2','S01'],inplace=True)
         return export_pars
 
     def estimate_p(self):

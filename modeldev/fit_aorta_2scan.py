@@ -5,7 +5,7 @@ import numpy as np
 
 import data
 import plot
-from models.aorta import AortaOneScan as Aorta
+from models.aorta import AortaTwoScan as Aorta
 
 
 def read(data, params):
@@ -13,9 +13,10 @@ def read(data, params):
     print('Reading aorta...')
     aorta = Aorta(
         weight = data['weight'],
-        dose = data['dose1'],
-        tdce = data['time1'],
-        tmolli = [data['T1time1'], data['T1time2']],
+        dose = [data['dose1'], data['dose2']], 
+        tdce = np.concatenate([data['time1'], data['time2']]),  
+        tmolli = [data['T1time1'], data['T1time2'], data['T1time3']], 
+        t0 = [data['t0'], data['t0']+data['time2'][0]],
     )
     aorta.read_csv(params)
     return aorta
@@ -27,17 +28,17 @@ def fit_aorta(data):
     print('Fitting aorta...')
     aorta = Aorta(
         weight = data['weight'],
-        dose = data['dose1'],
-        tdce = np.array(data['time1']),
-        tmolli = [data['T1time1'], data['T1time2']],
-        Sdce = data['aorta1'],
-        R1molli = np.array([1000.0/data['T1aorta1'], 1000.0/data['T1aorta2']]),
+        dose = [data['dose1'], data['dose2']],   
+        tdce = np.concatenate([data['time1'], data['time2']]),  
+        tmolli = [data['T1time1'], data['T1time2'], data['T1time3']],   
+        t0 = [data['t0'], data['t0']+data['time2'][0]],
+        Sdce = np.concatenate([data['aorta1'], data['aorta2']]),
+        R1molli = np.array([1000.0/data['T1aorta1'], 1000.0/data['T1aorta2'], 1000.0/data['T1aorta3']]),
         callback = False,
         ptol = 1e-3,
-        dcevalid = data['aorta_valid1'],
+        dose_tolerance = 1e-3,
+        dcevalid = np.concatenate([data['aorta_valid1'], data['aorta_valid2']]),
     )
-    # Perform fit
-    
     aorta.estimate_p()
     print('Aorta goodness of fit: ', aorta.goodness())
     aorta.fit_p()
@@ -54,7 +55,7 @@ def fit_data(datapath, resultspath):
         visitdatapath = os.path.join(datapath, visit)
         for s in os.listdir(visitdatapath):
             subj = os.path.join(visitdatapath, s)
-            print('Fitting ', visit, subj)
+            print('Fitting ', subj)
             subj_data = data.read(subj)
             aorta = fit_aorta(subj_data)
             aorta.to_csv(os.path.join(resultspath, s[:3] + '_' + visit + '.csv'))
@@ -77,7 +78,7 @@ def main(data, results):
 
     start = time.time()
 
-    resultspath = os.path.join(results, 'aorta_1scan')
+    resultspath = os.path.join(results, 'aorta_2scan')
     
     fit_data(data, resultspath)
 
@@ -85,7 +86,7 @@ def main(data, results):
     output_file = os.path.join(resultspath, 'parameters.csv')
     plot.create_bar_chart(output_file, ylim=ylim)
 
-    print('Fit aorta 1-scan calculation time (mins): ', (time.time()-start)/60)
+    print('Fit aorta 2-scan calculation time (mins): ', (time.time()-start)/60)
 
 
 if __name__ == "__main__":

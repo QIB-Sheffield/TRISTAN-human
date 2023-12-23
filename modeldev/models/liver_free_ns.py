@@ -12,8 +12,8 @@ class Liver(lib.SuperModel):
             # Constants used in model fitting
             BAT = None,
             liver_volume = 1000, # mL
-            **kwargs,   
-        ):
+            **kwargs,    
+            ):
         super().__init__(**kwargs)
         # Essential constants
         self.cb = cb
@@ -21,7 +21,7 @@ class Liver(lib.SuperModel):
         # Constants needed for model fitting
         self.BAT = BAT
         self.liver_volume = liver_volume
-        self.set_pars(TR,FA)
+        self.set_pars(TR, FA)
         self._set_df()
 
     def predict_R1(self):
@@ -32,53 +32,86 @@ class Liver(lib.SuperModel):
         # Tissue concentration in the extracellular space
         self.Ce = p.ve*ca/(1-self.Hct)
         # Tissue concentration in the hepatocytes
-        self.Ch = dcmri.res_comp(t, p.k_he*ca, 1/p.Kbh)
+        k_he = dcmri.lin(t, [p.k_he_i, p.k_he_f])
+        H = [p.h0, p.h1, p.h2, p.h3, p.h4, p.h5, p.h6, p.h7]
+        TT = [1*60, 5*60, 15*60, 30*60, 60*60, 120*60, 240*60, 360*60, 600*60]
+        self.Ch = dcmri.res_free(t[1]-t[0], t[-1], k_he*ca, H, TT)
+        #H = [p.h0, p.h1, p.h2, p.h3, p.h4]
+        #self.Ch = dcmri.res_free(t[1]-t[0], t[-1], k_he*ca, H, TTmin=5*60, TTmax=300*60)
         # Return R
         rp = lib.rp(self.field_strength)
         rh = lib.rh(self.field_strength)
         R1 = p.R10 + rp*self.Ce + rh*self.Ch
         return R1
-    
+
     def pars(self):
         return [
-            # Signal parameters
             ['R10', "Baseline R1", lib.R1_liver(), "1/sec", 0, np.inf, False, 4],
             # Inlets
             ['Tdel', "Gut delay time", 5.0, 'sec', 0, 20.0, True, 6],  
             ['Te', "Extracellular transit time", 30.0, 'sec', 0, 60, True, 6],
             # Liver tissue
             ['ve', "Extracellular volume fraction", 0.3, 'mL/mL', 0.01, 0.6, True, 6],
-            ['k_he', "Hepatocellular uptake rate", 20/6000, 'mL/sec/mL', 0, np.inf, True, 6],
-            ['Kbh', "Biliary tissue excretion rate", 1/(30*60), 'mL/sec/mL', 1/(10*60*60), 1/(10*60), True, 6],
+            ['k_he_i', "Hepatocellular uptake rate (initial)", 20/6000, 'mL/sec/mL', 0, np.inf, True, 6],
+            ['k_he_f', "Hepatocellular uptake rate (final)", 20/6000, 'mL/sec/mL', 0, np.inf, True, 6],
+            ['h0', "Transit time weight 0", 1, '1/sec', 0, np.inf, True, 9],
+            ['h1', "Transit time weight 1", 1, '1/sec', 0, np.inf, True, 9],
+            ['h2', "Transit time weight 2", 1, '1/sec', 0, np.inf, True, 9],
+            ['h3', "Transit time weight 3", 1, '1/sec', 0, np.inf, True, 9],
+            ['h4', "Transit time weight 4", 1, '1/sec', 0, np.inf, True, 9],
+            ['h5', "Transit time weight 5", 1, '1/sec', 0, np.inf, True, 9],
+            ['h6', "Transit time weight 6", 1, '1/sec', 0, np.inf, True, 9],
+            ['h7', "Transit time weight 6", 1, '1/sec', 0, np.inf, True, 9],
         ]
-    
+
     def export_pars(self, export_pars):
         p = self.p.value
+        export_pars.drop(['h0','h1','h2','h3','h4','h5','h6','h7'], inplace=True)
         # Convert to conventional units
         export_pars.loc['Te', ['value', 'unit']] = [p.Te/60, 'min']
         export_pars.loc['ve', ['value', 'unit']] = [100*p.ve, 'mL/100mL']
-        export_pars.loc['k_he', ['value', 'unit']] = [6000*p.k_he, 'mL/min/100mL']
-        export_pars.loc['Kbh', ['value', 'unit']] = [6000*p.Kbh, 'mL/min/100mL']
+        export_pars.loc['k_he_i', ['value', 'unit']] = [6000*p.k_he_i, 'mL/min/100mL']
+        export_pars.loc['k_he_f', ['value', 'unit']] = [6000*p.k_he_f, 'mL/min/100mL']
         # Add derived parameters 
-        export_pars.loc['Khe'] = ["Hepatocellular tissue uptake rate", 6000*p.k_he/p.ve, 'mL/min/100mL']         
-        export_pars.loc['k_bh'] = ["Biliary excretion rate", 6000*p.Kbh*(1-p.ve), 'mL/min/100mL']
-        export_pars.loc['Th'] = ["Hepatocellular transit time", np.divide(1, p.Kbh)/60, 'min']
-        export_pars.loc['CL_l'] = ['Liver blood clearance', 60*p.k_he*self.liver_volume, 'mL/min']
+        k_he = dcmri.lin(self.t(), [p.k_he_i, p.k_he_f])
+        k_he_avr = np.mean(k_he)
+        k_he_var = (np.amax(k_he)-np.amin(k_he))/k_he_avr
+        H = [p.h0, p.h1, p.h2, p.h3, p.h4, p.h5, p.h6, p.h7]
+        TT = [1*60, 5*60, 15*60, 30*60, 60*60, 120*60, 240*60, 360*60, 600*60]
+        TTdesc = dcmri.res_free_desc(self.tmax, H, TT)
+        #TTdesc = dcmri.res_free_desc(self.tmax, H, TTmin=10*60, TTmax=600*60)
+        Th = TTdesc['mean']
+        Dh = TTdesc['stdev']/TTdesc['mean']
+        export_pars.loc['k_he'] = ["Hepatocellular uptake rate", 6000*k_he_avr, 'mL/min/100mL']
+        export_pars.loc['k_he_var'] = ["Hepatocellular uptake rate variance", 100*k_he_var, '%']
+        export_pars.loc['Kbh'] = ["Biliary tissue excretion rate", 6000/Th, 'mL/min/100mL']
+        export_pars.loc['Khe'] = ["Hepatocellular tissue uptake rate", 6000*k_he_avr/p.ve, 'mL/min/100mL']         
+        export_pars.loc['k_bh'] = ["Biliary excretion rate", 6000*(1-p.ve)/Th, 'mL/min/100mL']
+        export_pars.loc['Th'] = ["Hepatocellular transit time", Th/60, 'min']
+        export_pars.loc['Dh'] = ["Hepatocellular transit time dispersion", 100*Dh, '%']
+        export_pars.loc['CL_l'] = ['Liver blood clearance', 60*k_he_avr*self.liver_volume, 'mL/min']
+        t2 = self.tdce[np.where(self.tdce < self.t0[1]-self.t0[0])][-1]
+        export_pars.loc['t0'] = ["Start time first acquisition", self.t0[0]/(60*60), 'hrs']
+        export_pars.loc['t1'] = ["End time first acquisition", t2/(60*60), 'hrs']
+        export_pars.loc['t2'] = ["Start time second acquisition", self.t0[1]/(60*60), 'hrs']
+        export_pars.loc['t3'] = ["End time second acquisition", (self.t0[0]+self.tdce[-1])/(60*60), 'hrs']
+        export_pars.loc['dt1'] = ["Time step first acquisition", self.tdce[1]-self.tdce[0], 'sec']
+        export_pars.loc['dt2'] = ["Time step second acquisition", self.tdce[-1]-self.tdce[-2], 'sec']
         return export_pars
-    
+
+
     def plot_data_fit(self, ax1, xlim, legend):
         xf, yf = self.xy_fitted()
         xi, yi = self.xy_ignored()
         tacq = self.tdce[1]-self.tdce[0]
-        #ax1.set_title('Signal')
         ax1.set(xlabel='Time (min)', ylabel='MR Signal (a.u.)', xlim=np.array(xlim)/60)
         ax1.plot((xi+tacq/2)/60, yi, marker='o', color='gray', label='ignored data', linestyle = 'None')
         ax1.plot((xf+tacq/2)/60, yf, marker='o', color='cornflowerblue', label='fitted data', linestyle = 'None')
         ax1.plot(self.t()/60, self.predict_signal(), linestyle='-', color='darkblue', linewidth=3.0, label='fit' )
-        ax1.plot(np.array([self.tdce[0]]+self.tR1[1:])/60, self.s_molli(), 'gx', label='MOLLI')
+        ax1.plot(np.array([self.tdce[0]]+self.tR1[1:])/60, self.s_molli(), color='black', marker='x', linestyle='None', label='MOLLI')
         if legend:
             ax1.legend()
-    
+
     def plot_conc_fit(self, ax2, xlim, legend):
         t = self.t()/60
         ax2.set(xlabel='Time (min)', ylabel='Tissue concentration (mM)', xlim=np.array(xlim)/60)
@@ -126,6 +159,7 @@ class LiverTwoScan(Liver):
         self.p = self.pars_2scan(TR, FA) + super().pars()
 
     def export_pars(self, export_pars):
+        p = self.p.value
         export_pars.drop(['TR','FA1','FA2','S01'],inplace=True)
         return super().export_pars(export_pars)
 
@@ -134,6 +168,3 @@ class LiverTwoScan(Liver):
 
     def plot_fit(self, **kwargs):
         self.plot_fit_tissue_2scan(**kwargs)
-
-
-    

@@ -2,10 +2,6 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
-
-import data
-
 
 
 sym = {
@@ -24,149 +20,119 @@ mark = {
     9: 'x',
     10: 'd',
 }
+clr = {
+    1: 'tab:blue',
+    2: 'tab:orange',
+    3: 'tab:green',
+    4: 'tab:red',
+    5: 'tab:purple',
+    6: 'tab:brown',
+    7: 'tab:pink',
+    8: 'tab:gray',
+    9: 'tab:olive',
+    10: 'tab:cyan',
+}
 
-def report_title(pdf):
-    firstPage = plt.figure(figsize=(8.27,11.69))
-    firstPage.clf()
-    txt = 'TRISTAN experimental medicine study: \n Results on the primary objective \n\n Internal report \n  TRISTAN work package 2 \n 01 oct 2023'
-    firstPage.text(0.5,0.5,txt, transform=firstPage.transFigure, size=16, ha="center")
-    pdf.savefig()
+
+def _line_plots(src, ax1, ax2, ylim=[50,5]):
+
+    output = pd.read_pickle(os.path.join(src, 'parameters_ext.pkl'))
+    visits = output.visit[output.visit!='change (%)'].unique()
+
+    fontsize=10
+    markersize=6
+    ax1.set_title('Hepatocellular uptake rate', fontsize=fontsize, pad=10)
+    ax1.set_ylabel('k_he (mL/min/100mL)', fontsize=fontsize)
+    ax1.set_ylim(0, ylim[0])
+    ax1.tick_params(axis='x', labelsize=fontsize)
+    ax1.tick_params(axis='y', labelsize=fontsize)
+    ax2.set_title('Biliary excretion rate', fontsize=fontsize, pad=10)
+    ax2.set_ylabel('k_bh (mL/min/100mL)', fontsize=fontsize)
+    ax2.set_ylim(0, ylim[1])
+    ax2.tick_params(axis='x', labelsize=fontsize)
+    ax2.tick_params(axis='y', labelsize=fontsize)
+    
+    pivot = pd.pivot_table(output[output.visit==visits[0]], values='value', columns='parameter', index='subject')
+    khe_ref = pivot.loc[:, 'k_he']
+    kbh_ref = pivot.loc[:, 'k_bh']
+    pivot = pd.pivot_table(output[output.visit==visits[1]], values='value', columns='parameter', index='subject')
+    khe_rif = pivot.loc[:, 'k_he']
+    kbh_rif = pivot.loc[:, 'k_bh']
+    
+    for s in khe_ref.index:
+        if s in khe_rif.index:
+            x = [visits[0], visits[1]]
+            khe = [khe_ref[s],khe_rif[s]]
+            kbh = [kbh_ref[s],kbh_rif[s]]
+        else:
+            x = [visits[0]]
+            khe = [khe_ref[s]]
+            kbh = [kbh_ref[s]]            
+        ax1.plot(x, khe, '-', label=str(s), marker=mark[s], markersize=markersize, color=clr[s])
+        ax2.plot(x, kbh, '-', label=str(s), marker=mark[s], markersize=markersize, color=clr[s])
+
+
+def _effect_box_plots(src, ax):
+
+    pars = ['k_he', 'k_bh']
+    df = pd.read_pickle(os.path.join(src, 'parameters_ext.pkl'))
+    all_data = []
+    for par in ['k_he effect size', 'k_bh effect size']:
+        data = df[df.parameter==par].value.values.tolist()
+        all_data.append(data)
+
+    linewidth = 1.0
+    fontsize=10
+    for axis in ['top','bottom','left','right']:
+        ax.spines[axis].set_linewidth(linewidth)
+
+    # box plot
+    boxprops = dict(linestyle='-', linewidth=linewidth, color='black')
+    medianprops = dict(linestyle='-', linewidth=linewidth, color='black')
+    whiskerprops = dict(linestyle='-', linewidth=linewidth, color='black')
+    capprops = dict(linestyle='-', linewidth=linewidth, color='black')
+    flierprops = dict(marker='o', markerfacecolor='white', markersize=6,
+                  markeredgecolor='black', markeredgewidth=linewidth)
+    bplot = ax.boxplot(all_data,
+                        whis = [2.5,97.5],
+                        capprops=capprops,
+                        flierprops=flierprops,
+                        whiskerprops=whiskerprops,
+                        medianprops=medianprops,
+                        boxprops=boxprops,
+                        widths=0.3,
+                        vert=True,  # vertical box alignment
+                        patch_artist=True,  # fill with color
+                        labels=pars)  # will be used to label x-ticks
+    ax.set_xticklabels(labels=pars, fontsize=fontsize)
+    ax.set_yticklabels(labels=ax.get_yticklabels(), fontsize=fontsize)
+
+    # fill with colors
+    for patch in bplot['boxes']:
+        patch.set_facecolor('lightsteelblue')
+
+    # adding horizontal grid line
+    ax.yaxis.grid(True)
+    ax.set_ylabel('Effect size (%)', fontsize=fontsize)
+
+
+def effect_plot(src, ylim=[50,5]):
+    fig, (ax0, ax1, ax2) = plt.subplots(1, 3, width_ratios=[2, 4, 4], figsize=(8,3))
+    fig.subplots_adjust(wspace=0.5)
+    _effect_box_plots(src, ax0)
+    _line_plots(src, ax1, ax2, ylim=ylim)
+    plt.savefig(fname=os.path.join(src, '_effect_plot.png'))
     plt.close()
 
-def report_heading(pdf, txt):
-    firstPage = plt.figure(figsize=(8.27,11.69))
-    firstPage.clf()
-    firstPage.text(0.5,0.5,txt, transform=firstPage.transFigure, size=16, ha="center")
-    pdf.savefig()
-    plt.close()
 
-def derive_effect_size(output):
-    subjects = output.subject.unique()
-    # Create pivot table
-    pivot = pd.pivot_table(output, values='value', index='parameter', columns=['subject', 'visit'])
-    # Calculate effect size as new column for each subject
-    for subj in subjects:
-        base = pivot[subj]['baseline'].values
-        try:
-            rif = pivot[subj]['rifampicin'].values
-            effect = 100*np.divide(rif-base, base)
-        except:
-            effect = np.full(len(base), np.nan)
-        pivot[subj, 'effect'] = effect
-        pivot = pivot.sort_index(axis=1)
-    # Extract only effect size and drop the column label
-    effect = pivot.xs('effect', axis=1, level=1, drop_level=False)
-    effect.columns = effect.columns.droplevel(1)
-    # Parameters in columns
-    effect = effect.T
-    return effect
+def _max_line_plots(output_file, ax1, ax2):
 
-
-
-def split_visits(output):
-    # Create pivot table
-    pivot = pd.pivot_table(output, values='value', index='parameter', columns=['subject', 'visit'])
-    # Extract only effect size and drop the column label
-    baseline = pivot.xs('baseline', axis=1, level=1, drop_level=False)
-    baseline.columns = baseline.columns.droplevel(1)
-    rifampicin = pivot.xs('rifampicin', axis=1, level=1, drop_level=False)
-    rifampicin.columns = rifampicin.columns.droplevel(1)
-    # Parameters in columns
-    return baseline.T, rifampicin.T
-
-def calc_effect_size(output_file, pdf):
     resultsfolder = os.path.dirname(output_file)
-    output = pd.read_csv(output_file)
-    effect = derive_effect_size(output)
-    baseline, rifampicin = split_visits(output)
-    rifampicin.to_csv(os.path.join(resultsfolder, '_table_rifampicin.csv'))
-    baseline.to_csv(os.path.join(resultsfolder, '_table_baseline.csv'))
-    effect.to_csv(os.path.join(resultsfolder, '_table_effect.csv'))
-    # Calculate stats
-    bstats = baseline.describe()
-    bstats = bstats[['k_he', 'k_bh']].round(2)
-    bstats = bstats.rename(columns={"k_he": "k_he baseline (mL/min/100mL)", "k_bh": "k_bh baseline (mL/min/100mL)"})
-    rstats = rifampicin.describe()
-    rstats = rstats[['k_he', 'k_bh']].round(2)
-    rstats = rstats.rename(columns={"k_he": "k_he rifampicin (mL/min/100mL)", "k_bh": "k_bh rifampicin (mL/min/100mL)"})
-    estats = effect.describe()
-    estats = estats[['k_he', 'k_bh']].round(1)
-    estats = estats.rename(columns={"k_he": "k_he effect size (%)", "k_bh": "k_bh effect size (%)"})
-    stats = pd.concat([estats.T, bstats.T, rstats.T])
-    stats=stats.reindex([
-        "k_he effect size (%)",
-        "k_he baseline (mL/min/100mL)",
-        "k_he rifampicin (mL/min/100mL)",
-        "k_bh effect size (%)",
-        "k_bh baseline (mL/min/100mL)",
-        "k_bh rifampicin (mL/min/100mL)",
-        ])
-    stats.to_csv(os.path.join(resultsfolder, '_table_k_stats.csv'))
-    # Save table in pdf report
-    fig, ax = plt.subplots(figsize=(8.27,11.69))
-    #fig.subplots_adjust(left=0.0, right=1.0, bottom=0.1, top=0.9)
-    ax.axis('tight')
-    ax.axis('off')
-    ax.set_title("Rifampicin effect size and absolute values \n of hepatocellular uptake (k_he) and biliary excretion (k_bh)\n of Gadoxetate")
-    table = ax.table(cellText=stats.values,colLabels=stats.columns,rowLabels=stats.index.values,loc='center', cellLoc='center')
-    table.scale(0.5, 1.5)
-    pdf.savefig(fig, bbox_inches='tight')
-
-
-def derive_pars(output_file, results_file=None):
-    output = pd.read_csv(output_file)
-    pivot = pd.pivot_table(output, values='value', columns='parameter', index=['visit','subject'])
-    if not 'k_he_i' in pivot.columns:
-        return pivot
-    khe = pivot['k_he'].values
-    khe_i = pivot['k_he_i'].values
-    khe_f = pivot['k_he_f'].values
-    i = np.isnan(khe_i)
-    khe_i[i] = khe[i]
-    f = np.isnan(khe_f)
-    khe_f[i] = khe[f]
-    khe_2pt = np.stack([khe_i, khe_f])
-    khe_max = np.amax(khe_2pt, axis=0)
-    pivot['k_he_max'] = khe_max
-    khe_min = np.amin(khe_2pt, axis=0)
-    pivot['k_he_min'] = khe_min
-
-    kbh = pivot['k_bh'].values
-    kbh_i = pivot['Kbh_i'].values * (1-pivot['ve'].values/100)
-    kbh_f = pivot['Kbh_f'].values * (1-pivot['ve'].values/100)
-    i = np.isnan(kbh_i)
-    kbh_i[i] = kbh[i]
-    f = np.isnan(kbh_f)
-    kbh_f[i] = kbh[f]
-    kbh_2pt = np.stack([kbh_i, kbh_f])
-    kbh_max = np.amax(kbh_2pt, axis=0)
-    pivot['k_bh_max'] = kbh_max
-    kbh_min = np.amin(kbh_2pt, axis=0)
-    pivot['k_bh_min'] = kbh_min
-    pivot['k_bh_i'] = kbh_i
-    pivot['k_bh_f'] = kbh_f
-    if results_file is not None:
-        pivot.to_csv(results_file)
-    return pivot
-
-
-def line_plot_max_effect(output_file, pdf):
+    output = pd.read_pickle(os.path.join(resultsfolder, 'parameters_ext.pkl'))
+    visits = output.visit[output.visit!='change (%)'].unique()
 
     fontsize=12
-    titlesize=16
     markersize=6
-    fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8.27,11.69))
-    #fig.tight_layout(pad=10.0)
-    fig.subplots_adjust(
-                    left=0.1,
-                    bottom=0.3,
-                    right=0.95,
-                    top = 0.6, 
-                    wspace=0.3,
-                    #hspace=1,
-                    )
-    title = "Maximum effect size. \nIndividual values for hepatocellular uptake (k_he, left) and biliary excretion (k_bh, right) \n of Gadoxetate at baseline (maximum, left of plot) and after administration of rifampicin (minimum, right of plot)." 
-    fig.suptitle(title, fontsize=12)
     ax1.set_title('Hepatocellular uptake rate', fontsize=fontsize, pad=10)
     ax1.set_ylabel('k_he (mL/min/100mL)', fontsize=fontsize)
     ax1.set_ylim(0, 40)
@@ -177,119 +143,44 @@ def line_plot_max_effect(output_file, pdf):
     ax2.set_ylim(0, 3.5)
     ax2.tick_params(axis='x', labelsize=fontsize)
     ax2.tick_params(axis='y', labelsize=fontsize)
-    
-    resultsfolder = os.path.dirname(output_file)
-    pivot = derive_pars(output_file)
-    khe_ref = pivot.loc['baseline', 'k_he_max']
-    khe_rif = pivot.loc['rifampicin', 'k_he_min']
-    kbh_ref = pivot.loc['baseline', 'k_bh_max']
-    kbh_rif = pivot.loc['rifampicin', 'k_bh_min']
-    
-    for s in khe_ref.index:
-        if s in khe_rif.index:
-            x = ['baseline', 'rifampicin']
-            khe = [khe_ref[s],khe_rif[s]]
-            kbh = [kbh_ref[s],kbh_rif[s]]
-        else:
-            x = ['baseline']
-            khe = [khe_ref[s]]
-            kbh = [kbh_ref[s]]            
-        ax1.plot(x, khe, 'k-', label=str(s), marker=mark[s], markersize=markersize)
-        ax2.plot(x, kbh, 'k-', label=str(s), marker=mark[s], markersize=markersize)
-    #ax1.legend(loc='upper center', ncol=5, prop={'size': 14})
-    #ax2.legend(loc='upper center', ncol=5, prop={'size': 14})
-    plot_file = os.path.join(resultsfolder, '_lineplot_max_effect.png')
-    #plt.show()
-    plt.savefig(fname=plot_file)
-    pdf.savefig()
-    plt.close()
 
-
-def line_plot_effect(output_file, pdf):
-
-    fontsize=12
-    titlesize=16
-    markersize=6
-    fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8.27,11.69))
-    #fig.tight_layout(pad=10.0)
-    fig.subplots_adjust(
-                    left=0.1,
-                    bottom=0.3,
-                    right=0.95,
-                    top = 0.6, 
-                    wspace=0.3,
-                    #hspace=1,
-                    )
-    title = "Average effect size. \nIndividual values for hepatocellular uptake (k_he, left) and biliary excretion (k_bh, right)\n of Gadoxetate at baseline (left of plot) and after administration of rifampicin (right of plot)." 
-    fig.suptitle(title, fontsize=12)
-    ax1.set_title('Hepatocellular uptake rate', fontsize=fontsize, pad=10)
-    ax1.set_ylabel('k_he (mL/min/100mL)', fontsize=fontsize)
-    ax1.set_ylim(0, 30)
-    ax1.tick_params(axis='x', labelsize=fontsize)
-    ax1.tick_params(axis='y', labelsize=fontsize)
-    ax2.set_title('Biliary excretion rate', fontsize=fontsize, pad=10)
-    ax2.set_ylabel('k_bh (mL/min/100mL)', fontsize=fontsize)
-    ax2.set_ylim(0, 3.5)
-    ax2.tick_params(axis='x', labelsize=fontsize)
-    ax2.tick_params(axis='y', labelsize=fontsize)
-    
-    resultsfolder = os.path.dirname(output_file)
-    pivot = derive_pars(output_file)
-    khe_ref = pivot.loc['baseline', 'k_he']
-    khe_rif = pivot.loc['rifampicin', 'k_he']
-    kbh_ref = pivot.loc['baseline', 'k_bh']
-    kbh_rif = pivot.loc['rifampicin', 'k_bh']
+    pivot = pd.pivot_table(output[output.visit==visits[0]], values='value', columns='parameter', index='subject')
+    khe_ref = pivot.loc[:, 'k_he_max']
+    kbh_ref = pivot.loc[:, 'k_bh_max']
+    pivot = pd.pivot_table(output[output.visit==visits[1]], values='value', columns='parameter', index='subject')
+    khe_rif = pivot.loc[:, 'k_he_min']
+    kbh_rif = pivot.loc[:, 'k_bh_min']
     
     for s in khe_ref.index:
         if s in khe_rif.index:
-            x = ['baseline', 'rifampicin']
+            x = visits
             khe = [khe_ref[s],khe_rif[s]]
             kbh = [kbh_ref[s],kbh_rif[s]]
         else:
-            x = ['baseline']
+            x = [visits[0]]
             khe = [khe_ref[s]]
             kbh = [kbh_ref[s]]            
-        ax1.plot(x, khe, 'k-', label=str(s), marker=mark[s], markersize=markersize)
-        ax2.plot(x, kbh, 'k-', label=str(s), marker=mark[s], markersize=markersize)
+        ax1.plot(x, khe, '-', label=str(s), marker=mark[s], markersize=markersize, color=clr[s])
+        ax2.plot(x, kbh, '-', label=str(s), marker=mark[s], markersize=markersize, color=clr[s])
     #ax1.legend(loc='upper center', ncol=5, prop={'size': 14})
     #ax2.legend(loc='upper center', ncol=5, prop={'size': 14})
-    plot_file = os.path.join(resultsfolder, '_lineplot_effect.png')
-    #plt.show()
-    plt.savefig(fname=plot_file)
-    pdf.savefig()
-    plt.close()
 
 
-def max_effect_size(output_file, pdf, ref='min'):
+def _max_effect_box_plots(output_file, ax):
+
     resultsfolder = os.path.dirname(output_file)
-    pivot = derive_pars(output_file)
-    khe_rif = pivot.loc['rifampicin', 'k_he_min']
-    khe_base = pivot.loc['baseline', 'k_he_max']
-    khe_ref = pivot.loc['baseline', 'k_he_'+ref]
-    khe_eff = 100*(khe_rif-khe_base)/khe_ref
-    khe_eff = khe_eff[~khe_eff.isnull()]
-    kbh_rif = pivot.loc['rifampicin', 'k_bh_min']
-    kbh_base = pivot.loc['baseline', 'k_bh_max']
-    kbh_ref = pivot.loc['baseline', 'k_bh_'+ref]
-    kbh_eff = 100*(kbh_rif-kbh_base)/kbh_ref
-    kbh_eff = kbh_eff[~kbh_eff.isnull()]
-    all_data = [khe_eff.values.tolist(), kbh_eff.values.tolist()]
+    output = pd.read_pickle(os.path.join(resultsfolder, 'parameters_ext.pkl'))
+    khe = output[output.parameter=='k_he max effect size 1'].value.values.tolist()
+    kbh = output[output.parameter=='k_bh max effect size 1'].value.values.tolist()
+    all_data = [khe, kbh]
     parameters = ['k_he', 'k_bh']
     
     # Create box plot
-    fig, ax = plt.subplots(figsize=(8.27,11.69))
-    linewidth = 1.5
-    fontsize=14
+    linewidth = 1.0
+    fontsize=10
     for axis in ['top','bottom','left','right']:
         ax.spines[axis].set_linewidth(linewidth)
-    fig.subplots_adjust(
-                    left=0.4,
-                    right=0.6,
-                    bottom=0.3,
-                    top = 0.7,
-                    # wspace=0.4,
-                    # hspace=0.4,
-                    )
+
     # box plot
     boxprops = dict(linestyle='-', linewidth=linewidth, color='black')
     medianprops = dict(linestyle='-', linewidth=linewidth, color='black')
@@ -309,8 +200,6 @@ def max_effect_size(output_file, pdf, ref='min'):
                         patch_artist=True,  # fill with color
                         labels=parameters)  # will be used to label x-ticks
     
-    title = "Rifampicin maximum effect size (perc of "+ref+")\n on hepatocellular uptake (k_he, left) and biliary excretion (k_bh, right) of Gadoxetate. \n The boxplot shows median, interquartile range and 95 percent range."
-    ax.set_title(title, fontsize=12, pad=60)
     ax.set_xticklabels(labels=parameters, fontsize=fontsize)
     ax.set_yticklabels(labels=ax.get_yticklabels(), fontsize=fontsize)
 
@@ -320,113 +209,28 @@ def max_effect_size(output_file, pdf, ref='min'):
 
     # adding horizontal grid line
     ax.yaxis.grid(True)
-    ax.set_ylabel('Rifampicin maximum effect size (perc of '+ ref+')', fontsize=fontsize)
+    ax.set_ylabel('Maximum effect size (%)', fontsize=fontsize)
     #ax.set_ylim(-100, 20)
 
-    plot_file = os.path.join(resultsfolder, '_drug_max_effect_ref_'+ref+'.png')
-    plt.savefig(fname=plot_file)
-    pdf.savefig()
+
+def max_effect_plot(output_file):
+    fig, (ax0, ax1, ax2) = plt.subplots(1, 3, width_ratios=[2, 4, 4], figsize=(8,3))
+    fig.subplots_adjust(wspace=0.5)
+    _max_effect_box_plots(output_file, ax0)
+    _max_line_plots(output_file, ax1, ax2)
+    resultsfolder = os.path.dirname(output_file)
+    plt.savefig(fname=os.path.join(resultsfolder, '_max_effect_plot.png'))
     plt.close()
 
 
-def pivot_table(output_file):
-    resultsfolder = os.path.dirname(output_file)
+def tmax_effect(output_file, pdf):
+    # Read parameter file
     output = pd.read_csv(output_file)
-    results_file = os.path.join(resultsfolder, 'pivot.csv')
-    pivot = pd.pivot_table(output, values='value', columns='parameter', index=['visit', 'subject'])
-    pivot.to_csv(results_file)
-
-
-def drug_effect_function(output_file, pdf):
-
-    pars = ['k_he', 'k_bh']
-
-    resultsfolder = os.path.dirname(output_file)
-    output = pd.read_csv(output_file)
-
-    # Create box plots for aorta and liver
-    subjects = output['subject'].unique()
-    structures = output['structure'].unique()
-    for struct in structures:
-        df_struct = output[output.structure==struct]
-        all_data = []
-        parameters = pars
-        for par in parameters:
-            df_par = df_struct[df_struct.parameter==par]
-            data_par = []
-            for s in subjects:
-                df_subj = df_par[df_par.subject==s]
-                df_baseline_subj = df_subj[df_subj.visit=='baseline']
-                df_rifampicin_subj = df_subj[df_subj.visit=='rifampicin'] 
-                if not df_baseline_subj.empty and not df_rifampicin_subj.empty:
-                    v0 = df_baseline_subj['value'].values[0]
-                    v1 = df_rifampicin_subj['value'].values[0]
-                    if v0 != 0:
-                        data_par.append(100*(v1-v0)/v0)
-            all_data.append(data_par)
-
-    fig, ax = plt.subplots(figsize=(8.27,11.69))
-    linewidth = 1.5
-    fontsize=14
-    for axis in ['top','bottom','left','right']:
-        ax.spines[axis].set_linewidth(linewidth)
-    fig.subplots_adjust(
-                    left=0.4,
-                    right=0.6,
-                    bottom=0.3,
-                    top = 0.7,
-                    # wspace=0.4,
-                    # hspace=0.4,
-                    )
-
-    # box plot
-    boxprops = dict(linestyle='-', linewidth=linewidth, color='black')
-    medianprops = dict(linestyle='-', linewidth=linewidth, color='black')
-    whiskerprops = dict(linestyle='-', linewidth=linewidth, color='black')
-    capprops = dict(linestyle='-', linewidth=linewidth, color='black')
-    flierprops = dict(marker='o', markerfacecolor='white', markersize=6,
-                  markeredgecolor='black', markeredgewidth=linewidth)
-    bplot = ax.boxplot(all_data,
-                        whis = [2.5,97.5],
-                        capprops=capprops,
-                        flierprops=flierprops,
-                        whiskerprops=whiskerprops,
-                        medianprops=medianprops,
-                        boxprops=boxprops,
-                        widths=0.3,
-                        vert=True,  # vertical box alignment
-                        patch_artist=True,  # fill with color
-                        labels=parameters)  # will be used to label x-ticks
-    title = "Rifampicin effect size (%)\n on hepatocellular uptake (k_he, left) and biliary excretion (k_bh, right) of Gadoxetate. \n The boxplot shows median, interquartile range and 95 percent range."
-    ax.set_title(title, fontsize=12, pad=60)
-    ax.set_xticklabels(labels=parameters, fontsize=fontsize)
-    ax.set_yticklabels(labels=ax.get_yticklabels(), fontsize=fontsize)
-
-    # fill with colors
-    for patch in bplot['boxes']:
-        patch.set_facecolor('white')
-
-    # adding horizontal grid line
-    ax.yaxis.grid(True)
-    ax.set_ylabel('Rifampicin effect size (%)', fontsize=fontsize)
-    #ax.set_ylim(-100, 20)
-
-    #plt.show()
-
-    plot_file = os.path.join(resultsfolder, '_drug_effect_function.png')
-    plt.savefig(fname=plot_file)
-    pdf.savefig()
-    plt.close()
-
-
-
-
-def diurnal_k(output_file, pdf):
-    resultsfolder = os.path.dirname(output_file)
-    output = pd.read_csv(output_file)
+    output = output[output.structure=='liver']
+    # Set up figure
     fontsize=12
     titlesize=14
-    markersize=6
+    markersize=2
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2,2,figsize=(8.27,11.69))
     fig.subplots_adjust(
                     left=0.1,
@@ -436,7 +240,7 @@ def diurnal_k(output_file, pdf):
                     wspace=0.3,
                     #hspace=1,
                     )
-    title = "Intra-day changes \nin hepatocellular uptake (k_he, top row) and biliary excretion (k_bh, bottom row) of Gadoxetate \n at baseline (left column) and after administration of rifampicin (right column). \n Full lines connect values taken in the same subject at the same day." 
+    title = "Effect of changing acquisition time \non hepatocellular uptake (k_he, top row) and biliary excretion (k_bh, bottom row) of Gadoxetate \n at baseline (left column) and after administration of rifampicin (right column). \n Full lines connect values taken in the same subject." 
     fig.suptitle(title, fontsize=12)
     ax = {
         'baselinek_he': ax1,
@@ -445,73 +249,121 @@ def diurnal_k(output_file, pdf):
         'rifampicink_bh': ax4,
     }
     ax1.set_title('Baseline', fontsize=titlesize)
-    ax1.set_xlabel('Time of day (hrs)', fontsize=fontsize)
+    ax1.set_xlabel('Scan time (mins)', fontsize=fontsize)
     ax1.set_ylabel('k_he (mL/min/100mL)', fontsize=fontsize)
     ax1.set_ylim(0, 50)
     ax1.tick_params(axis='x', labelsize=fontsize)
     ax1.tick_params(axis='y', labelsize=fontsize)
     ax2.set_title('Rifampicin', fontsize=titlesize)
-    ax2.set_xlabel('Time of day (hrs)', fontsize=fontsize)
+    ax2.set_xlabel('Scan time (mins)', fontsize=fontsize)
     ax2.set_ylabel('k_he (mL/min/100mL)', fontsize=fontsize)
     ax2.set_ylim(0, 3)
     ax2.tick_params(axis='x', labelsize=fontsize)
     ax2.tick_params(axis='y', labelsize=fontsize)
     #ax3.set_title('Baseline', fontsize=titlesize)
-    ax3.set_xlabel('Time of day (hrs)', fontsize=fontsize)
+    ax3.set_xlabel('Scan time (mins)', fontsize=fontsize)
     ax3.set_ylabel('k_bh (mL/min/100mL)', fontsize=fontsize)
     ax3.set_ylim(0, 4)
     ax3.tick_params(axis='x', labelsize=fontsize)
     ax3.tick_params(axis='y', labelsize=fontsize)
     #ax4.set_title('Rifampicin', fontsize=titlesize)
-    ax4.set_xlabel('Time of day (hrs)', fontsize=fontsize)
+    ax4.set_xlabel('Scan time (mins)', fontsize=fontsize)
     ax4.set_ylabel('k_bh (mL/min/100mL)', fontsize=fontsize)
     ax4.set_ylim(0, 4)
     ax4.tick_params(axis='x', labelsize=fontsize)
     ax4.tick_params(axis='y', labelsize=fontsize)
     
-    # Create box plots for aorta and liver
-    structures = output.structure.unique()
-    for struct in structures:
-        df_struct = output[output.structure==struct]
-        visits = df_struct.visit.unique()
-        for visit in visits:
-            df_visit = df_struct[df_struct.visit==visit]
-            subjects = df_visit.subject.unique()
-            for s in subjects:
-                df_subj = df_visit[df_visit.subject==s]
+    # Create plots
+    for visit in output.visit.unique():
+        for subject in output.subject.unique():
+            df = output[output.visit==visit]
+            df = df[df.subject==subject]
+            if not df.empty:
+                df = pd.pivot(df, values='value', columns='parameter', index='tmax') 
                 for par in ['k_he', 'k_bh']:
-                    data_subj = []
-                    df_par = df_subj[df_subj.parameter=='ve']
-                    if not df_par.empty:
-                        ve = df_par.value.values[0]
-                        vh = 1-ve/100
-                    if par == 'k_bh':
-                        par_t = ['Kbh_i', 'Kbh_f']
-                    else:
-                        par_t = [par+'_i', par+'_f']
-                    for p in par_t:
-                        df_par = df_subj[df_subj.parameter==p]
-                        if not df_par.empty:
-                            v = df_par.value.values[0]
-                            if par == 'k_bh':
-                                v *= vh
-                            data_subj.append(v)
-                    t = []
-                    for p in ['t0', 't3']:
-                        df_par = df_subj[df_subj.parameter==p]
-                        if not df_par.empty:
-                            v = df_par.value.values[0]
-                            t.append(v)
-                    if len(data_subj) == 2:
-                        ax[visit+par].plot(t, data_subj, 'k-', label=str(s), marker=mark[s], markersize=markersize)
+                    ax[visit+par].plot(df.index.values/60, df[par].values, 'k-', label=str(subject), marker=mark[subject], markersize=markersize)
 
-    plot_file = os.path.join(resultsfolder, '_diurnal_function.png')
+    # Export results
+    resultsfolder = os.path.dirname(output_file)
+    plot_file = os.path.join(resultsfolder, '_tmax.png')
     plt.savefig(fname=plot_file)
     pdf.savefig()
+    #plt.show()
     plt.close()
+                
 
+def diurnal_k(src, ylim=[50,6]):
+    output = pd.read_pickle(os.path.join(src, 'parameters_ext.pkl'))
+    visits = output.visit[output.visit!='change (%)'].unique()
 
+    fontsize=10
+    titlesize=12
+    markersize=6
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2,2,figsize=(8,8))
+    fig.subplots_adjust(
+                    left=0.1,
+                    right=0.9,
+                    bottom=0.1,
+                    top = 0.9, 
+                    wspace=0.3,
+                    #hspace=1,
+                    )
+    ax = {
+        visits[0]+'k_he': ax1,
+        visits[1]+'k_he': ax2,
+        visits[0]+'k_bh': ax3,
+        visits[1]+'k_bh': ax4,
+    }
+    ax1.set_title(visits[0], fontsize=titlesize)
+    ax1.set_xlabel('Time of day (hrs)', fontsize=fontsize)
+    ax1.set_ylabel('k_he (mL/min/100mL)', fontsize=fontsize)
+    ax1.set_ylim(0, ylim[0])
+    ax1.tick_params(axis='x', labelsize=fontsize)
+    ax1.tick_params(axis='y', labelsize=fontsize)
+    ax2.set_title(visits[1], fontsize=titlesize)
+    ax2.set_xlabel('Time of day (hrs)', fontsize=fontsize)
+    ax2.set_ylabel('k_he (mL/min/100mL)', fontsize=fontsize)
+    ax2.set_ylim(0, ylim[0])
+    ax2.tick_params(axis='x', labelsize=fontsize)
+    ax2.tick_params(axis='y', labelsize=fontsize)
+    #ax3.set_title('Baseline', fontsize=titlesize)
+    ax3.set_xlabel('Time of day (hrs)', fontsize=fontsize)
+    ax3.set_ylabel('k_bh (mL/min/100mL)', fontsize=fontsize)
+    ax3.set_ylim(0, ylim[1])
+    ax3.tick_params(axis='x', labelsize=fontsize)
+    ax3.tick_params(axis='y', labelsize=fontsize)
+    #ax4.set_title('Rifampicin', fontsize=titlesize)
+    ax4.set_xlabel('Time of day (hrs)', fontsize=fontsize)
+    ax4.set_ylabel('k_bh (mL/min/100mL)', fontsize=fontsize)
+    ax4.set_ylim(0, ylim[1])
+    ax4.tick_params(axis='x', labelsize=fontsize)
+    ax4.tick_params(axis='y', labelsize=fontsize)
 
+    # Create box plots
+    for visit in visits:
+        df_visit = output[output.visit==visit]
+        subjects = df_visit.subject.unique()
+        for s in subjects:
+            df_subj = df_visit[df_visit.subject==s]
+            for par in ['k_he', 'k_bh']:
+                data_subj = []
+                for p in [par+'_i', par+'_f']:
+                    df_par = df_subj[df_subj.parameter==p]
+                    if not df_par.empty:
+                        v = df_par.value.values[0]
+                        data_subj.append(v)
+                t = []
+                for p in ['t0', 't3']:
+                    df_par = df_subj[df_subj.parameter==p]
+                    if not df_par.empty:
+                        v = df_par.value.values[0]
+                        t.append(v)
+                if len(data_subj) == 2:
+                    ax[visit+par].plot(t, data_subj, '-', label=str(s), marker=mark[s], markersize=markersize, color=clr[s])
+
+    plot_file = os.path.join(src, '_diurnal_function.png')
+    plt.savefig(fname=plot_file)
+    plt.close()
 
 
 
@@ -539,7 +391,7 @@ def line_plot_extracellular(output_file):
         'Te': ax2,
     }
     subjects = output['subject'].unique()
-    visits = ['baseline', 'rifampicin']
+    visits = output.visit[output.visit!='change (%)'].unique()
     structures = output['structure'].unique()
     for struct in structures:
         df_struct = output[output.structure==struct]
@@ -626,7 +478,7 @@ def create_box_plot(output_file, ylim={}):
 
     # Create box plots for each parameter
     subjects = output['subject'].unique()
-    visits = ['baseline', 'rifampicin']
+    visits = output.visit[output.visit!='change (%)'].unique()
     structures = output['structure'].unique()
     for struct in structures:
         df_struct = output[output.structure==struct]
@@ -676,10 +528,10 @@ def create_bar_chart(output_file, ylim={}):
 
     resultsfolder = os.path.dirname(output_file)
     output = pd.read_csv(output_file)
+    visits = output.visit[output.visit!='change (%)'].unique()
 
     # Create bar charts for each parameter
     subjects = output['subject'].unique()
-    visits = ['baseline', 'rifampicin']
     structures = output['structure'].unique()
     for struct in structures:
         df_struct = output[output.structure==struct]
@@ -701,7 +553,7 @@ def create_bar_chart(output_file, ylim={}):
             multiplier = 0
 
             fig, ax = plt.subplots(layout='constrained')
-            colors = {'baseline':'slateblue', 'rifampicin':'coral'}
+            colors = {visits[0]:'slateblue', visits[1]:'coral'}
             for attribute, measurement in bar_chart.items():
                 offset = width * multiplier
                 if measurement != np.nan:
@@ -712,12 +564,31 @@ def create_bar_chart(output_file, ylim={}):
             # Add some text for labels, title and custom x-axis tick labels, etc.
             units = df.unit.unique()[0]
             ax.set_ylabel(par + ' (' + str(units) + ')')
-            ax.set_title('Drug effect on ' + par)
+            ax.set_title('Values per visit ' + par)
             ax.set_xticks(x + width, subjects)
             ax.legend(loc='upper left', ncols=2)
             if par in ylim:
                 ax.set_ylim(ylim[par][0], ylim[par][1])
-
-            plot_file = os.path.join(resultsfolder, '_plot_' + struct + '_' + par + '.png')
+            
+            plot_file = os.path.join(resultsfolder, '_plot_' + par + '_' + struct + '.png')
             plt.savefig(fname=plot_file)
             plt.close()
+
+
+# def effect_size(resultsfolder):
+#     stats = pd.read_pickle(os.path.join(resultsfolder, '_table_k_stats.pkl'))
+#     # Save table in pdf report
+#     fig, ax = plt.subplots(figsize=(11, 4))
+#     fig.subplots_adjust(left=0.1, right=1.0, bottom=0.1, top=0.9)
+#     ax.axis('tight')
+#     ax.axis('off')
+#     table = ax.table(cellText=stats.values,colLabels=stats.columns,rowLabels=stats.index.values,loc='center', cellLoc='center')
+#     table.auto_set_font_size(False)
+#     table.set_fontsize(12)
+#     table.scale(0.65, 1.7)
+#     #plt.show()
+#     plt.savefig(fname=os.path.join(resultsfolder, 'effect_size.png' ))
+#     plt.close()
+
+if __name__ == "__main__":
+    tmax_effect()
