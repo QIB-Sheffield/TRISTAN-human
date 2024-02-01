@@ -1,7 +1,7 @@
 import numpy as np
 import wezel
-import dbdicom as db
-from mdreg import MDReg
+#import dbdicom as db
+#from mdreg import MDReg
 
 import menu as tristan
 wsl = wezel.app(wezel.apps.dicom.Windows)
