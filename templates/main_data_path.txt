@@ -1,0 +1,31 @@
+path\to\the\main\data\directory
+path\to\directory\to\save\outputs
+
+***** DELETE EVERYTHING AFTER PATHS TWO LINE FILE ONLY*********
+
+Single line text file with the path to your main data directory in the first line
+
+Structure of directory this path points to:
+
+MAIN DIRECTORY
+  |
+  |
+  |---SubjectID1
+  |	|
+  |	|--Visit1Scan1
+  |	|--Visit1Scan2
+  |	|--Visit2Scan1
+  |	|--Visit2Scan2
+  |---SubjectID2
+  |	|
+  |	|--Visit1Scan1
+  |	|--Visit1Scan2
+  |	|--Visit2Scan1
+  |	|--Visit2Scan2
+  .	.
+  .	.
+  .	.
+
+Detail the Subject IDs and Scan driectory names in your data_finder.csv for navigation within the main directory path
+
+  
