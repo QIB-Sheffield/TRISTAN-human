@@ -4,6 +4,7 @@ import time
 import itk
 import mdreg
 from utilities import helper
+import matplotlib.pyplot as plt
 
 def setup_mdreg(info, fit_interval = None):
     '''Main function for DCE model-driven registration
@@ -14,27 +15,16 @@ def setup_mdreg(info, fit_interval = None):
     '''
     subject, visit, scan = info['subject'], info['visit'], info['scan']
     subject_path = os.path.join(f'Subject_{subject}', f'Visit_{visit}', f'Scan_{scan}')
-    coreg_path = os.path.join(info['output_path'],'coreg', subject_path)
-    aif_path = os.path.join(info['output_path'],'aif', subject_path)
+    coreg_path = os.path.join(info['output_path'],'coreg')
+    aif_path = os.path.join(info['output_path'],'aif')
+    arrays_path = os.path.join(info['output_path'],'arrays', subject_path)
+    aif_file = f"S{subject}_v{visit}_s{scan}_aif_prec.npz"
+    
     
     logger = info['logger']
 
     helper.check_dirs_exist(coreg_path)
 
-    if end_point is None:
-        logger.info("End point not specified, fitting full dynamic data")
-
-    logger.info(f"Running coregistration for Subject {subject}, Visit {visit}, Scan {scan}")
-    logger.info(f"Starting aif and dynamic data loading")
-    
-    aif = np.load(f"{aif_path}\\s{subject}_v{visit}_s{scan}_aif.npz",allow_pickle=True)['aif'] 
-    
-    logger.info(f"Loaded aif for Subject {subject}, Visit {visit}, Scan {scan}")
-    
-    data = np.load(f"{info['data_path']}\\combined_dynamic.npz",allow_pickle=True)
-    
-    logger.info(f"Loaded dynamic data for Subject {subject}, Visit {visit}, Scan {scan}")
-    
     # Set interval if ony want to motionn correction only part of the full dynamic
     # Default is 0 which returns the entire array found in combined_dynamic.npz
     
@@ -43,6 +33,20 @@ def setup_mdreg(info, fit_interval = None):
     elif not fit_interval:
         start_point = 0
         end_point = None
+
+    if end_point is None:
+        logger.info("End point not specified, fitting full dynamic data")
+
+    logger.info(f"Running coregistration for Subject {subject}, Visit {visit}, Scan {scan}")
+    logger.info(f"Starting aif and dynamic data loading")
+    
+    aif = np.load(os.path.join(aif_path, aif_file), allow_pickle=True)['aif']
+    
+    logger.info(f"Loaded aif for Subject {subject}, Visit {visit}, Scan {scan}")
+    
+    data = np.load(os.path.join(arrays_path, 'combined_dynamic.npz'), allow_pickle=True)
+    
+    logger.info(f"Loaded dynamic data for Subject {subject}, Visit {visit}, Scan {scan}")
     
     array = data['data'][:,:,:,start_point:end_point]
     aif = aif[start_point:end_point]
@@ -80,6 +84,6 @@ def setup_mdreg(info, fit_interval = None):
                                     
                                     
 
-    np.savez_compressed('{}\\Sub{}_V{}_S{}_coreg.npz'.format(coreg_path, subject, visit, scan), coreg=coreg, fit=fit, pars=pars, spacing=spacing)
+    np.savez_compressed(os.path.join(coreg_path,f'Sub{subject}_V{visit}_S{scan}_coreg.npz'), coreg=coreg, fit=fit, pars=pars, spacing=spacing)
 
     return  

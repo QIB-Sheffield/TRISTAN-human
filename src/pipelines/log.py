@@ -4,6 +4,8 @@ import os
 
 def create_logger(subject_details):
     """Function to create a run log"""
+    
+    subject, visit, scan = subject_details
 
     # Create a directory for log files if it doesn't exist
     os.makedirs('log_files', exist_ok=True)
@@ -11,11 +13,12 @@ def create_logger(subject_details):
     # Create a logger
     log   = logging.getLogger(__name__)
 
-    subject, visit, scan = subject_details
+    current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_name = f's{subject}_v{visit}_s{scan}_{current_time}.log'
 
     # Set log file configuration
-    current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
-    logging.basicConfig(filename=f'log_files\\s{subject}_v{visit}_s{scan}_{current_time}.log', encoding='utf-8', level=logging.DEBUG)
+    
+    logging.basicConfig(filename=os.path.join('log_files',log_name), encoding='utf-8', level=logging.DEBUG)
     
     return log
 

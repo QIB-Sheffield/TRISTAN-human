@@ -18,8 +18,7 @@ def setup_segmentation(info, seg_type):
     elif seg_type == 'post_coreg':
         array_path = os.path.join(info['output_path'], 'coreg')
         data_4d =  np.load(os.path.join(array_path, f'Sub{subject}_V{visit}_S{scan}_coreg.npz'))['coreg']
-        #dims = np.load(os.path.join(array_path, f'Sub{subject}_V{visit}_S{scan}_coreg.npz'))['spacing']
-        dims = np.load(os.path.join(info['output_path'], 'arrays', f'Subject_{5}', f'Visit_{visit}', f'Scan_{scan}', 'combined_dynamic.npz'))['spacing']
+        dims = np.load(os.path.join(info['output_path'], 'arrays', f'Subject_{subject}', f'Visit_{visit}', f'Scan_{scan}', 'combined_dynamic.npz'))['spacing']
 
     aif_path = os.path.join(info['output_path'], f'aif')
     liver_path = os.path.join(info['output_path'], f'liver')
@@ -33,7 +32,7 @@ def setup_segmentation(info, seg_type):
     if info['study_name'] == 'tristan_twocomp':
         data_axial_max = np.flip(data_axial_max, axis=1)
 
-    output_folder = os.path.join(array_path, 'masks', f'S{subject}_v{visit}_s{scan}_max')
+    output_folder = os.path.join(info['output_path'], 'masks', f'S{subject}_v{visit}_s{scan}_max')
     aorta_mask, liver_mask = run_totalsegmentator(data_axial_max, dims_axial, output_folder, seg_type, format='3D',
                                     task="total_mr", return_mask=True,
                                     quiet=True, verbose=True)
@@ -61,7 +60,7 @@ def save_volumes_as_nifti(volumes, voxel_dim, output_folder, output_file='volume
     helper.check_dirs_exist(output_folder)
     #for time, Z, X, Y in volumes.shape: #(215, 72, 224, 224)
     affine = np.diag([voxel_dim[0], voxel_dim[1], voxel_dim[2], 1])
-        # Stack slices into a 3D volume
+    # Stack slices into a 3D volume
     
     if vol_format == '3D':
         time, Z, X, Y = volumes.shape
@@ -82,11 +81,10 @@ def save_volumes_as_nifti(volumes, voxel_dim, output_folder, output_file='volume
             volume_data = ndi.rotate(volume_data, rotate, axes=(0,1), reshape=False)
             
             nifti_img = nib.Nifti1Image(volume_data, affine=affine)
-            #numb = int(vol_3d)
+
             output_path = os.path.join(output_folder, f"{output_file}.nii.gz")
             nib.save(nifti_img, output_path)
         else:
-            #time, Z, X, Y = volumes.shape
             volume_data = volumes[vol_3d].transpose(flip_axes[0],flip_axes[1],flip_axes[2])
             volume_data = ndi.rotate(volume_data, rotate, axes=(0,1), reshape=False)
             
@@ -96,9 +94,6 @@ def save_volumes_as_nifti(volumes, voxel_dim, output_folder, output_file='volume
             nib.save(nifti_img, output_path)
     else:
             print(f"{vol_format} format not supported.")
-        
-    #if verbose:    
-            #print(f"...Saved 3D NIfTI file to {output_file}...")
     
 
     if return_nifti:
@@ -143,8 +138,6 @@ def run_totalsegmentator(dicom_4d_array, dims, output_folder, seg_type, format='
     volume_liver = ndi.rotate(volume_liver, 180, axes=(0,1), reshape=False)
     volume_liver = np.transpose(volume_liver, (2, 0, 1))
 
-    shutil.rmtree(labels_folder)
-    shutil.rmtree(img_folder)
 
     if verbose:
         print("\n...<<Masks created>>...")
@@ -157,6 +150,7 @@ def run_totalsegmentator(dicom_4d_array, dims, output_folder, seg_type, format='
 
     if seg_type == 'pre_coreg':
         np.savez_compressed(os.path.join(output_folder, 'aorta_mask_precoreg.npz'), aorta_mask=volume_aorta)
+        np.savez_compressed(os.path.join(output_folder, 'masks_precoreg.npz'), aorta_mask=volume_aorta, liver_mask=volume_liver)
     elif seg_type == 'post_coreg':
         np.savez_compressed(os.path.join(output_folder, 'masks_postcoreg.npz'), aorta_mask=volume_aorta, liver_mask=volume_liver)
     
