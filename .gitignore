@@ -147,4 +147,9 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# Data storage
+data/
+log_files/
+tristan_twocomp/
+
 # End of https://www.toptal.com/developers/gitignore/api/python
