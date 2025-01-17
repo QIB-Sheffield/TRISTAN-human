@@ -4,6 +4,7 @@ import dbdicom as db
 import pandas as pd
 from utilities import helper
 import nibabel as nib
+import traceback
 
 def arrays_from_dicom(info):
     # Extract the subject, visit and scan numbers
@@ -14,15 +15,24 @@ def arrays_from_dicom(info):
 
     database = db.database(info['data_path'])
 
-    series = database.studies()[0].series()
+    all_series_in_study = database.studies()[0].series()
+    
 
-    for instance in series:
-                
-        instance.SeriesDescription = format_series_description(str(instance.SeriesDescription))
-        sorted_np_export(instance, scan_path)
+    for series in all_series_in_study:
+        # odd bug where sometimes series description is a list for localiser scans
+        # more so if new dbdicom is used
+        # also some series descriptions have special characters that need to be removed
+        # see format_series_description function below
+        #
+        # if isinstance(desc, list):
+        #     desc = desc[0]
+        # if '*' or ':' or '-' or '/' or "'" in desc:
+        #     series.SeriesDescription = format_series_description(str(desc))
         
-        if 'T1Map_LL' in instance.SeriesDescription:
-            export_inversion_times(instance, scan_path)
+        sorted_np_export(series, scan_path)
+        
+        if 'T1Map_LL' in series.SeriesDescription:
+            export_inversion_times(series, scan_path)
     
     combine_dynamic(scan_path)
 
@@ -41,9 +51,33 @@ def export_inversion_times(instance, path):
         inversion_times = instance.InversionTime
         spacing = np.append(instance.PixelSpacing, instance.SliceThickness)
         if 'POST' in instance.label():
-            np.save(f'{path}\\inversion_times_postc.npz', inversion_times = inversion_times, spacing = spacing)
+            np.savez(os.path.join(path, 'inversion_times_postc.npz') , inversion_times = inversion_times, spacing = spacing)
         else:
-            np.save(f'{path}\\inversion_times_prec.npz', inversion_times = inversion_times, spacing = spacing)
+            np.savez(os.path.join(path, 'inversion_times_prec.npz') , inversion_times = inversion_times, spacing = spacing)
+    except Exception:
+        pass
+
+    return
+
+def export_affine(instance, path):
+
+    try:
+        affine = instance.affine()
+        affine_path = os.path.join(path, 'affine')
+        helper.check_dirs_exist(affine_path)
+        affine_file = os.path.join(affine_path, f'{instance.label()}.npz')
+        np.savez_compressed(affine_file, affine=affine)
+        return
+    except Exception:
+        pass
+
+    try:
+        affine = instance.unique_affines()
+        affine_path = os.path.join(path, 'affine')
+        helper.check_dirs_exist(affine_path)
+        affine_file = os.path.join(affine_path, f'{instance.label()}_unique.npz')
+        np.savez_compressed(affine_file, affine=affine)
+        return
     except Exception:
         pass
 
@@ -98,6 +132,10 @@ def format_series_description(description):
         format_description = description.replace(':', '')
     elif '-' in description:
         format_description = description.replace('-', '_')
+    elif '/' in description:
+        format_description = description.replace('/', '')
+    elif "'" in description:
+        format_description = description.replace("'", '')
     else:
         return description
 
@@ -133,21 +171,33 @@ def sorted_np_export_ge(instance, path):
         if 'DISCO' in instance.label():
             print(f'starting timepoints for DISCO {instance.SeriesNumber}')
             timepoints = instance.TriggerTime + (instance.AcquisitionTime*1000)
-            np.savez_compressed('{}\\dyn_timepoints_{}.npz'.format(path, instance.SeriesNumber), timepoints=timepoints)
-            np.savez_compressed('{}\\dyn_spacing_{}.npz'.format(path, instance.SeriesNumber), spacing = np.append(instance.PixelSpacing, instance.SliceThickness))
+            np.savez_compressed(os.path.join(path, 'dyn_timepoints_{}.npz'.format(instance.SeriesNumber)) , timepoints = timepoints)
+            np.savez_compressed(os.path.join(path, 'dyn_spacing_{}.npz'.format(instance.SeriesNumber)) , spacing = np.append(instance.PixelSpacing, instance.SliceThickness))
+            np.savez_compressed(os.path.join(path, 'dyn_header_{}.npz'.format(instance.SeriesNumber)) , fa = instance.FlipAngle, Tr=instance.RepetitionTime, weight=instance.PatientWeight, study_date=instance.StudyDate)
     except Exception:
         pass
 
     try:
         instance.export_as_npy(path, ['SliceLocation','TriggerTime'])
     except Exception:
+        error_message = traceback.format_exc()
+        print(error_message)
         try:
             instance.export_as_npy(path, ['SliceLocation','InstanceNumber'])
         except Exception:
+            error_message = traceback.format_exc()
+            print(error_message)
             try:
                 instance.export_as_npy(path, ['InstanceNumber', 'SliceLocation'])
             except Exception:
+                error_message = traceback.format_exc()
+                print(error_message)
                 instance.export_as_npy(path)
+
+    try:
+        export_affine(instance, path)
+    except Exception:
+        pass
 
     return
 
@@ -165,9 +215,9 @@ def sorted_np_export_siemens_philips(instance, path):
         if len(instance.AcquisitionTime) > 100:
             if not instance.SeriesDescription:
                 instance.SeriesDescription = 'dynamic'
-                
-            np.save('{}\\dyn_timepoints_{}.npy'.format(path, instance.SeriesNumber), instance.AcquisitionTime)
-            np.save('{}\\dyn_spacing.npy_{}'.format(path, instance.SeriesNumber), np.append(instance.PixelSpacing, instance.SliceThickness))
+            
+            np.savez_compressed(os.path.join(path, 'dyn_timepoints_{}.npz'.format(instance.SeriesNumber)) , timepoints = instance.AcquisitionTime)
+            np.savez_compressed(os.path.join(path, 'dyn_spacing_{}.npz'.format(instance.SeriesNumber)) , spacing = np.append(instance.PixelSpacing, instance.SliceThickness))
     except Exception:
         pass
 
@@ -218,10 +268,13 @@ def combine_dynamic(scan_path):
 
     long_timepoints = stitch_timepoints(dyn_time_paths)
     long_timeseries = stitch_timeseries(dynamic_files)
-    spacing = np.load(f'{scan_path}\\dyn_spacing_15.npz')['arr_0']
+    spacing = np.load(os.path.join(scan_path,'dyn_spacing_15.npz'))['spacing']
+    header_info = np.load(os.path.join(scan_path,'dyn_header_15.npz'))
+    fa = header_info['fa'] # degrees
+    Tr = header_info['Tr'] # ms
     
     print('Now saving combined dynamic data')
-    np.savez_compressed(f'{scan_path}\\combined_dynamic.npz', data=long_timeseries, timepoints=long_timepoints, spacing=spacing)
+    np.savez_compressed(os.path.join(scan_path,'combined_dynamic.npz'), data=long_timeseries, timepoints=long_timepoints, spacing=spacing, fa=fa, Tr=Tr)
     print('Combined dynamic data saved')
 
     return
