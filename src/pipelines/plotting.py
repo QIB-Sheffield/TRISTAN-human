@@ -10,7 +10,12 @@ def overlay_masks(info, checkpoint):
     subject_path = os.path.join(f'Subject_{subject}', f'Visit_{visit}', f'Scan_{scan}')
     data_path = os.path.join(output_path, 'arrays', subject_path, 'combined_dynamic.npz')
 
-    mask_path = os.path.join(output_path, 'masks', f'S{subject}_v{visit}_s{scan}_max',f'masks_{checkpoint}.npz')
+    if checkpoint == 'pre_coreg':
+         scan_type = 'precoreg'
+    elif checkpoint == 'post_coreg':
+        scan_type = 'postcoreg'
+
+    mask_path = os.path.join(output_path, 'masks', f'S{subject}_v{visit}_s{scan}_max',f'masks_{scan_type}.npz')
     masks = np.load(mask_path)
     aorta = masks['aorta_mask']
     liver = masks['liver_mask']
