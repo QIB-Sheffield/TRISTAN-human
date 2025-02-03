@@ -5,12 +5,19 @@ nibabel
 pydicom
 Pillow
 matplotlib
-dbdicom
-mdreg
-dcmri
 dipy
 pyvista
+pyvistaqt
 TotalSegmentator
 tqdm
 xlsxwriter
 openpyxl
+zarr
+napari
+dask
+# dbdicom
+# mdreg
+# dcmri
+# vreg
+# miblab
+# wezel

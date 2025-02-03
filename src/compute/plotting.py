@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import math
 import numpy as np
 import os
-from utilities import helper
+from . import helper
 
 def overlay_masks(info, checkpoint):
     output_path = info['output_path']

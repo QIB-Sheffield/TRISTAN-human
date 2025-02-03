@@ -1,12 +1,13 @@
 import os
 import pandas as pd
 
-def details_dict(subject_details, study_name, logger=None):
-    rel_path = os.path.dirname(__file__)
-    data_finder_path = os.path.join(rel_path, '..', '..', 'data', 'data_finder.csv')
-    df = pd.read_csv(data_finder_path)
+def details_dict(datapath, resultspath, subject, visit, scan, logger):
 
-    subject, visit, scan = subject_details
+    # This can simplify - read from directories rather than header.csv
+    
+    study_name = 'tristan_twocomp'
+    data_finder_path = os.path.join(datapath, 'header.csv')
+    df = pd.read_csv(data_finder_path)
     
     # Find the row in the dataframe corresponding to the volunteer number and visit number
     row = df.loc[(df['Subject No'] == subject) & (df['Visit'] == visit)]
@@ -15,29 +16,25 @@ def details_dict(subject_details, study_name, logger=None):
     dirname = row['Directory Name'].values[0]
     comp_name = row['Drug'].values[0]
     subject_id = row['Subject ID'].values[0]
-    
-    main_data_path_file = os.path.join(rel_path, '..', '..', 'data', 'data_paths.txt')
-    with open(main_data_path_file, 'r') as file:
-        main_data_path = file.readline().strip()
-        main_output_path = file.readline().strip()
    
-    data_path = os.path.join(main_data_path, subject_id, dirname)
-    output_path = os.path.join(main_output_path, study_name, comp_name, 'outputs')
-    results_path = os.path.join(main_output_path, study_name, comp_name, 'results')
+    data_path = os.path.join(datapath, subject_id, dirname)
+    output_path = os.path.join(resultspath, study_name, comp_name, 'outputs')
+    results_path = os.path.join(resultspath, study_name, comp_name, 'results')
     subject_path = os.path.join(f'Subject_{subject}', f'Visit_{visit}', f'Scan_{scan}')
     
     if not os.path.exists(data_path):
         logger.error(f"Data path {data_path} does not exist")
 
-    if not os.path.exists(data_finder_path):
-        logger.error(f"Data finder path {data_finder_path} does not exist")
-
     check_dirs_exist(output_path, results_path)
 
+    scan_path = os.path.join(output_path, 'arrays', f'Subject_{subject}', f'Visit_{visit}', f'Scan_{scan}')
+    
+    check_dirs_exist(scan_path)
+
     info = {
-        'subject': subject_details[0],
-        'visit': subject_details[1],
-        'scan': subject_details[2],
+        'subject': subject,
+        'visit': visit,
+        'scan': scan,
         'subject_id': subject_id,
         'study_name': study_name,
         'comp_name': comp_name,
@@ -46,6 +43,7 @@ def details_dict(subject_details, study_name, logger=None):
         'output_path': output_path,
         'results_path': results_path,
         'subject_path': subject_path,
+        'scan_path': scan_path,
         'logger':logger
     }
 

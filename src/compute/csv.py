@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
 import os
-import nibabel as nib
-from utilities import helper
 
 def create_csv(info):
 

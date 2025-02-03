@@ -1,6 +1,6 @@
 import mdreg
 import os
-from utilities import helper
+from . import helper
 import numpy as np
 
 def map_molli(info, scan_type):

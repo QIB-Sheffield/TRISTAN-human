@@ -1,13 +1,22 @@
 import time
 import traceback
-from pipelines import log, export, segment, csv, motioncorrect, plotting, mapping, analysis
-from utilities import helper
+from compute import (
+    io,
+    log, 
+    segment, 
+    csv, 
+    motioncorrect, 
+    plotting, 
+    mapping, 
+    analysis,
+    helper,
+)
 
 ## SETUP LOGGER
 
-def setup_logger(subject_details):
+def setup_logger(subject, visit, scan):
     try:
-        logger = log.create_logger(subject_details)
+        logger = log.create_logger(subject, visit, scan)
         logger.info('Logger setup successfully')
     except Exception as e:
         print("An error occurred:")
@@ -20,9 +29,9 @@ def setup_logger(subject_details):
 
 ## DETAILS SETUP
 
-def setup_detail_dict(subject_details, study_name, logger=None):
+def setup_detail_dict(datapath, resultspath, subject, visit, scan, logger):
     try:
-        info = helper.details_dict(subject_details, study_name, logger)
+        info = helper.details_dict(datapath, resultspath, subject, visit, scan, logger)
         if logger:
             logger.info('Details dictionary setup successfully')
     except Exception as e:
@@ -42,7 +51,7 @@ def setup_detail_dict(subject_details, study_name, logger=None):
 def extract_arrays(info):
     start_time = time.time()
     try:
-        export.arrays_from_dicom(info)
+        io.arrays_from_dicom(info)
         total_time = time.time() - start_time
         if info['logger']:
             info['logger'].info('Data extraction completed in {} seconds'.format(total_time))

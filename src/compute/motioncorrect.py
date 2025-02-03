@@ -3,7 +3,7 @@ import os
 import time
 import itk
 import mdreg
-from utilities import helper
+from . import helper
 import matplotlib.pyplot as plt
 
 def setup_mdreg(info, fit_interval = None):

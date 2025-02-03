@@ -1,23 +1,25 @@
 import os
-import numpy as np
-import dbdicom as db
-import pandas as pd
-from utilities import helper
-import nibabel as nib
 import traceback
+
+import numpy as np
+import nibabel as nib
+
+import dbdicom as db
+from . import helper
+
+
+def read_database(datapath):
+    database = db.database(datapath)
+    database.save()
+    return database
+
 
 def arrays_from_dicom(info):
     # Extract the subject, visit and scan numbers
-    subject, visit, scan = info['subject'], info['visit'], info['scan']
-    scan_path = os.path.join(info['output_path'], 'arrays',f'Subject_{subject}', f'Visit_{visit}', f'Scan_{scan}')
-    
-    helper.check_dirs_exist(scan_path)
-
+    scan_path = info['scan_path']
     database = db.database(info['data_path'])
-
     all_series_in_study = database.studies()[0].series()
     
-
     for series in all_series_in_study:
         # odd bug where sometimes series description is a list for localiser scans
         # more so if new dbdicom is used
@@ -36,7 +38,6 @@ def arrays_from_dicom(info):
     
     combine_dynamic(scan_path)
 
-    return
 
 def export_inversion_times(instance, path):
     '''
@@ -57,7 +58,6 @@ def export_inversion_times(instance, path):
     except Exception:
         pass
 
-    return
 
 def export_affine(instance, path):
 
@@ -81,7 +81,6 @@ def export_affine(instance, path):
     except Exception:
         pass
 
-    return
 
 def nifti_from_arrays(path_to_arrays, path_to_nifti, file_name):
     '''
@@ -114,7 +113,6 @@ def nifti_from_arrays(path_to_arrays, path_to_nifti, file_name):
     # Save the NIfTI image
     nib.save(new_image, os.path.join(path_to_nifti, file_name))
 
-    return
 
 def format_series_description(description):
     '''
@@ -141,6 +139,7 @@ def format_series_description(description):
 
     return format_description
 
+
 def sorted_np_export(instance, path):
     '''
     Export DICOM pixel values as a Numpy file based on the manufacturer DICOM 
@@ -155,8 +154,8 @@ def sorted_np_export(instance, path):
         sorted_np_export_ge(instance, path)
     elif instance.Manufacturer == 'SIEMENS' or instance.Manufacturer == 'Philips':
         sorted_np_export_siemens_philips(instance, path)
-    
-    return
+
+
 
 def sorted_np_export_ge(instance, path):
     '''
@@ -199,7 +198,7 @@ def sorted_np_export_ge(instance, path):
     except Exception:
         pass
 
-    return
+
 
 def sorted_np_export_siemens_philips(instance, path):
     '''
@@ -232,7 +231,7 @@ def sorted_np_export_siemens_philips(instance, path):
             except Exception:
                 instance.export_as_npy(path)
    
-    return
+
 
 def combine_dynamic(scan_path):
     
@@ -276,5 +275,3 @@ def combine_dynamic(scan_path):
     print('Now saving combined dynamic data')
     np.savez_compressed(os.path.join(scan_path,'combined_dynamic.npz'), data=long_timeseries, timepoints=long_timepoints, spacing=spacing, fa=fa, Tr=Tr)
     print('Combined dynamic data saved')
-
-    return

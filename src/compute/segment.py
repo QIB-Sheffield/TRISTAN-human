@@ -2,7 +2,7 @@ import os
 import numpy as np
 import nibabel as nib
 import scipy.ndimage as ndi
-from utilities import helper
+from . import helper
 import shutil
 from tqdm import tqdm
 from totalsegmentator.python_api import totalsegmentator
@@ -33,9 +33,9 @@ def setup_segmentation(info, seg_type):
         data_axial_max = np.flip(data_axial_max, axis=1)
 
     output_folder = os.path.join(info['output_path'], 'masks', f'S{subject}_v{visit}_s{scan}_max')
-    aorta_mask, liver_mask = run_totalsegmentator(data_axial_max, dims_axial, output_folder, seg_type, format='3D',
-                                    task="total_mr", return_mask=True,
-                                    quiet=True, verbose=True)
+    aorta_mask, liver_mask = run_totalsegmentator(
+        data_axial_max, dims_axial, output_folder, seg_type, format='3D',
+        task="total_mr", return_mask=True, quiet=True, verbose=True)
 
     masked_data = data_4d_axial * aorta_mask[np.newaxis, ...]
     aif = np.sum(masked_data, axis=(1,2,3))/np.sum(aorta_mask)
@@ -51,11 +51,14 @@ def setup_segmentation(info, seg_type):
     return
 
 
-def save_volumes_as_nifti(volumes, voxel_dim, output_folder, output_file='volume', flip_axes=[2,1,0], rotate=180, vol_format='3D', vol_3d=0,
-                         verbose=True, return_nifti=False): 
+def save_volumes_as_nifti(volumes, voxel_dim, output_folder, 
+                          output_file='volume', flip_axes=[2,1,0], 
+                          rotate=180, vol_format='3D', vol_3d=0,
+                          verbose=True, return_nifti=False): 
     #flip_axes: is used to order the axes (Heparim data's order is 2,1,0)
     #rotate: use to rotate image
-    #vol_format: '3D' or '4D', '3D' saves individual nifti files of each volume, '4D' saves one nifit file of all volumes
+    #vol_format: '3D' or '4D', '3D' saves individual nifti files of each volume, 
+    # '4D' saves one nifit file of all volumes
     #vol_3d = volume to save in vol_format='3D_single'
     helper.check_dirs_exist(output_folder)
     #for time, Z, X, Y in volumes.shape: #(215, 72, 224, 224)
@@ -112,14 +115,16 @@ def run_totalsegmentator(dicom_4d_array, dims, output_folder, seg_type, format='
     helper.check_dirs_exist(labels_folder, img_folder)
 
     if format=='4D':
-        nifti_path = save_volumes_as_nifti(dicom_4d_array, dims, img_folder, vol_format='3D_single', vol_3d=ha_vol,
+        nifti_path = save_volumes_as_nifti(dicom_4d_array, dims, img_folder, 
+                                           vol_format='3D_single', vol_3d=ha_vol,
                                            verbose=False, return_nifti=True)
     elif format=='3D':
         if len(dicom_4d_array.shape)==3:
             x, y, z = dicom_4d_array.shape
             dicom_4d_array = np.reshape(dicom_4d_array, (1, x, y, z ))
         
-        nifti_path = save_volumes_as_nifti(dicom_4d_array, dims, img_folder, vol_format='3D_single', vol_3d=0,
+        nifti_path = save_volumes_as_nifti(dicom_4d_array, dims, img_folder, 
+                                           vol_format='3D_single', vol_3d=0,
                                            verbose=False, return_nifti=True)
     else:
         print('Format not supported!')
@@ -127,7 +132,9 @@ def run_totalsegmentator(dicom_4d_array, dims, output_folder, seg_type, format='
     if verbose:
         print("\n...<<Running TotalSegmentator>>...")
     
-    totalsegmentator(nifti_path, labels_folder, task=task, roi_subset=['liver', 'aorta'], quiet=quiet, device='cpu')
+    totalsegmentator(
+        nifti_path, labels_folder, task=task, 
+        roi_subset=['liver', 'aorta'], quiet=quiet, device='cpu')
     aorta_data = nib.load(os.path.join(labels_folder, 'aorta.nii.gz'))
     volume_aorta = aorta_data.get_fdata().transpose(1,0,2)
     volume_aorta = ndi.rotate(volume_aorta, 180, axes=(0,1), reshape=False)
