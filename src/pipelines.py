@@ -279,11 +279,12 @@ def onescandev(datapath, resultspath):
     # segment_molli(datapath, resultspath)
     # TODO coreg MOLLI with DISCO?
 
-    merge_series(datapath)
+    # merge_series(datapath)
     # merge_zarr(datapath, resultspath)
     
     print("--- %s minutes ---" % ((time.time() - start_time)/60))
-    gui().open(datapath).display('DISCO_mean').use()
+    gui().open(datapath).use()
+    #gui().open(datapath).display('DISCO_mean').use()
 
 
 
